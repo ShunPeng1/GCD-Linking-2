@@ -115,7 +115,7 @@ namespace Shun_Grid_System
         {
             var indexDifferenceAbsolute = Grid.GetIndexDifferenceAbsolute(start,end);
 
-            return _distanceCostFunction.GetDistanceCost(indexDifferenceAbsolute.x, indexDifferenceAbsolute.y);
+            return _distanceCostFunction.GetDistanceCost(indexDifferenceAbsolute.x, indexDifferenceAbsolute.y) + start.GetAdjacentCellCost(end);
         }
     
     }

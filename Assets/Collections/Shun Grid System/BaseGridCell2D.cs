@@ -7,6 +7,7 @@ namespace Shun_Grid_System
     {
         [Header("Base")]
         public List<BaseGridCell2D<TItem>> AdjacentCells = new();
+        private Dictionary<BaseGridCell2D<TItem> ,double> _adjacentCellCosts = new();
         public TItem Item;
         public bool IsObstacle;
 
@@ -22,7 +23,7 @@ namespace Shun_Grid_System
             Item = item;
         }
 
-        public void SetAdjacency(BaseGridCell2D<TItem>[] adjacentRawCells)
+        public void SetAdjacency(BaseGridCell2D<TItem>[] adjacentRawCells, double [] adjacentCellCost = null)
         {
             foreach (var adjacentCell in adjacentRawCells)
             {
@@ -30,11 +31,15 @@ namespace Shun_Grid_System
             }
         }
     
-        public void SetAdjacency(BaseGridCell2D<TItem> adjacentCell)
+        public void SetAdjacency(BaseGridCell2D<TItem> adjacentCell, double adjacentCellCost = 0)
         {
-            if (!AdjacentCells.Contains(adjacentCell)) AdjacentCells.Add(adjacentCell);
+            if (!AdjacentCells.Contains(adjacentCell))
+            {
+                AdjacentCells.Add(adjacentCell);
+                _adjacentCellCosts[adjacentCell] = adjacentCellCost;
+            }
         }
-    
+        
         public void RemoveAdjacency(BaseGridCell2D<TItem>[] adjacentRawCells)
         {
             foreach (var adjacentCell in adjacentRawCells)
@@ -45,8 +50,15 @@ namespace Shun_Grid_System
     
         public void RemoveAdjacency(BaseGridCell2D<TItem> adjacentCell)
         {
-            if (AdjacentCells.Contains(adjacentCell)) AdjacentCells.Remove(adjacentCell);
+            if (!AdjacentCells.Contains(adjacentCell)) return;
+            
+            AdjacentCells.Remove(adjacentCell);
+            _adjacentCellCosts.Remove(adjacentCell);
         }
 
+        public double GetAdjacentCellCost(BaseGridCell2D<TItem> adjacentCell)
+        {
+            return AdjacentCells.Contains(adjacentCell)? _adjacentCellCosts[adjacentCell] : 0;
+        }
     }
 }
