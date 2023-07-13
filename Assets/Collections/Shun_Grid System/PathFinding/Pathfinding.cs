@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace _Scripts.Grid_System.PathFinding
+namespace Shun_Grid_System
 {
     public enum PathFindingAlgorithmType
     {

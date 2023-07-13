@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace _Script.PathFinding
+namespace Shun_Grid_System
 {
     public enum PathFindingCostFunction
     {

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace _Scripts.Grid_System
+namespace Shun_Grid_System
 {
     public class GridXYCell<TItem> : BaseGridCell2D<TItem>
     {

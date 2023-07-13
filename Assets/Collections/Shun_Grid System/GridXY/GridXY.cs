@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace _Scripts.Grid_System
+namespace Shun_Grid_System
 {
     public class GridXY<TItem> : BaseGrid2D<GridXYCell<TItem>, TItem>
     {

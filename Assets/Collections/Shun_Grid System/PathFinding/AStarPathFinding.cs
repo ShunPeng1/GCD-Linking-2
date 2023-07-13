@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using _Scripts.Grid_System.PathFinding;
 
-namespace _Script.PathFinding
+
+namespace Shun_Grid_System
 {
     public class AStarPathFinding<TGrid,TCell,TItem> : Pathfinding<TGrid, TCell, TItem> 
         where TGrid : BaseGrid2D<TCell,TItem> 
