@@ -5,8 +5,8 @@ namespace Shun_Grid_System
 {
     public class GridXY<TItem> : BaseGrid2D<GridXYCell<TItem>, TItem>
     {
-        public GridXY(int width, int height, float cellWidthSize, float cellHeightSize, Vector3 transformPosition) 
-            : base(width, height, cellWidthSize, cellHeightSize, transformPosition)
+        public GridXY(int width, int height, float cellWidthSize, float cellHeightSize, Vector3 worldOriginPosition) 
+            : base(width, height, cellWidthSize, cellHeightSize, worldOriginPosition)
         {
             
         }
