@@ -14,7 +14,7 @@ TagManager:
   - 
   - 
   - 
-  - 
+  - Collision Tilemap
   - 
   - 
   - 
@@ -38,6 +38,18 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Background Tilemap
+    uniqueID: 4066693411
+    locked: 0
+  - name: Midground Tilemap
+    uniqueID: 3195708635
+    locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Foreground Tilemap
+    uniqueID: 2074887101
+    locked: 0
+  - name: Overlay Tilemap
+    uniqueID: 781901129
     locked: 0
