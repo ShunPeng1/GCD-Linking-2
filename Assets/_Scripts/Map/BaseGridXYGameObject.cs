@@ -7,7 +7,7 @@ public class BaseGridXYGameObject : MonoBehaviour
 {
     protected GridXY<BaseGridXYItemGameObject> Grid;
 
-    void Start()
+    protected virtual void Start()
     {
         Grid = MapManager.Instance.WorldGrid;
         
