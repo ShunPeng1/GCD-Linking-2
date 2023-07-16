@@ -10,7 +10,7 @@ public class BaseGridXYItemGameObject : MonoBehaviour
     protected int XIndex, YIndex;
     
     
-    void Start()
+    protected virtual void Start()
     {
         Grid = MapManager.Instance.WorldGrid;
         Cell = Grid.GetCell(transform.position);

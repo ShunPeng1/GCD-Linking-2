@@ -25,7 +25,10 @@ public class MapManager : SingletonMonoBehaviour<MapManager>
         {
             for (int y = 0; y < GridHeight; y++)
             {
-                var cell = new GridXYCell<BaseGridXYItemGameObject>(WorldGrid, x, y);
+                var testItem = Instantiate(ResourceManager.Instance.TestItem, WorldGrid.GetWorldPositionOfNearestCell(x, y),
+                    Quaternion.identity, transform);
+                var cell = new GridXYCell<BaseGridXYItemGameObject>(WorldGrid, x, y, testItem);
+                
                 WorldGrid.SetCell(cell,x,y);   
             }
         }

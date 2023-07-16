@@ -23,6 +23,6 @@ public class BaseCharacter : BaseGridXYGameObject
 
         _rb.AddForce(movement * MoveSpeed);
         
-        Debug.Log(GetCell().XIndex + " " + GetCell().YIndex);
+        //Debug.Log(GetCell().XIndex + " " + GetCell().YIndex);
     }
 }
