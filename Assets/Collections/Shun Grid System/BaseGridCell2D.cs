@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -23,15 +24,15 @@ namespace Shun_Grid_System
             Item = item;
         }
 
-        public void SetAdjacency(BaseGridCell2D<TItem>[] adjacentRawCells, double [] adjacentCellCost = null)
+        public void SetAdjacencyCell(BaseGridCell2D<TItem>[] adjacentRawCells, double [] adjacentCellCost = null)
         {
             foreach (var adjacentCell in adjacentRawCells)
             {
-                SetAdjacency(adjacentCell);
+                SetAdjacencyCell(adjacentCell);
             }
         }
     
-        public void SetAdjacency(BaseGridCell2D<TItem> adjacentCell, double adjacentCellCost = 0)
+        public void SetAdjacencyCell(BaseGridCell2D<TItem> adjacentCell, double adjacentCellCost = 0)
         {
             if (!AdjacentCells.Contains(adjacentCell))
             {
@@ -39,7 +40,7 @@ namespace Shun_Grid_System
                 _adjacentCellCosts[adjacentCell] = adjacentCellCost;
             }
         }
-        
+
         public void RemoveAdjacency(BaseGridCell2D<TItem>[] adjacentRawCells)
         {
             foreach (var adjacentCell in adjacentRawCells)

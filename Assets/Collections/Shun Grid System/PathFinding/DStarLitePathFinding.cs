@@ -6,13 +6,13 @@ using UnityEngine;
 /* <summary>
 D* Lite is a pathfinding algorithm that is similar to A* but is designed to handle changing environments, such as a partially mapped or dynamic grid. The algorithm uses two values for each cell on the grid: the g-value and the rhs-value.
 
-The g-value represents the cost of the optimal path from the start node to the current node. Initially, all g-values are set to infinity except for the start node, which is set to zero. As the algorithm explores the grid, it updates the g-values of cells that are closer to the start node with more accurate costs.
+The g-value represents the cost of the optimal path from the start cell to the current cell. Initially, all g-values are set to infinity except for the start cell, which is set to zero. As the algorithm explores the grid, it updates the g-values of cells that are closer to the start cell with more accurate costs.
 
-The rhs-value represents the cost of the second-best path from the start node to the current node. Initially, all rhs-values are set to infinity except for the start node, which is set to zero. As the algorithm explores the grid, it updates the rhs-values of cells that are farther from the start node with more accurate costs.
+The rhs-value represents the cost of the second-best path from the start cell to the current cell. Initially, all rhs-values are set to infinity except for the start cell, which is set to zero. As the algorithm explores the grid, it updates the rhs-values of cells that are farther from the start cell with more accurate costs.
 
 The algorithm starts by creating a priority queue of cells to be explored. The priority queue is sorted by the sum of the g-value and the heuristic value (H) of each cell. At each iteration, the algorithm checks the cell with the lowest priority in the priority queue. If the cell's g-value is greater than its rhs-value, the cell's g-value is updated to its rhs-value and the cell's predecessors are updated. If the cell's g-value is less than its rhs-value, the cell's rhs-value is updated to its g-value and the cell is added to the priority queue.
 
-As the algorithm progresses, it updates the g-values and rhs-values of cells and adds new cells to the priority queue. When the goal cell is found, the algorithm returns the path from the start node to the goal node.
+As the algorithm progresses, it updates the g-values and rhs-values of cells and adds new cells to the priority queue. When the goal cell is found, the algorithm returns the path from the start cell to the goal cell.
 
 One of the key features of D* Lite is that it is designed to work efficiently in dynamic environments. When the environment changes, the algorithm can be re-run with the updated costs and a new path will be found that takes the changes into account. This makes it a useful algorithm for applications such as robotics, where the environment can change frequently.
 */
@@ -22,34 +22,28 @@ namespace Shun_Grid_System
         where TGrid : BaseGrid2D<TCell,TItem> 
         where TCell : BaseGridCell2D<TItem>
     {
-        private TCell _startNode, _endNode;
+        private TCell _startCell, _endCell;
         private IPathFindingDistanceCost _distanceCostFunction;
-        private Priority_Queue.SimplePriorityQueue<TCell, QueueKey > _openNodes = new ( new CompareFCostHCost()); // priority queue of open nodes
+        private IPathFindingAdjacentCellSelection<TCell, TItem> _adjacentCellSelectionFunction;
+        private Priority_Queue.SimplePriorityQueue<TCell, QueueKey > _openCells = new ( new CompareFCostHCost()); // priority queue of open cells
         private int _km = 0; // km = heuristic for estimating cost of travel along the last path
         private Dictionary<TCell, double> _rhsValues = new (); // rhsValues[x] = the current best estimate of the cost from x to the goal
         private Dictionary<TCell, double> _gValues = new (); // gValues[x] = the cost of the cheapest path from the start to x
-        private Dictionary<TCell, TCell> _predecessors = new (); // predecessors[x] = the node that comes before x on the best path from the start to x
+        private Dictionary<TCell, TCell> _predecessors = new (); // predecessors[x] = the cell that comes before x on the best path from the start to x
         private Dictionary<TCell, float> _dynamicObstacles = new(); // dynamicObstacle[x] = the cell that is found obstacle after find path and its found time
-    
-        public DStarLitePathFinding(TGrid gridXZ, PathFindingCostFunction costFunctionType) : base(gridXZ)
+        
+        
+        public DStarLitePathFinding(TGrid gridXZ, IPathFindingAdjacentCellSelection<TCell, TItem> adjacentCellSelectionFunc, PathFindingCostFunction costFunctionType) : base(gridXZ)
         {
-            switch (costFunctionType)
+            _adjacentCellSelectionFunction = adjacentCellSelectionFunc;
+            _distanceCostFunction = costFunctionType switch
             {
-                case PathFindingCostFunction.Manhattan:
-                    _distanceCostFunction = new ManhattanDistanceCost();
-                    break;
-                case PathFindingCostFunction.Euclidean:
-                    _distanceCostFunction = new EuclideanDistanceCost();
-                    break;
-                case PathFindingCostFunction.Octile:
-                    _distanceCostFunction = new OctileDistanceCost();
-                    break;
-                case PathFindingCostFunction.Chebyshev:
-                    _distanceCostFunction = new ChebyshevDistanceCost();
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(costFunctionType), costFunctionType, null);
-            }
+                PathFindingCostFunction.Manhattan => new ManhattanDistanceCost(),
+                PathFindingCostFunction.Euclidean => new EuclideanDistanceCost(),
+                PathFindingCostFunction.Octile => new OctileDistanceCost(),
+                PathFindingCostFunction.Chebyshev => new ChebyshevDistanceCost(),
+                _ => throw new ArgumentOutOfRangeException(nameof(costFunctionType), costFunctionType, null)
+            };
         }
     
         public DStarLitePathFinding(TGrid gridXZ, IPathFindingDistanceCost pathFindingDistanceCost) : base(gridXZ)
@@ -81,59 +75,61 @@ namespace Shun_Grid_System
             }
         }
 
-        public override LinkedList<TCell> FirstTimeFindPath(TCell startNode, TCell endNode)
+        public override LinkedList<TCell> FirstTimeFindPath(TCell startCell, TCell endCell)
         {
-            ResetPathFinding(startNode, endNode);
+            ResetPathFinding(startCell, endCell);
         
-            return FindPath(startNode, endNode);
+            return FindPath(startCell, endCell);
         }
 
-        public LinkedList<TCell> FindPath(TCell startNode, TCell endNode)
+        public LinkedList<TCell> FindPath(TCell startCell, TCell endCell)
         {
-            while (_openNodes.Count > 0 &&
-                   (GetRhsValue(startNode) > CalculateKey(startNode, startNode) ||
-                    _gValues[startNode] == double.PositiveInfinity))
+            while (_openCells.Count > 0 &&
+                   (GetRhsValue(startCell) > CalculateKey(startCell, startCell) ||
+                    _gValues[startCell] == double.PositiveInfinity))
             {
-                if (!_openNodes.TryDequeue(out TCell currentNode)) return null; // there are no way to get to end
+                if (!_openCells.TryDequeue(out TCell currentCell)) return null; // there are no way to get to end
             
-                //Debug.Log("DStar current Node" + currentNode.XIndex + " " + currentNode.ZIndex);
+                //Debug.Log("DStar current Cell" + currentCell.XIndex + " " + currentCell.ZIndex);
 
-                if (GetGValue(currentNode) > _rhsValues[currentNode])
+                if (GetGValue(currentCell) > _rhsValues[currentCell])
                 {
-                    _gValues[currentNode] = _rhsValues[currentNode];
+                    _gValues[currentCell] = _rhsValues[currentCell];
 
-                    foreach (TCell neighbor in currentNode.AdjacentCells)
+                    foreach (TCell neighbor in currentCell.AdjacentCells)
                     {
-                        //if (neighbor != null && !neighbor.IsObstacle)
-                        if (neighbor != null && !neighbor.IsObstacle && !_dynamicObstacles.ContainsKey(neighbor))
+                        if (neighbor != null && !neighbor.IsObstacle 
+                                             && _adjacentCellSelectionFunction.CheckMovableCell(currentCell, neighbor) 
+                                             && !_dynamicObstacles.ContainsKey(neighbor))
                         {
-                            UpdateNode(neighbor, currentNode);
+                            UpdateCell(neighbor, currentCell);
                         }
                     }
                 }
                 else
                 {
-                    _gValues[currentNode] = double.PositiveInfinity;
-                    UpdateNode(currentNode);
+                    _gValues[currentCell] = double.PositiveInfinity;
+                    UpdateCell(currentCell);
 
-                    foreach (TCell neighbor in currentNode.AdjacentCells)
+                    foreach (TCell neighbor in currentCell.AdjacentCells)
                     {
-                        //if (neighbor != null && !neighbor.IsObstacle)
-                        if (neighbor != null && !neighbor.IsObstacle && !_dynamicObstacles.ContainsKey(neighbor))
+                        if (neighbor != null && !neighbor.IsObstacle 
+                                             && _adjacentCellSelectionFunction.CheckMovableCell(currentCell, neighbor) 
+                                             && !_dynamicObstacles.ContainsKey(neighbor))
                         {
-                            UpdateNode(neighbor, currentNode);
+                            UpdateCell(neighbor, currentCell);
                         }
                     }
 
                 }
             }
 
-            return RetracePath(startNode, endNode);
+            return RetracePath(startCell, endCell);
         }
     
-        public override LinkedList<TCell> UpdatePathWithDynamicObstacle(TCell currentStartNode, List<TCell> foundDynamicObstacles)
+        public override LinkedList<TCell> UpdatePathWithDynamicObstacle(TCell currentStartCell, List<TCell> foundDynamicObstacles)
         {
-            ResetPathFinding(currentStartNode, _endNode);
+            ResetPathFinding(currentStartCell, _endCell);
         
             foreach (var obstacleCell in foundDynamicObstacles)
             {
@@ -141,13 +137,13 @@ namespace Shun_Grid_System
                 _dynamicObstacles[obstacleCell] = Time.time;
             }
         
-            return FindPath(_startNode, _endNode);
+            return FindPath(_startCell, _endCell);
         }
     
-        private void UpdateNode(TCell updateNode, TCell itsPredecessorNode = null)
+        private void UpdateCell(TCell updateCell, TCell itsPredecessorCell = null)
         {
-            //Debug.Log("DStar UpdateNode " + node.XIndex + " " + node.ZIndex);
-            if (updateNode != _endNode)
+            //Debug.Log("DStar UpdateCell " + cell.XIndex + " " + cell.ZIndex);
+            if (updateCell != _endCell)
             {
                 /*
              * Get the min rhs from Successors, then add it to the predecessors for traverse
@@ -155,42 +151,44 @@ namespace Shun_Grid_System
                 double minRhs = double.PositiveInfinity;
                 TCell minSucc = null;
 
-                foreach (TCell successor in updateNode.AdjacentCells)
+                foreach (TCell successor in updateCell.AdjacentCells)
                 {
                     double rhs = _gValues.ContainsKey(successor)
-                        ? GetGValue(successor) + GetDistanceCost(updateNode, successor)
+                        ? GetGValue(successor) + GetDistanceCost(updateCell, successor)
                         : double.PositiveInfinity;
-                    if (rhs < minRhs && !successor.IsObstacle && !_dynamicObstacles.ContainsKey(successor) && !_dynamicObstacles.ContainsKey(successor))
+                    if (rhs < minRhs && !successor.IsObstacle
+                                     && _adjacentCellSelectionFunction.CheckMovableCell(updateCell, successor) 
+                                     && !_dynamicObstacles.ContainsKey(successor))
                         // Is the min successor, if it the same, choose the one not its press 
-                        //if  ((rhs < minRhs||(rhs == minRhs && rhs !=double.PositiveInfinity  && successor != itsPredecessorNode)) && !successor.IsObstacle && !_dynamicObstacles.ContainsKey(successor))
+                        //if  ((rhs < minRhs||(rhs == minRhs && rhs !=double.PositiveInfinity  && successor != itsPredecessorCell)) && !successor.IsObstacle && !_dynamicObstacles.ContainsKey(successor))
                     {
                         minRhs = rhs;
                         minSucc = successor;
                     }
                 }
 
-                _rhsValues[updateNode] = minRhs;
-                //_predecessors[upgradeNode] = minSucc ?? (_predecessors[upgradeNode] ?? null);
-                _predecessors[updateNode] = minSucc;
+                _rhsValues[updateCell] = minRhs;
+                //_predecessors[upgradeCell] = minSucc ?? (_predecessors[upgradeCell] ?? null);
+                _predecessors[updateCell] = minSucc;
 
             }
 
-            if (_openNodes.Contains(updateNode)) // refresh the old node
+            if (_openCells.Contains(updateCell)) // refresh the old cell
             {
-                _openNodes.TryRemove(updateNode);
+                _openCells.TryRemove(updateCell);
             }
 
-            if (GetGValue(updateNode) != GetRhsValue(updateNode)) // Mainly if both not equal double.PositiveInfinity, meaning it found a path that is shorter
+            if (GetGValue(updateCell) != GetRhsValue(updateCell)) // Mainly if both not equal double.PositiveInfinity, meaning it found a path that is shorter
             {
-                //_gValues[updateNode] = GetRhsValue(updateNode);
-                var gValue = (double.IsPositiveInfinity(GetGValue(updateNode)) ? 999999999 : _gValues[updateNode]);
-                var hValue = GetDistanceCost(updateNode, _startNode);
+                //_gValues[updateCell] = GetRhsValue(updateCell);
+                var gValue = (double.IsPositiveInfinity(GetGValue(updateCell)) ? 999999999 : _gValues[updateCell]);
+                var hValue = GetDistanceCost(updateCell, _startCell);
                 var fValue = (gValue + hValue + _km);
-                updateNode.GCost = gValue;
-                updateNode.HCost = hValue;
-                updateNode.FCost = fValue;
+                updateCell.GCost = gValue;
+                updateCell.HCost = hValue;
+                updateCell.FCost = fValue;
 
-                _openNodes.Enqueue(updateNode, new QueueKey(fValue, hValue)); // Enqueue the new node
+                _openCells.Enqueue(updateCell, new QueueKey(fValue, hValue)); // Enqueue the new cell
             }
         }
 
@@ -210,7 +208,10 @@ namespace Shun_Grid_System
                 foreach (TCell successor in currentCell.AdjacentCells)
                 {
                     double successorGCost = GetGValue(successor);
-                    if ( successorGCost <= minGCost && !successor.IsObstacle && !_dynamicObstacles.ContainsKey(successor) && !visitedCells.Contains(successor))
+                    if ( successorGCost <= minGCost && !successor.IsObstacle
+                                                    && _adjacentCellSelectionFunction.CheckMovableCell(currentCell, successor) 
+                                                    && !_dynamicObstacles.ContainsKey(successor) 
+                                                    && !visitedCells.Contains(successor))
                     {
                         nextCell = successor;
                         minGCost = successorGCost;
@@ -227,43 +228,43 @@ namespace Shun_Grid_System
             return path;
         }
 
-        private void ResetPathFinding(TCell startNode, TCell endNode)
+        private void ResetPathFinding(TCell startCell, TCell endCell)
         {
-            _openNodes = new ( new CompareFCostHCost()); // priority queue of open nodes
+            _openCells = new ( new CompareFCostHCost()); // priority queue of open cells
             _km = 0; // km = heuristic for estimating cost of travel along the last path
             _rhsValues = new (); // rhsValues[x] = the current best estimate of the cost from x to the goal
             _gValues = new (); // gValues[x] = the cost of the cheapest path from the start to x
-            _predecessors = new (); // predecessors[x] = the node that comes before x on the best path from the start to x
+            _predecessors = new (); // predecessors[x] = the cell that comes before x on the best path from the start to x
             _dynamicObstacles = new(); // dynamicObstacle[x] = the cell that is found obstacle after find path and its found time
 
-            this._startNode = startNode;
-            this._endNode = endNode;
+            this._startCell = startCell;
+            this._endCell = endCell;
         
-            _gValues[endNode] = double.PositiveInfinity;
-            _rhsValues[endNode] = 0;
+            _gValues[endCell] = double.PositiveInfinity;
+            _rhsValues[endCell] = 0;
 
-            _gValues[startNode] =  double.PositiveInfinity;
-            _rhsValues[startNode] = double.PositiveInfinity;
-            _predecessors[startNode] = null;
+            _gValues[startCell] =  double.PositiveInfinity;
+            _rhsValues[startCell] = double.PositiveInfinity;
+            _predecessors[startCell] = null;
 
-            _openNodes.Enqueue(endNode, new QueueKey((int) CalculateKey(endNode, startNode) , 0));
+            _openCells.Enqueue(endCell, new QueueKey((int) CalculateKey(endCell, startCell) , 0));
 
         
         }
 
-        private double CalculateKey(TCell currNode, TCell startNode)
+        private double CalculateKey(TCell currCell, TCell startCell)
         {
-            return Math.Min(GetRhsValue(currNode), GetGValue(currNode)) + GetDistanceCost(currNode, startNode) + _km;
+            return Math.Min(GetRhsValue(currCell), GetGValue(currCell)) + GetDistanceCost(currCell, startCell) + _km;
         }
 
-        private double GetRhsValue(TCell node)
+        private double GetRhsValue(TCell cell)
         {
-            return _rhsValues.TryGetValue(node, out double value) ? value : double.PositiveInfinity;
+            return _rhsValues.TryGetValue(cell, out double value) ? value : double.PositiveInfinity;
         }
 
-        private double GetGValue(TCell node)
+        private double GetGValue(TCell cell)
         {
-            return _gValues.TryGetValue(node, out double value) ? value : double.PositiveInfinity;
+            return _gValues.TryGetValue(cell, out double value) ? value : double.PositiveInfinity;
         }
 
         protected virtual double GetDistanceCost(TCell start, TCell end)

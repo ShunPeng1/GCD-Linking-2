@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 
@@ -11,26 +12,19 @@ namespace Shun_Grid_System
         private Dictionary<TCell, double> _hValues = new (); // rhsValues[x] = the current best estimate of the cost from x to the goal
         private Dictionary<TCell, double> _gValues = new (); // gValues[x] = the cost of the cheapest path from the start to x
         private IPathFindingDistanceCost _distanceCostFunction;
+        private IPathFindingAdjacentCellSelection<TCell, TItem> _adjacentCellSelectionFunction;
 
-        public AStarPathFinding(TGrid gridXZ, PathFindingCostFunction costFunctionType) : base(gridXZ)
+        public AStarPathFinding(TGrid gridXZ, IPathFindingAdjacentCellSelection<TCell, TItem> adjacentCellSelectionFunction, PathFindingCostFunction costFunctionType) : base(gridXZ)
         {
-            switch (costFunctionType)
+            _adjacentCellSelectionFunction = adjacentCellSelectionFunction;
+            _distanceCostFunction = costFunctionType switch
             {
-                case PathFindingCostFunction.Manhattan:
-                    _distanceCostFunction = new ManhattanDistanceCost();
-                    break;
-                case PathFindingCostFunction.Euclidean:
-                    _distanceCostFunction = new EuclideanDistanceCost();
-                    break;
-                case PathFindingCostFunction.Octile:
-                    _distanceCostFunction = new OctileDistanceCost();
-                    break;
-                case PathFindingCostFunction.Chebyshev:
-                    _distanceCostFunction = new ChebyshevDistanceCost();
-                    break;
-                default:
-                    break;
-            }
+                PathFindingCostFunction.Manhattan => new ManhattanDistanceCost(),
+                PathFindingCostFunction.Euclidean => new EuclideanDistanceCost(),
+                PathFindingCostFunction.Octile => new OctileDistanceCost(),
+                PathFindingCostFunction.Chebyshev => new ChebyshevDistanceCost(),
+                _ => throw new ArgumentOutOfRangeException(nameof(costFunctionType), costFunctionType, null)
+            };
         }
     
         public AStarPathFinding(TGrid gridXZ, IPathFindingDistanceCost pathFindingDistanceCost) : base(gridXZ)
@@ -67,10 +61,9 @@ namespace Shun_Grid_System
 
                 foreach (TCell adjacentCell in currentMinFCostCell.AdjacentCells)
                 {
-                    if (closeSet.Contains(adjacentCell)) // skip for travelled ceil 
-                    {
-                        continue;
-                    }
+                    if (closeSet.Contains(adjacentCell)) continue;  // skip for travelled cell
+                    if (!_adjacentCellSelectionFunction.CheckMovableCell(currentMinFCostCell, adjacentCell)) continue;
+                    
 
                     double newGCostToNeighbour = currentMinFCostCell.GCost + GetDistanceCost(currentMinFCostCell, adjacentCell);
                     if (newGCostToNeighbour < adjacentCell.GCost || !openSet.Contains(adjacentCell))
