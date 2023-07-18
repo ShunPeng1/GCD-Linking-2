@@ -104353,7 +104353,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _dragSpeed: 500
   _smoothTime: 0.125
-  _zoomSpeed: 20
+  _zoomSpeed: 15
   _minZoomDistance: 5
   _maxZoomDistance: 20
   _zoomElasticity: 0.5
