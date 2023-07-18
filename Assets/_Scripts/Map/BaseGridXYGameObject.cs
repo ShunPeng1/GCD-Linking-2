@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class BaseGridXYGameObject : MonoBehaviour
 {
-    protected GridXY<BaseGridXYItemGameObject> Grid;
+    [SerializeField] protected GridXY<BaseGridXYItemGameObject> Grid;
 
     protected virtual void Start()
     {

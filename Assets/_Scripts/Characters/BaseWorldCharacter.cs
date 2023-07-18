@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BaseCharacter : BaseGridXYGameObject
+public class BaseWorldCharacter : BaseGridXYGameObject
 {
     public float MoveSpeed = 5f;
     private Rigidbody2D _rb;
@@ -24,5 +24,10 @@ public class BaseCharacter : BaseGridXYGameObject
         _rb.AddForce(movement * MoveSpeed);
         
         //Debug.Log(GetCell().XIndex + " " + GetCell().YIndex);
+    }
+
+    private void MoveToCell()
+    {
+        
     }
 }

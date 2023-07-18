@@ -2,7 +2,7 @@
 
 namespace _Scripts.Cards.Card_UI
 {
-    public class CharacterCardPlaceHolder : BaseCardPlaceHolder
+    public class CharacterCardHolder : BaseCardHolder
     {
         protected override void AttachCardVisual()
         {

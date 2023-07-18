@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Shun_Card_System
 {
     [RequireComponent(typeof(Collider2D))]
-    public class BaseCardPlaceRegion : MonoBehaviour
+    public class BaseCardRegion : MonoBehaviour
     {
         public enum MiddleInsertionStyle
         {
@@ -15,15 +15,15 @@ namespace Shun_Card_System
             Cannot,
         }
         
-        [SerializeField] protected BaseCardPlaceHolder CardPlaceHolderPrefab;
+        [SerializeField] protected BaseCardHolder CardHolderPrefab;
         [SerializeField] protected Transform SpawnPlace;
         [SerializeField] protected Vector3 CardOffset = new Vector3(5f, 0 ,0);
 
         
-        [SerializeField] protected List<BaseCardPlaceHolder> _cardPlaceHolders = new();
+        [SerializeField] protected List<BaseCardHolder> _cardPlaceHolders = new();
         [SerializeField] protected int MaxCardHold;
         [SerializeField] protected MiddleInsertionStyle CardMiddleInsertionStyle = MiddleInsertionStyle.InsertInMiddle;
-        protected BaseCardPlaceHolder TemporaryBaseCardHolder;
+        protected BaseCardHolder TemporaryBaseCardHolder;
         protected int CardHoldingCount = 0;
         
         protected virtual void Awake()
@@ -45,7 +45,7 @@ namespace Shun_Card_System
             {
                 for (int i = 0; i < MaxCardHold; i++)
                 {
-                    var cardPlaceHolder = Instantiate(CardPlaceHolderPrefab, SpawnPlace.position + i * CardOffset,
+                    var cardPlaceHolder = Instantiate(CardHolderPrefab, SpawnPlace.position + i * CardOffset,
                         Quaternion.identity, SpawnPlace);
                     _cardPlaceHolders.Add(cardPlaceHolder);
                     cardPlaceHolder.InitializeRegion(this, i);
@@ -77,15 +77,25 @@ namespace Shun_Card_System
             CardHoldingCount = 0;
         }
 
-        public BaseCardPlaceHolder FindEmptyCardPlaceHolder()
+        protected BaseCardHolder FindEmptyCardPlaceHolder()
         {
             if (CardHoldingCount >= MaxCardHold) return null;
             return _cardPlaceHolders[CardHoldingCount];
         }
-
-        public bool AddCard(BaseCardGameObject cardGameObject, BaseCardPlaceHolder cardPlaceHolder)
+        
+        public BaseCardHolder FindCardPlaceHolder(BaseCardGameObject baseCardGameObject)
         {
-            if (cardPlaceHolder == null || cardPlaceHolder.IndexInRegion >= CardHoldingCount)
+            foreach (var cardPlaceHolder in _cardPlaceHolders)
+            {
+                if (cardPlaceHolder.CardGameObject == baseCardGameObject) return cardPlaceHolder;
+            }
+
+            return null;
+        }
+
+        public bool AddCard(BaseCardGameObject cardGameObject, BaseCardHolder cardHolder)
+        {
+            if (cardHolder == null || cardHolder.IndexInRegion >= CardHoldingCount)
             {
                 return AddCardAtBack(cardGameObject);
             }
@@ -93,7 +103,7 @@ namespace Shun_Card_System
             return CardMiddleInsertionStyle switch
             {
                 MiddleInsertionStyle.AlwaysBack => AddCardAtBack(cardGameObject),
-                MiddleInsertionStyle.InsertInMiddle => AddCardAtMiddle(cardGameObject, cardPlaceHolder.IndexInRegion),
+                MiddleInsertionStyle.InsertInMiddle => AddCardAtMiddle(cardGameObject, cardHolder.IndexInRegion),
                 MiddleInsertionStyle.Cannot => false,
                 _ => false
             };
@@ -179,23 +189,23 @@ namespace Shun_Card_System
             return false;
         }
         
-        public bool DetachCard(BaseCardGameObject cardGameObject,BaseCardPlaceHolder cardPlaceHolder)
+        public bool DetachCard(BaseCardGameObject cardGameObject,BaseCardHolder cardHolder)
         {
-            if (cardPlaceHolder.CardGameObject != cardGameObject) return false;
+            if (cardHolder.CardGameObject != cardGameObject) return false;
 
-            cardPlaceHolder.DetachCardGameObject();
+            cardHolder.DetachCardGameObject();
             
-            ShiftLeft(_cardPlaceHolders.IndexOf(cardPlaceHolder));
+            ShiftLeft(_cardPlaceHolders.IndexOf(cardHolder));
             CardHoldingCount--;
 
             return true;
         }
         
-        public bool TakeOutTemporary(BaseCardGameObject cardGameObject,BaseCardPlaceHolder cardPlaceHolder)
+        public bool TakeOutTemporary(BaseCardGameObject cardGameObject,BaseCardHolder cardHolder)
         {
-            if (!DetachCard(cardGameObject, cardPlaceHolder)) return false;
+            if (!DetachCard(cardGameObject, cardHolder)) return false;
             
-            TemporaryBaseCardHolder = cardPlaceHolder;
+            TemporaryBaseCardHolder = cardHolder;
             return true;
         }
         

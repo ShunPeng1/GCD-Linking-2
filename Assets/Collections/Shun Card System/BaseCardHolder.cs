@@ -7,17 +7,17 @@ namespace Shun_Card_System
     /// This can be used to move, animations,...
     /// </summary>
     [RequireComponent(typeof(Collider2D))]
-    public class BaseCardPlaceHolder : MonoBehaviour
+    public class BaseCardHolder : MonoBehaviour
     {
-        [HideInInspector] public BaseCardPlaceRegion CardPlaceRegion;
+        [HideInInspector] public BaseCardRegion CardRegion;
         [HideInInspector] public int IndexInRegion;
         public BaseCardGameObject CardGameObject;
 
-        public void InitializeRegion(BaseCardPlaceRegion cardPlaceRegion, int indexInRegion)
+        public void InitializeRegion(BaseCardRegion cardRegion, int indexInRegion)
         {
-            CardPlaceRegion = cardPlaceRegion;
+            CardRegion = cardRegion;
             IndexInRegion = indexInRegion;
-            transform.parent = cardPlaceRegion.transform;
+            transform.parent = cardRegion.transform;
         }
         
         public void AttachCardGameObject(BaseCardGameObject cardGameObject)
