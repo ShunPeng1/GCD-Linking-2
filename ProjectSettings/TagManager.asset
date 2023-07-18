@@ -53,3 +53,6 @@ TagManager:
   - name: Overlay Tilemap
     uniqueID: 781901129
     locked: 0
+  - name: Card UI
+    uniqueID: 775460255
+    locked: 0
