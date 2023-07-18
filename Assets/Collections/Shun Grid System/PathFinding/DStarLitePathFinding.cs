@@ -139,7 +139,12 @@ namespace Shun_Grid_System
         
             return FindPath(_startCell, _endCell);
         }
-    
+
+        public override LinkedList<TCell> FindAllCellsSmallerThanCost(TCell currentStartNode, double cost)
+        {
+            throw new NotImplementedException();
+        }
+
         private void UpdateCell(TCell updateCell, TCell itsPredecessorCell = null)
         {
             //Debug.Log("DStar UpdateCell " + cell.XIndex + " " + cell.ZIndex);
@@ -271,7 +276,7 @@ namespace Shun_Grid_System
         {
             var indexDifferenceAbsolute = Grid.GetIndexDifferenceAbsolute(start,end);
 
-            return _distanceCostFunction.GetDistanceCost(indexDifferenceAbsolute.x, indexDifferenceAbsolute.y) + start.GetAdjacentCellCost(end);
+            return _distanceCostFunction.GetDistanceCost(indexDifferenceAbsolute.x, indexDifferenceAbsolute.y) + start.GetAdditionalAdjacentCellCost(end);
         }
     
     }

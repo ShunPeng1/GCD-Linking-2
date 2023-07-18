@@ -7,12 +7,12 @@ namespace Shun_Grid_System
     public abstract class BaseGridCell2D<TItem>
     {
         [Header("Base")]
-        public List<BaseGridCell2D<TItem>> AdjacentCells = new();
-        private Dictionary<BaseGridCell2D<TItem> ,double> _adjacentCellCosts = new();
+        public readonly List<BaseGridCell2D<TItem>> AdjacentCells = new();
+        private readonly Dictionary<BaseGridCell2D<TItem> ,double> _adjacentCellCosts = new();
         public TItem Item;
-        public bool IsObstacle;
+        public bool IsObstacle = false;
 
-        [Header("A Star Pathfinding")] 
+        [Header("Pathfinding Debug")] 
         public BaseGridCell2D<TItem> ParentXZCell2D = null; 
         public double FCost;
         public double HCost;
@@ -57,7 +57,7 @@ namespace Shun_Grid_System
             _adjacentCellCosts.Remove(adjacentCell);
         }
 
-        public double GetAdjacentCellCost(BaseGridCell2D<TItem> adjacentCell)
+        public double GetAdditionalAdjacentCellCost(BaseGridCell2D<TItem> adjacentCell)
         {
             return AdjacentCells.Contains(adjacentCell)? _adjacentCellCosts[adjacentCell] : 0;
         }

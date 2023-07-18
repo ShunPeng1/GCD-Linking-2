@@ -8,7 +8,7 @@ namespace Shun_Grid_System
         where TGrid : BaseGrid2D<TCell,TItem> 
         where TCell : BaseGridCell2D<TItem>
     {
-        private TCell _startNode, _endNode;
+        private TCell _startCell, _endCell;
         private Dictionary<TCell, double> _hValues = new (); // rhsValues[x] = the current best estimate of the cost from x to the goal
         private Dictionary<TCell, double> _gValues = new (); // gValues[x] = the cost of the cheapest path from the start to x
         private IPathFindingDistanceCost _distanceCostFunction;
@@ -32,43 +32,100 @@ namespace Shun_Grid_System
             _distanceCostFunction = pathFindingDistanceCost;
         }
         
-        public override LinkedList<TCell> FirstTimeFindPath(TCell startNode, TCell endNode)
+        public override LinkedList<TCell> FirstTimeFindPath(TCell startCell, TCell endCell)
         {
-            _startNode = startNode;
-            _endNode = endNode;
-            return FindPath(startNode, endNode);
+            _startCell = startCell;
+            _endCell = endCell;
+            return FindPath();
         }
-    
+
+        public override LinkedList<TCell> UpdatePathWithDynamicObstacle(TCell currentStartCell, List<TCell> foundDynamicObstacles)
+        {
+            return FindPath();
+        }
+
+        public override LinkedList<TCell> FindAllCellsSmallerThanCost(TCell currentStartCell, double cost)
+        {
+            Priority_Queue.SimplePriorityQueue<TCell, double> openSet = new Priority_Queue.SimplePriorityQueue<TCell, double>();
+            HashSet<TCell> visitedSet = new HashSet<TCell>();
+
+            openSet.Enqueue(currentStartCell, currentStartCell.FCost);
+
+            LinkedList<TCell> reachableCells = new LinkedList<TCell>();
+
+            while (openSet.Count > 0)
+            {
+                TCell currentCell = openSet.Dequeue();
+                visitedSet.Add(currentCell);
+
+                if (currentCell.FCost > cost)
+                    continue;
+
+                reachableCells.AddLast(currentCell);
+
+                foreach (TCell adjacentCell in currentCell.AdjacentCells)
+                {
+                    if (visitedSet.Contains(adjacentCell))
+                        continue;
+
+                    if (!_adjacentCellSelectionFunction.CheckMovableCell(currentCell, adjacentCell))
+                        continue;
+
+                    double newGCost = currentCell.GCost + GetDistanceCost(currentCell, adjacentCell);
+
+                    if (newGCost < adjacentCell.GCost || !openSet.Contains(adjacentCell))
+                    {
+                        adjacentCell.GCost = newGCost;
+                        adjacentCell.HCost = GetDistanceCost(adjacentCell, _endCell);
+                        adjacentCell.FCost = newGCost + adjacentCell.HCost;
+                        adjacentCell.ParentXZCell2D = currentCell;
+
+                        if (!openSet.Contains(adjacentCell))
+                        {
+                            openSet.Enqueue(adjacentCell, adjacentCell.FCost);
+                        }
+                    }
+                }
+            }
+
+            return reachableCells;
+        }
+        
+
         /// <summary>
         /// 
         /// </summary>
         /// <returns> the path between start and end</returns>
-        public LinkedList<TCell> FindPath(TCell startXZCell, TCell endXZCell)
+        private LinkedList<TCell> FindPath()
         {
             Priority_Queue.SimplePriorityQueue<TCell, double> openSet = new (); // to be travelled set
-            HashSet<TCell> closeSet = new(); // travelled set 
-            openSet.Enqueue(startXZCell, startXZCell.FCost);
+            HashSet<TCell> visitedSet = new(); // travelled set 
+            
+            openSet.Enqueue(_startCell, _startCell.FCost);
         
             while (openSet.Count > 0)
             {
-                var currentMinFCostCell = openSet.Dequeue();
-                closeSet.Add(currentMinFCostCell);
+                TCell currentMinFCostCell = openSet.Dequeue();
+                visitedSet.Add(currentMinFCostCell);
 
-                if (currentMinFCostCell == endXZCell)
+                if (currentMinFCostCell == _endCell)
                 {
-                    return RetracePath(startXZCell, endXZCell);;
+                    return RetracePath(_startCell, _endCell);;
                 }
 
                 foreach (TCell adjacentCell in currentMinFCostCell.AdjacentCells)
                 {
-                    if (closeSet.Contains(adjacentCell)) continue;  // skip for travelled cell
-                    if (!_adjacentCellSelectionFunction.CheckMovableCell(currentMinFCostCell, adjacentCell)) continue;
+                    if (visitedSet.Contains(adjacentCell)) 
+                        continue;  // skip for travelled cell
                     
-
+                    if (!_adjacentCellSelectionFunction.CheckMovableCell(currentMinFCostCell, adjacentCell)) 
+                        continue;
+                    
                     double newGCostToNeighbour = currentMinFCostCell.GCost + GetDistanceCost(currentMinFCostCell, adjacentCell);
+                    
                     if (newGCostToNeighbour < adjacentCell.GCost || !openSet.Contains(adjacentCell))
                     {
-                        double hCost = GetDistanceCost(adjacentCell, endXZCell);
+                        double hCost = GetDistanceCost(adjacentCell, _endCell);
                         
                         adjacentCell.GCost = newGCostToNeighbour;
                         adjacentCell.HCost = hCost;
@@ -93,12 +150,12 @@ namespace Shun_Grid_System
         protected LinkedList<TCell> RetracePath(TCell start, TCell end)
         {
             LinkedList<TCell> path = new();
-            TCell currentNode = end;
-            while (currentNode != start && currentNode!= null) 
+            TCell currentCell = end;
+            while (currentCell != start && currentCell!= null) 
             {
-                //Debug.Log("Path "+ currentNode.xIndex +" "+ currentNode.zIndex );
-                path.AddFirst(currentNode);
-                currentNode = (TCell)currentNode.ParentXZCell2D;
+                //Debug.Log("Path "+ currentCell.xIndex +" "+ currentCell.zIndex );
+                path.AddFirst(currentCell);
+                currentCell = (TCell)currentCell.ParentXZCell2D;
             }
             path.AddFirst(start);
             return path;
@@ -108,7 +165,7 @@ namespace Shun_Grid_System
         {
             var indexDifferenceAbsolute = Grid.GetIndexDifferenceAbsolute(start,end);
 
-            return _distanceCostFunction.GetDistanceCost(indexDifferenceAbsolute.x, indexDifferenceAbsolute.y) + start.GetAdjacentCellCost(end);
+            return _distanceCostFunction.GetDistanceCost(indexDifferenceAbsolute.x, indexDifferenceAbsolute.y) + start.GetAdditionalAdjacentCellCost(end);
         }
     
     }

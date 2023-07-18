@@ -12,11 +12,12 @@ namespace Shun_Grid_System
         where TGrid : BaseGrid2D<TCell, TItem> 
         where TCell : BaseGridCell2D<TItem>
     {
-        public LinkedList<TCell> FirstTimeFindPath(TCell start, TCell end);
+        public LinkedList<TCell> FirstTimeFindPath(TCell startCell, TCell endCell);
         public LinkedList<TCell> UpdatePathWithDynamicObstacle(TCell currentStartNode, List<TCell> foundDynamicObstacles);
+        public LinkedList<TCell> FindAllCellsSmallerThanCost(TCell currentStartNode, double cost);
     }
 
-    public class Pathfinding<TGrid, TCell, TItem> : IPathfindingAlgorithm<TGrid,TCell,TItem> 
+    public abstract class Pathfinding<TGrid, TCell, TItem> : IPathfindingAlgorithm<TGrid,TCell,TItem> 
         where TGrid : BaseGrid2D<TCell, TItem> 
         where TCell : BaseGridCell2D<TItem>
     {
@@ -26,15 +27,10 @@ namespace Shun_Grid_System
         {
             this.Grid = grid;
         }
-    
-        public virtual LinkedList<TCell> FirstTimeFindPath(TCell start, TCell end)
-        {
-            return null;
-        }
 
-        public virtual LinkedList<TCell> UpdatePathWithDynamicObstacle(TCell currentStartNode, List<TCell> foundDynamicObstacles)
-        {
-            return null;
-        }
+        public abstract LinkedList<TCell> FirstTimeFindPath(TCell startCell, TCell endCell);
+
+        public abstract LinkedList<TCell> UpdatePathWithDynamicObstacle(TCell currentStartNode, List<TCell> foundDynamicObstacles);
+        public abstract LinkedList<TCell> FindAllCellsSmallerThanCost(TCell currentStartNode, double cost);
     }
 }
