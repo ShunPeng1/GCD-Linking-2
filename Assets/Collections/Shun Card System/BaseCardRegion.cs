@@ -54,12 +54,12 @@ namespace Shun_Card_System
             
         }
 
-        public List<BaseCardInformation> GetAllCardInformation(bool getNull = false)
+        public List<BaseCardGameObject> GetAllCardGameObjects(bool getNull = false)
         {
-            List<BaseCardInformation> result = new();
+            List<BaseCardGameObject> result = new();
             for (int i = 0; i < CardHoldingCount; i++)
             {
-                result.Add(_cardPlaceHolders[i].CardGameObject.CardInformation);
+                if ((!getNull && _cardPlaceHolders[i].CardGameObject != null) || getNull) result.Add(_cardPlaceHolders[i].CardGameObject);
             }
 
             return result;

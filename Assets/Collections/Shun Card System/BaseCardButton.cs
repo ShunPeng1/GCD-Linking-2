@@ -6,12 +6,6 @@ namespace Shun_Card_System
     public class BaseCardButton : MonoBehaviour
     {
         public bool Interactable = true;
-        protected BaseCardGameObject CardGameObject;
-
-        public void Initialize(BaseCardGameObject baseCardGameObject)
-        {
-            CardGameObject = baseCardGameObject;
-        }
 
         public virtual void Hover()
         {

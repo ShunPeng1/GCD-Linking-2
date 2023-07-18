@@ -9,15 +9,14 @@ namespace Shun_Card_System
     public class BaseCardGameObject : MonoBehaviour
     {
         public bool Interactable = true;
-        public BaseCardInformation CardInformation;
+        [SerializeField] protected bool ActivateOnValidate = false;
         
         private void OnValidate()
         {
-            if(CardInformation == null) return;
-            InitializeInformation();
+            if (ActivateOnValidate) ValidateInformation();
         }
         
-        protected virtual void InitializeInformation()
+        protected virtual void ValidateInformation()
         {
             
         }

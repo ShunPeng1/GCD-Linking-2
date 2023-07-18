@@ -4,8 +4,8 @@ using Shun_Card_System;
 using UnityEngine;
 
 
-[CreateAssetMenu(fileName = "Character Card Information", menuName = "Character Card Information/")]
-public abstract class CharacterInfomation : BaseCardInformation
+//[CreateAssetMenu(fileName = "Character Information", menuName = "Character Information/")]
+public abstract class CharacterInformation : BaseCardInformation
 {
     public CharacterCardGameObject CharacterCardGameObjectPrefab;
     public BaseWorldCharacter WorldCharacterPrefab;

@@ -2,7 +2,8 @@
 
 namespace _Scripts.Cards.Character_Information
 {
-    public class JohnCharacterInformation : CharacterInfomation
+    [CreateAssetMenu(fileName = "Character Information", menuName = "Character Information/John Information")]
+    public class JohnCharacterInformation : CharacterInformation
     {
         public override void Init()
         {
