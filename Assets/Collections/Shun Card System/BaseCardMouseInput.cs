@@ -95,6 +95,34 @@ public class BaseCardMouseInput : MonoBehaviour
 
         DraggingCard.Select();
         
+        DetachCardToHolder();
+
+    }
+
+    protected void DragMouse()
+    {
+        if (!IsDragging) return; 
+        
+        DraggingCard.transform.position = MouseWorldPosition + CardOffset;
+        
+    }
+
+    protected void EndDragMouse()
+    {
+        if (!IsDragging) return;
+        
+        DraggingCard.Deselect();
+        AttachCardToHolder();
+
+        DraggingCard = null;
+        LastCardHolder = null;
+        LastCardRegion = null;
+        IsDragging = false;
+
+    }
+    
+    protected void DetachCardToHolder()
+    {
         // Check the card region base on card game object or card holder, to TakeOutTemporary
         LastCardRegion = FindFirstInMouseCast<BaseCardRegion>();
         if (LastCardRegion == null)
@@ -117,32 +145,9 @@ public class BaseCardMouseInput : MonoBehaviour
         
         LastCardHolder = null;
         LastCardRegion = null;
-
     }
 
-    protected void DragMouse()
-    {
-        if (!IsDragging) return; 
-        
-        DraggingCard.transform.position = MouseWorldPosition + CardOffset;
-        
-    }
-
-    protected void EndDragMouse()
-    {
-        if (!IsDragging) return;
-        
-        DraggingCard.Deselect();
-        AddCardToHolder();
-
-        DraggingCard = null;
-        LastCardHolder = null;
-        LastCardRegion = null;
-        IsDragging = false;
-
-    }
-
-    protected void AddCardToHolder()
+    protected void AttachCardToHolder()
     {
         
         var dropRegion = FindFirstInMouseCast<BaseCardRegion>();

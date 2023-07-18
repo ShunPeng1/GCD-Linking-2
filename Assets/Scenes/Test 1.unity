@@ -7158,7 +7158,7 @@ GameObject:
   - component: {fileID: 860356288}
   - component: {fileID: 860356289}
   m_Layer: 0
-  m_Name: Card Mouse Drag Manager
+  m_Name: Card Mouse Input
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7176,8 +7176,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 893738485}
-  m_RootOrder: 2
+  m_Father: {fileID: 2069281038}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &860356289
 MonoBehaviour:
@@ -7332,7 +7332,6 @@ Transform:
   m_Children:
   - {fileID: 2048732251}
   - {fileID: 1709846910}
-  - {fileID: 860356288}
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -104327,6 +104326,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 930233320}
+  - {fileID: 860356288}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
