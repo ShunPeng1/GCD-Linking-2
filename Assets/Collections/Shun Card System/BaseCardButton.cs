@@ -28,12 +28,12 @@ namespace Shun_Card_System
             
         }
 
-        public virtual void DisableInteraction()
+        public virtual void DisableInteractable()
         {
             Interactable = false;
         }
         
-        public virtual void EnableInteraction()
+        public virtual void EnableInteractable()
         {
             Interactable = true;
         }

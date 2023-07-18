@@ -26,7 +26,7 @@ namespace Shun_Card_System
             
             CardGameObject = cardGameObject;
             CardGameObject.transform.SetParent(transform);
-            CardGameObject
+            CardGameObject.DisableInteractable();
             AttachCardVisual();
         }
 
@@ -44,6 +44,7 @@ namespace Shun_Card_System
         protected virtual void AttachCardVisual()
         {
             CardGameObject.transform.localPosition = Vector3.zero;
+            CardGameObject.EnableInteractable();
         }
     }
 }
