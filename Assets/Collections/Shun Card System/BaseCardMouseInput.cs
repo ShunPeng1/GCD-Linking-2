@@ -12,25 +12,31 @@ public class BaseCardMouseInput : MonoBehaviour
     protected bool IsDragging = false;
     protected Vector3 CardOffset;
     protected BaseCardGameObject DraggingCard;
-    protected BaseCardPlaceRegion LastCardPlaceRegion;
-    protected BaseCardPlaceHolder LastCardPlaceHolder;
-    
-    protected void Update()
+    protected BaseCardRegion LastCardRegion;
+    protected BaseCardHolder LastCardHolder;
+    protected BaseCardButton LastCardButton;
+
+    protected RaycastHit2D[] MouseCastHits;
+
+        protected void Update()
     {
         UpdateMousePosition();
         
         if (Input.GetMouseButtonDown(0))
         {
-           StartDragMouse();
+            CastMouse();
+            StartDragMouse();
         }
 
         if (Input.GetMouseButton(0))
         {
+            CastMouse();
             DragMouse();
         }
 
         if (Input.GetMouseButtonUp(0))
         {
+            CastMouse();
             EndDragMouse();
         }
     }
@@ -41,11 +47,15 @@ public class BaseCardMouseInput : MonoBehaviour
         MouseWorldPosition = new Vector3(worldMousePosition.x, worldMousePosition.y, 0);
     }
 
-    protected TResult CastMouseFindFirst<TResult>()
+    
+    private void CastMouse()
     {
-        RaycastHit2D[] hits = Physics2D.RaycastAll(MouseWorldPosition, Vector2.zero);
-
-        foreach (var hit in hits)
+        MouseCastHits = Physics2D.RaycastAll(MouseWorldPosition, Vector2.zero);
+    }
+    
+    protected TResult FindFirstInMouseCast<TResult>()
+    {
+        foreach (var hit in MouseCastHits)
         {
             var result = hit.transform.gameObject.GetComponent<TResult>();
             if (result != null)
@@ -59,29 +69,54 @@ public class BaseCardMouseInput : MonoBehaviour
         return default;
     }
 
+    
     protected void StartDragMouse()
     {
-        DraggingCard = CastMouseFindFirst<BaseCardGameObject>();
-        LastCardPlaceHolder = CastMouseFindFirst<BaseCardPlaceHolder>();
-        LastCardPlaceRegion = CastMouseFindFirst<BaseCardPlaceRegion>();
+        // Check for button first
+        LastCardButton = FindFirstInMouseCast<BaseCardButton>();
 
-        if (DraggingCard == null) return;
+        if (LastCardButton != null && LastCardButton.Interactable)
+        {
+            LastCardButton.Execute();
+            return;
+        } 
+
+        // Check for card game object second
+        DraggingCard = FindFirstInMouseCast<BaseCardGameObject>();
+
+        if (DraggingCard == null || !DraggingCard.Interactable)
+        {
+            DraggingCard = null;
+            return;
+        }
         
         CardOffset = DraggingCard.transform.position - MouseWorldPosition;
         IsDragging = true;
 
         DraggingCard.Select();
         
-        if (LastCardPlaceHolder == null)
+        // Check the card region base on card game object or card holder, to TakeOutTemporary
+        LastCardRegion = FindFirstInMouseCast<BaseCardRegion>();
+        if (LastCardRegion == null)
         {
-            LastCardPlaceRegion = null;
-            return;
+            LastCardHolder = FindFirstInMouseCast<BaseCardHolder>();
+            if (LastCardHolder == null)
+            {
+                return;
+            }
+
+            LastCardRegion = LastCardHolder.CardRegion;
         }
-        if (!LastCardPlaceRegion.TakeOutTemporary(DraggingCard, LastCardPlaceHolder))
+        else
         {
-            LastCardPlaceHolder = null;
-            LastCardPlaceRegion = null;
+            LastCardHolder = LastCardRegion.FindCardPlaceHolder(DraggingCard);
         }
+
+        // Having got the region and holder, take the card out temporary
+        if (LastCardRegion.TakeOutTemporary(DraggingCard, LastCardHolder)) return;
+        
+        LastCardHolder = null;
+        LastCardRegion = null;
 
     }
 
@@ -101,8 +136,8 @@ public class BaseCardMouseInput : MonoBehaviour
         AddCardToHolder();
 
         DraggingCard = null;
-        LastCardPlaceHolder = null;
-        LastCardPlaceRegion = null;
+        LastCardHolder = null;
+        LastCardRegion = null;
         IsDragging = false;
 
     }
@@ -110,33 +145,36 @@ public class BaseCardMouseInput : MonoBehaviour
     protected void AddCardToHolder()
     {
         
-        var placeRegion = CastMouseFindFirst<BaseCardPlaceRegion>();
-        var placeHolder = CastMouseFindFirst<BaseCardPlaceHolder>();
+        var dropRegion = FindFirstInMouseCast<BaseCardRegion>();
+        var dropHolder = FindFirstInMouseCast<BaseCardHolder>();
         
-        if (placeHolder == null)
+        if (dropHolder == null)
         {
-            if (placeRegion != null && placeRegion != LastCardPlaceRegion && placeRegion.AddCard(DraggingCard, placeHolder))
+            if (dropRegion != null && dropRegion != LastCardRegion 
+                                   && dropRegion.AddCard(DraggingCard, dropHolder)) // Successfully add to the drop region
             {
-                if (LastCardPlaceHolder != null)
+                if (LastCardHolder != null) // remove the temporary in last region
                 {
-                    LastCardPlaceRegion.RemoveTemporary(DraggingCard);
+                    LastCardRegion.RemoveTemporary(DraggingCard);
                     return;
                 }
             }
             
-            if (LastCardPlaceRegion != null) 
-                LastCardPlaceRegion.ReAddTemporary(DraggingCard);
+            if (LastCardRegion != null) // Unsuccessfully add to drop region or it is the same region
+                LastCardRegion.ReAddTemporary(DraggingCard);
         }
         else
         {
-            if (!placeRegion.AddCard(DraggingCard, placeHolder))
+            if (dropRegion == null) dropRegion = dropHolder.CardRegion;
+            
+            if (!dropRegion.AddCard(DraggingCard, dropHolder))
             {
-                if(LastCardPlaceRegion != null) LastCardPlaceRegion.ReAddTemporary(DraggingCard);
+                if(LastCardRegion != null) LastCardRegion.ReAddTemporary(DraggingCard);
             }
             
-            if (LastCardPlaceHolder != null)
+            if (LastCardHolder != null)
             {
-                LastCardPlaceRegion.RemoveTemporary(DraggingCard);
+                LastCardRegion.RemoveTemporary(DraggingCard);
             }
 
         }
