@@ -124,7 +124,8 @@ public class CardMouseDragManager : MonoBehaviour
                 }
             }
             
-            if (_lastCardPlaceRegion != null) _lastCardPlaceRegion.ReAddTemporary(_draggingCard);
+            if (_lastCardPlaceRegion != null) 
+                _lastCardPlaceRegion.ReAddTemporary(_draggingCard);
         }
         else
         {

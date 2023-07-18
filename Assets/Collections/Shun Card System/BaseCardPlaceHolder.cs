@@ -9,8 +9,8 @@ namespace Shun_Card_System
     [RequireComponent(typeof(Collider2D))]
     public class BaseCardPlaceHolder : MonoBehaviour
     {
-        public BaseCardPlaceRegion CardPlaceRegion;
-        public int IndexInRegion;
+        [HideInInspector] public BaseCardPlaceRegion CardPlaceRegion;
+        [HideInInspector] public int IndexInRegion;
         public BaseCardGameObject CardGameObject;
 
         public void InitializeRegion(BaseCardPlaceRegion cardPlaceRegion, int indexInRegion)
@@ -22,7 +22,7 @@ namespace Shun_Card_System
         
         public virtual void AttachCardGameObject(BaseCardGameObject cardGameObject)
         {
-            if (CardGameObject == null) return;
+            if (cardGameObject == null) return;
             
             CardGameObject = cardGameObject;
             cardGameObject.transform.SetParent(transform);
