@@ -20,16 +20,17 @@ namespace Shun_Card_System
             transform.parent = cardPlaceRegion.transform;
         }
         
-        public virtual void AttachCardGameObject(BaseCardGameObject cardGameObject)
+        public void AttachCardGameObject(BaseCardGameObject cardGameObject)
         {
             if (cardGameObject == null) return;
             
             CardGameObject = cardGameObject;
-            cardGameObject.transform.SetParent(transform);
+            CardGameObject.transform.SetParent(transform);
+            CardGameObject
             AttachCardVisual();
         }
 
-        public virtual BaseCardGameObject DetachCardGameObject()
+        public BaseCardGameObject DetachCardGameObject()
         {
             if (CardGameObject == null) return null;
             

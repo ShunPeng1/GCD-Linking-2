@@ -8,6 +8,7 @@ namespace Shun_Card_System
     [RequireComponent(typeof(Collider2D))]
     public class BaseCardGameObject : MonoBehaviour
     {
+        public bool Interactable = true;
         public BaseCardInformation CardInformation;
         
         private void OnValidate()
@@ -41,5 +42,14 @@ namespace Shun_Card_System
             
         }
         
+        public virtual void DisableInteraction()
+        {
+            Interactable = false;
+        }
+        
+        public virtual void EnableInteraction()
+        {
+            Interactable = true;
+        }
     }
 }
