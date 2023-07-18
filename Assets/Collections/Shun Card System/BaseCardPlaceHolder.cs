@@ -2,18 +2,47 @@
 
 namespace Shun_Card_System
 {
+    /// <summary>
+    /// This class is the card place holder of a card object in card place region.
+    /// This can be used to move, animations,...
+    /// </summary>
+    [RequireComponent(typeof(Collider2D))]
     public class BaseCardPlaceHolder : MonoBehaviour
     {
-        public BaseCardGameObject BaseCardGameObject;
+        public BaseCardPlaceRegion CardPlaceRegion;
+        public int IndexInRegion;
+        public BaseCardGameObject CardGameObject;
 
-        public virtual void AttachCardGameObject(BaseCardGameObject baseCardGameObject)
+        public void InitializeRegion(BaseCardPlaceRegion cardPlaceRegion, int indexInRegion)
         {
-            BaseCardGameObject = baseCardGameObject;
+            CardPlaceRegion = cardPlaceRegion;
+            IndexInRegion = indexInRegion;
+            transform.parent = cardPlaceRegion.transform;
+        }
+        
+        public virtual void AttachCardGameObject(BaseCardGameObject cardGameObject)
+        {
+            if (CardGameObject == null) return;
+            
+            CardGameObject = cardGameObject;
+            cardGameObject.transform.SetParent(transform);
+            AttachCardVisual();
         }
 
-        public virtual void DetachCardGameObject()
+        public virtual BaseCardGameObject DetachCardGameObject()
         {
-            BaseCardGameObject = null;
+            if (CardGameObject == null) return null;
+            
+            BaseCardGameObject detachedCard = CardGameObject;
+            detachedCard.transform.SetParent(null);
+            CardGameObject = null;
+
+            return detachedCard;
+        }
+
+        protected virtual void AttachCardVisual()
+        {
+            CardGameObject.transform.localPosition = Vector3.zero;
         }
     }
 }

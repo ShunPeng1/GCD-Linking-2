@@ -4,7 +4,7 @@ using Shun_Card_System;
 using UnityEngine;
 using UnityUtilities;
 
-public class InputManager : MonoBehaviour
+public class CardMouseDragManager : MonoBehaviour
 {
     private Vector3 _mousePosition;
     

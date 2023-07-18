@@ -1,20 +1,15 @@
 
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace Shun_Card_System
 {
+    [RequireComponent(typeof(Collider2D))]
     public class BaseCardGameObject : MonoBehaviour
     {
         public BaseCardInformation CardInformation;
         
-        [SerializeField] private Color _selectHighlightColor = new Color(0.15f, 0.15f, 0.15f);
-
-        [SerializeField] private bool _activeValidate = true;
-
-        [SerializeField] private float _spawnDuration = 0.5f;
-        [SerializeField] private Ease _spawnEase = Ease.OutCubic;
-    
         private void OnValidate()
         {
             if(CardInformation == null) return;
@@ -45,6 +40,6 @@ namespace Shun_Card_System
         {
             
         }
-
+        
     }
 }

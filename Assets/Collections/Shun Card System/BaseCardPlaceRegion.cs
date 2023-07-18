@@ -5,12 +5,14 @@ using UnityEngine;
 
 namespace Shun_Card_System
 {
+    [RequireComponent(typeof(Collider2D))]
     public class BaseCardPlaceRegion : MonoBehaviour
     {
-        public enum InsertionStyle
+        public enum MiddleInsertionStyle
         {
-            Scatter,
-            StackToFront
+            AlwaysBack,
+            InsertInMiddle,
+            Cannot,
         }
         
         [SerializeField] protected BaseCardPlaceHolder CardPlaceHolderPrefab;
@@ -20,7 +22,7 @@ namespace Shun_Card_System
         
         [SerializeField] protected List<BaseCardPlaceHolder> _cardPlaceHolders = new();
         [SerializeField] protected int MaxCardHold;
-        [SerializeField] protected InsertionStyle CardInsertionStyle;
+        [SerializeField] protected MiddleInsertionStyle CardMiddleInsertionStyle = MiddleInsertionStyle.InsertInMiddle;
         protected BaseCardPlaceHolder TemporaryBaseCardHolder;
         protected int CardHoldingCount = 0;
         
@@ -34,22 +36,30 @@ namespace Shun_Card_System
             if (_cardPlaceHolders.Count != 0)
             {
                 MaxCardHold = _cardPlaceHolders.Count;
-                return;
+                for (int i = 0; i < MaxCardHold; i++)
+                {
+                    _cardPlaceHolders[i].InitializeRegion(this, i);
+                }
+            }
+            else
+            {
+                for (int i = 0; i < MaxCardHold; i++)
+                {
+                    var cardPlaceHolder = Instantiate(CardPlaceHolderPrefab, SpawnPlace.position + i * CardOffset,
+                        Quaternion.identity, SpawnPlace);
+                    _cardPlaceHolders.Add(cardPlaceHolder);
+                    cardPlaceHolder.InitializeRegion(this, i);
+                }    
             }
             
-            for (int i = 0; i < MaxCardHold; i++)
-            {
-                _cardPlaceHolders.Add( Instantiate(CardPlaceHolderPrefab, SpawnPlace.position + i * CardOffset, Quaternion.identity, SpawnPlace));
-                
-            }
         }
 
-        public List<BaseCardInformation> GetAllCardInformation()
+        public List<BaseCardInformation> GetAllCardInformation(bool getNull = false)
         {
             List<BaseCardInformation> result = new();
             for (int i = 0; i < CardHoldingCount; i++)
             {
-                result.Add(_cardPlaceHolders[i].BaseCardGameObject.CardInformation);
+                result.Add(_cardPlaceHolders[i].CardGameObject.CardInformation);
             }
 
             return result;
@@ -57,13 +67,13 @@ namespace Shun_Card_System
 
         public void DestroyAllCardGameObject()
         {
-            for (int i = 0; i < CardHoldingCount; i++)
+            foreach (var cardHolder in _cardPlaceHolders)
             {
-                Destroy(_cardPlaceHolders[i].BaseCardGameObject.gameObject);
-                _cardPlaceHolders[i].BaseCardGameObject = null;
-                
+                if (cardHolder.CardGameObject == null) continue;
+                Destroy(cardHolder.CardGameObject.gameObject);
+                cardHolder.CardGameObject = null;
             }
-
+            
             CardHoldingCount = 0;
         }
 
@@ -73,58 +83,66 @@ namespace Shun_Card_System
             return _cardPlaceHolders[CardHoldingCount];
         }
 
-        public bool AddCard(BaseCardGameObject cardGameObject, BaseCardPlaceHolder baseCardPlaceHolder)
+        public bool AddCard(BaseCardGameObject cardGameObject, BaseCardPlaceHolder cardPlaceHolder)
+        {
+            if (cardPlaceHolder == null || cardPlaceHolder.IndexInRegion >= CardHoldingCount)
+            {
+                return AddCardAtBack(cardGameObject);
+            }
+
+            return CardMiddleInsertionStyle switch
+            {
+                MiddleInsertionStyle.AlwaysBack => AddCardAtBack(cardGameObject),
+                MiddleInsertionStyle.InsertInMiddle => AddCardAtMiddle(cardGameObject, cardPlaceHolder.IndexInRegion),
+                MiddleInsertionStyle.Cannot => false,
+                _ => false
+            };
+        }
+
+        private bool AddCardAtBack(BaseCardGameObject cardGameObject)
         {
             if (CardHoldingCount >= MaxCardHold)
             {
                 return false;
             }
-
-            int index = 0;
-            if (baseCardPlaceHolder == null)
-            {
-                baseCardPlaceHolder = _cardPlaceHolders[CardHoldingCount];
-                index = CardHoldingCount ;
-            }
-            else
-            {
-                index = _cardPlaceHolders.IndexOf(baseCardPlaceHolder);
-            }
             
-            if (index >= CardHoldingCount)
-            {
-                index = CardHoldingCount ;
+            var cardPlaceHolder = _cardPlaceHolders[CardHoldingCount];
+            cardPlaceHolder.AttachCardGameObject(cardGameObject);
+            
+            CardHoldingCount ++;
+            UpdateCardPlaceHolderTransforms();
                 
-                _cardPlaceHolders[index].BaseCardGameObject = cardGameObject;
-                cardGameObject.transform.parent = transform;
-                //card.transform.position = _cardPlaceHolders[index].transform.position;
-                SmoothMove(cardGameObject.transform, _cardPlaceHolders[index].transform.position);
-                
-                CardHoldingCount ++;
-                return true;
+            return true;
+        }
+        
+        private bool AddCardAtMiddle(BaseCardGameObject cardGameObject, int index)
+        {
+            if (CardHoldingCount >= MaxCardHold)
+            {
+                return false;
             }
             
-            if(CardInsertionStyle == InsertionStyle.StackToFront) ShiftRight(index);
-            
-            _cardPlaceHolders[index].BaseCardGameObject = cardGameObject;
-            cardGameObject.transform.parent = transform;
-            //card.transform.position = _cardPlaceHolders[index].transform.position;
-            SmoothMove(cardGameObject.transform, _cardPlaceHolders[index].transform.position);
+            ShiftRight(index);
 
+            var cardPlaceHolder = _cardPlaceHolders[index];
+            cardPlaceHolder.AttachCardGameObject(cardGameObject);
+            
+            UpdateCardPlaceHolderTransforms();
             CardHoldingCount++;
             return true;
         }
-
+        
+        
         protected void ShiftRight(int startIndex)
         {
             for (int i = _cardPlaceHolders.Count - 1; i > startIndex; i--)
             {
-                var card = _cardPlaceHolders[i-1].BaseCardGameObject;
-                _cardPlaceHolders[i].BaseCardGameObject = card;
+                var card = _cardPlaceHolders[i - 1].DetachCardGameObject();
                 
                 if (card == null) continue;
-                //card.transform.position = _cardPlaceHolders[i].transform.position;
-                SmoothMove(card.transform, _cardPlaceHolders[i].transform.position);
+                _cardPlaceHolders[i].AttachCardGameObject(card);
+                
+                //SmoothMove(card.transform, _cardPlaceHolders[i].transform.position);
 
             }
         }
@@ -134,58 +152,51 @@ namespace Shun_Card_System
         {
             for (int i = startIndex; i < _cardPlaceHolders.Count - 1; i++)
             {
-                var card = _cardPlaceHolders[i+1].BaseCardGameObject;
-                _cardPlaceHolders[i].BaseCardGameObject = card;
-
+                var card = _cardPlaceHolders[i + 1].DetachCardGameObject();
+                
                 if (card == null) continue;
-                //card.transform.position = _cardPlaceHolders[i].transform.position;
-                SmoothMove(card.transform, _cardPlaceHolders[i].transform.position);
+                
+                _cardPlaceHolders[i].AttachCardGameObject(card);
+                
+                //SmoothMove(card.transform, _cardPlaceHolders[i].transform.position);
 
             }
-            
-            _cardPlaceHolders[^1].BaseCardGameObject = null;
         }
         
-        public bool RemoveCard(BaseCardGameObject cardGameObject)
+        public bool DetachCard(BaseCardGameObject cardGameObject)
         {
             for (int i = 0; i < _cardPlaceHolders.Count; i++)
             {
-                if (_cardPlaceHolders[i].BaseCardGameObject == cardGameObject)
-                {
-                    _cardPlaceHolders[i].BaseCardGameObject.transform.parent = null;
-                    _cardPlaceHolders[i].BaseCardGameObject = null;
-                    ShiftLeft(i);
-                    
-                    CardHoldingCount--;
-
-                    return true;
-                }
+                if (_cardPlaceHolders[i].CardGameObject != cardGameObject) continue;
+                
+                _cardPlaceHolders[i].DetachCardGameObject();
+                CardHoldingCount--;
+                
+                ShiftLeft(i);
+                
+                return true;
             }
             return false;
         }
         
-        public bool RemoveCard(BaseCardGameObject cardGameObject,BaseCardPlaceHolder baseCardPlaceHolder)
+        public bool DetachCard(BaseCardGameObject cardGameObject,BaseCardPlaceHolder cardPlaceHolder)
         {
-            if (baseCardPlaceHolder.BaseCardGameObject != cardGameObject) return false;
+            if (cardPlaceHolder.CardGameObject != cardGameObject) return false;
 
-            baseCardPlaceHolder.BaseCardGameObject.transform.parent = null;
-            baseCardPlaceHolder.BaseCardGameObject = null;
+            cardPlaceHolder.DetachCardGameObject();
             
-            if(CardInsertionStyle == InsertionStyle.StackToFront) ShiftLeft(_cardPlaceHolders.IndexOf(baseCardPlaceHolder));
+            ShiftLeft(_cardPlaceHolders.IndexOf(cardPlaceHolder));
             CardHoldingCount--;
 
             return true;
         }
         
-        public bool TakeOutTemporary(BaseCardGameObject cardGameObject,BaseCardPlaceHolder baseCardPlaceHolder)
+        public bool TakeOutTemporary(BaseCardGameObject cardGameObject,BaseCardPlaceHolder cardPlaceHolder)
         {
-            if (RemoveCard(cardGameObject, baseCardPlaceHolder))
-            {
-                
-                TemporaryBaseCardHolder = baseCardPlaceHolder;
-                return true;
-            }
-            return false;
+            if (!DetachCard(cardGameObject, cardPlaceHolder)) return false;
+            
+            TemporaryBaseCardHolder = cardPlaceHolder;
+            return true;
         }
         
         public void ReAddTemporary(BaseCardGameObject baseCardGameObject)
@@ -203,6 +214,11 @@ namespace Shun_Card_System
         protected virtual void SmoothMove(Transform movingObject, Vector3 toPosition)
         {
             movingObject.position = toPosition;
+        }
+
+        protected virtual void UpdateCardPlaceHolderTransforms()
+        {
+            
         }
     }
 }
