@@ -18,14 +18,19 @@ public class CameraMovement : MonoBehaviour
     [SerializeField] private float _minZoomDistance = 5f;    // Minimum distance for zooming
     [SerializeField] private float _maxZoomDistance = 20f;   // Maximum distance for zooming
     [SerializeField] private float _zoomElasticity = 0.5f;   // Elasticity factor for zooming
+    private float _originZoomDistance;
+
+    [Header("Scale with camera")] 
+    [SerializeField] private List<GameObject> _scaleWithCameraObjects;
+
     private void Start()
     {
         _camera = Camera.main;
+        _originZoomDistance = _camera.orthographicSize;
     }
 
     void LateUpdate()
     {
-        
         // Camera _dragging
         HandleDragging();
 
@@ -78,6 +83,10 @@ public class CameraMovement : MonoBehaviour
 
         // Update the camera position for zooming
         _camera.orthographicSize = newZoomDistance;
-        
+
+        foreach (var scaleWithCameraObject in _scaleWithCameraObjects)
+        {
+            scaleWithCameraObject.transform.localScale = Vector3.one * (newZoomDistance / _originZoomDistance);
+        }
     }
 }

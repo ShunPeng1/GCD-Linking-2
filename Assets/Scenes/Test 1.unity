@@ -104351,12 +104351,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0aa4d07529c3bb498d46b08b1e01ad6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _dragSpeed: 7
-  _smoothTime: 0.15
+  _dragSpeed: 500
+  _smoothTime: 0.125
   _zoomSpeed: 20
   _minZoomDistance: 5
   _maxZoomDistance: 20
   _zoomElasticity: 0.5
+  _scaleWithCameraObjects:
+  - {fileID: 930233319}
 --- !u!1001 &3309244573970014076
 PrefabInstance:
   m_ObjectHideFlags: 0
