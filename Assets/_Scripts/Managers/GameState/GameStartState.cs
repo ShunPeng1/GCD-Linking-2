@@ -1,18 +1,15 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using _Scripts.Managers;
+using Shun_State_Machine;
 using UnityEngine;
 
-public class GameStartState : MonoBehaviour
+[Serializable]
+public class GameStartState : BaseState<GameState>
 {
-    // Start is called before the first frame update
-    void Start()
+    
+    public GameStartState(GameState myStateEnum, Action<GameState, object[]> executeEvents = null, Action<GameState, object[]> exitEvents = null, Action<GameState, object[]> enterEvents = null) : base(myStateEnum, executeEvents, exitEvents, enterEvents)
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }
