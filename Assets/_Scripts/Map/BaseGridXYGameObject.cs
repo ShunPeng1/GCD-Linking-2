@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class BaseGridXYGameObject : MonoBehaviour
 {
-    [SerializeField] protected GridXY<BaseGridXYItemGameObject> Grid;
+    [SerializeField] protected GridXY<MapCellItem> Grid;
 
     protected virtual void Start()
     {
@@ -13,7 +13,7 @@ public class BaseGridXYGameObject : MonoBehaviour
         
     }
 
-    public GridXYCell<BaseGridXYItemGameObject> GetCell()
+    public GridXYCell<MapCellItem> GetCell()
     {
         return Grid.GetCell(transform.position);
     }

@@ -7,7 +7,7 @@ using UnityUtilities;
 
 public class MapManager : SingletonMonoBehaviour<MapManager>
 {
-    public GridXY<BaseGridXYItemGameObject> WorldGrid { get; private set;}
+    public GridXY<MapCellItem> WorldGrid { get; private set;}
     public int GridWidth, GridHeight;
     public float WidthSize, HeightSize;
     
@@ -18,15 +18,16 @@ public class MapManager : SingletonMonoBehaviour<MapManager>
 
     void InitializeGrid()
     {
-        WorldGrid = new GridXY<BaseGridXYItemGameObject>(GridWidth, GridHeight, WidthSize, HeightSize , transform.position);
+        WorldGrid = new GridXY<MapCellItem>(GridWidth, GridHeight, WidthSize, HeightSize , transform.position);
 
         for (int x = 0; x < GridWidth; x++)
         {
             for (int y = 0; y < GridHeight; y++)
             {
-                var testItem = Instantiate(ResourceManager.Instance.TestItem, WorldGrid.GetWorldPositionOfNearestCell(x, y),
-                    Quaternion.identity, transform);
-                var cell = new GridXYCell<BaseGridXYItemGameObject>(WorldGrid, x, y, testItem);
+                
+                var cell = new GridXYCell<MapCellItem>(WorldGrid, x, y, null);
+                var item = new MapCellItem(WorldGrid,cell);
+                cell.Item = item;
                 
                 WorldGrid.SetCell(cell,x,y);   
             }

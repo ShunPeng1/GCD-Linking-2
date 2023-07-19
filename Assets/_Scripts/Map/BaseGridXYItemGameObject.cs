@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class BaseGridXYItemGameObject : MonoBehaviour
 {
-    protected GridXY<BaseGridXYItemGameObject> Grid;
-    protected GridXYCell<BaseGridXYItemGameObject> Cell;
+    protected GridXY<MapCellItem> Grid;
+    protected GridXYCell<MapCellItem> Cell;
     protected int XIndex, YIndex;
     
     
@@ -14,7 +14,7 @@ public class BaseGridXYItemGameObject : MonoBehaviour
     {
         Grid = MapManager.Instance.WorldGrid;
         Cell = Grid.GetCell(transform.position);
-        Cell.Item = this;
+        
         XIndex = Cell.XIndex;
         YIndex = Cell.YIndex;
     }
