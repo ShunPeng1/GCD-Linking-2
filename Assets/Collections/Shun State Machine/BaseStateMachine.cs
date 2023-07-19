@@ -16,7 +16,12 @@ namespace Shun_State_Machine
 
         protected virtual void Awake()
         {
-            StateHistoryStrategy = new StackStateHistoryStrategy<TStateEnum>(10);
+            SetHistoryStrategy(new StackStateHistoryStrategy<TStateEnum>(10));
+        }
+
+        protected void SetHistoryStrategy(IStateHistoryStrategy<TStateEnum> historyStrategy)
+        {
+            StateHistoryStrategy = historyStrategy;
         }
 
         protected void AddState(BaseState<TStateEnum> baseState)

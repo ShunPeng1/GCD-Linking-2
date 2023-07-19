@@ -1,18 +1,29 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using Shun_State_Machine;
 
-public class GameManager : MonoBehaviour
+namespace _Scripts.Managers
 {
-    // Start is called before the first frame update
-    void Start()
+    public enum GameState
     {
-        
+        Start,
+        End,
+        Pause,
+        Card
     }
 
-    // Update is called once per frame
-    void Update()
+    public enum WhoseSide
     {
+        Detective,
+        Imposter
+    }
+
+    public class GameManager : BaseStateMachine<GameState>
+    {
+        protected override void Awake()
+        {
+            base.Awake();
+            
+            
+        }
         
     }
 }
