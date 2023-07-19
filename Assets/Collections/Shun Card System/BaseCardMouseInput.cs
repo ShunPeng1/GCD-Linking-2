@@ -9,7 +9,7 @@ public class BaseCardMouseInput : MonoBehaviour
     protected Vector3 MouseWorldPosition;
     
     [Header("Drag Objects")]
-    protected bool IsDragging = false;
+    protected bool IsDraggingCard = false;
     protected Vector3 CardOffset;
     protected BaseCardGameObject DraggingCard;
     protected BaseCardRegion LastCardRegion;
@@ -18,26 +18,26 @@ public class BaseCardMouseInput : MonoBehaviour
 
     protected RaycastHit2D[] MouseCastHits;
 
-        protected void Update()
+    protected void Update()
     {
         UpdateMousePosition();
         
         if (Input.GetMouseButtonDown(0))
         {
             CastMouse();
-            StartDragMouse();
+            StartDragCard();
         }
 
         if (Input.GetMouseButton(0))
         {
             CastMouse();
-            DragMouse();
+            DragCard();
         }
 
         if (Input.GetMouseButtonUp(0))
         {
             CastMouse();
-            EndDragMouse();
+            EndDragCard();
         }
     }
 
@@ -70,7 +70,7 @@ public class BaseCardMouseInput : MonoBehaviour
     }
 
     
-    protected void StartDragMouse()
+    protected void StartDragCard()
     {
         // Check for button first
         LastCardButton = FindFirstInMouseCast<BaseCardButton>();
@@ -91,7 +91,7 @@ public class BaseCardMouseInput : MonoBehaviour
         }
         
         CardOffset = DraggingCard.transform.position - MouseWorldPosition;
-        IsDragging = true;
+        IsDraggingCard = true;
 
         DraggingCard.Select();
         
@@ -99,17 +99,17 @@ public class BaseCardMouseInput : MonoBehaviour
 
     }
 
-    protected void DragMouse()
+    protected void DragCard()
     {
-        if (!IsDragging) return; 
+        if (!IsDraggingCard) return; 
         
         DraggingCard.transform.position = MouseWorldPosition + CardOffset;
         
     }
 
-    protected void EndDragMouse()
+    protected void EndDragCard()
     {
-        if (!IsDragging) return;
+        if (!IsDraggingCard) return;
         
         DraggingCard.Deselect();
         AttachCardToHolder();
@@ -117,7 +117,7 @@ public class BaseCardMouseInput : MonoBehaviour
         DraggingCard = null;
         LastCardHolder = null;
         LastCardRegion = null;
-        IsDragging = false;
+        IsDraggingCard = false;
 
     }
     

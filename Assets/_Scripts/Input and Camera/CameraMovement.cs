@@ -12,6 +12,7 @@ public class CameraMovement : MonoBehaviour
     [SerializeField] private float _dragSpeed = 1f, _smoothTime = 0.2f;   // Speed of camera movement
     private Vector3 _currentVelocity;
     private Vector3 _lastMousePosition;
+    public bool IsDraggingMouse = false;
     
     [Header("Zoom")]
     [SerializeField] private float _zoomSpeed = 20f;    // Speed of camera zooming
@@ -23,48 +24,51 @@ public class CameraMovement : MonoBehaviour
     [Header("Scale with camera")] 
     [SerializeField] private List<GameObject> _scaleWithCameraObjects;
 
-    private void Start()
+    private void Awake()
     {
         _camera = Camera.main;
         _originZoomDistance = _camera.orthographicSize;
     }
 
-    void LateUpdate()
+    private void Update()
     {
-        // Camera _dragging
-        HandleDragging();
+        if (Input.GetMouseButtonDown(1))
+        {
+            StartDragCamera();
+        }
 
-        // Camera zooming
+        if (Input.GetMouseButton(1))
+        {
+            DragCamera();
+        }
+
         HandleZooming();
     }
 
-    
-    private void HandleDragging()
+
+    // Store the initial mouse position
+    private void StartDragCamera()
     {
-        // Check if right mouse button is pressed
-        if (Input.GetMouseButtonDown(1))
-        {
-            // Store the initial mouse position
-            _lastMousePosition = _camera.ScreenToViewportPoint(Input.mousePosition);
-        }
+        _lastMousePosition = _camera.ScreenToViewportPoint(Input.mousePosition);
+        IsDraggingMouse = true;
+    }
+    
+    private void DragCamera()
+    {
+        if (!IsDraggingMouse) return;
+        
+        // Calculate the mouse movement delta
+        Vector3 currentMousePosition = _camera.ScreenToViewportPoint(Input.mousePosition);
+        Vector3 mouseDelta =  currentMousePosition - _lastMousePosition;
 
-        // Check if right mouse button is being held
-        if (Input.GetMouseButton(1))
-        {
-            // Calculate the mouse movement delta
-            Vector3 currentMousePosition = _camera.ScreenToViewportPoint(Input.mousePosition);
-            Vector3 mouseDelta =  currentMousePosition - _lastMousePosition;
+        // Calculate the camera movement direction based on mouse movement
+        Vector3 dragDirection = new Vector3(-mouseDelta.x, -mouseDelta.y, 0f);
+        Vector3 targetPosition = _camera.transform.position + dragDirection * _dragSpeed;
+        
+        // Apply the drag movement
+        _camera.transform.position = Vector3.SmoothDamp(_camera.transform.position, targetPosition, ref _currentVelocity, _smoothTime);
+        _lastMousePosition = currentMousePosition;
 
-            // Calculate the camera movement direction based on mouse movement
-            Vector3 dragDirection = new Vector3(-mouseDelta.x, -mouseDelta.y, 0f);
-            Vector3 targetPosition = transform.position + dragDirection * _dragSpeed;
-            
-            // Apply the drag movement
-            //transform.Translate(dragDirection * _dragSpeed, Space.World);
-            transform.position = Vector3.SmoothDamp(transform.position, targetPosition, ref _currentVelocity, _smoothTime);
-            _lastMousePosition = currentMousePosition;
-            
-        }
     }
 
     private void HandleZooming()
