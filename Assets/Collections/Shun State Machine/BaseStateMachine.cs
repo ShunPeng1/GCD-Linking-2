@@ -8,7 +8,7 @@ namespace Shun_State_Machine
 {
     public abstract class BaseStateMachine<TStateEnum> : MonoBehaviour where TStateEnum : Enum 
     {
-        protected BaseState<TStateEnum> CurrentBaseState;
+        protected BaseState<TStateEnum> CurrentBaseState = new (default);
         private Dictionary<TStateEnum, BaseState<TStateEnum>> _states = new ();
 
         [Header("History")] 
