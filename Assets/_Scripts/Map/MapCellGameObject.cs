@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Shun_Grid_System;
 using UnityEngine;
 
-public class BaseGridXYItemGameObject : MonoBehaviour
+public class MapCellGameObject : MonoBehaviour
 {
     protected GridXY<MapCellItem> Grid;
     protected GridXYCell<MapCellItem> Cell;

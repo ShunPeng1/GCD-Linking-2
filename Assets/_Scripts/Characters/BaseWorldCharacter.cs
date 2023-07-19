@@ -6,7 +6,7 @@ using UnityEngine.Rendering.Universal;
 
 
 
-public class BaseWorldCharacter : BaseGridXYGameObject
+public class BaseWorldCharacter : MapGameObject
 {
     public float MoveSpeed = 5f;
 

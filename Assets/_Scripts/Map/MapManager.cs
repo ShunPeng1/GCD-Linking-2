@@ -7,9 +7,24 @@ using UnityUtilities;
 
 public class MapManager : SingletonMonoBehaviour<MapManager>
 {
+    [field: Header("Grid")]
     public GridXY<MapCellItem> WorldGrid { get; private set;}
     public int GridWidth, GridHeight;
     public float WidthSize, HeightSize;
+    
+    
+    [Header("Adjacency Cell")]
+    [HideInInspector] public Vector2Int[] AdjacencyDirections = new[]
+    {
+        new Vector2Int(0, 1),
+        new Vector2Int(1, 1),
+        new Vector2Int(1, 0),
+        new Vector2Int(1, -1),
+        new Vector2Int(0, -1),
+        new Vector2Int(-1, -1),
+        new Vector2Int(-1, 0),
+        new Vector2Int(-1, 1),
+    };
     
     private void Awake()
     {
@@ -26,9 +41,8 @@ public class MapManager : SingletonMonoBehaviour<MapManager>
             {
                 
                 var cell = new GridXYCell<MapCellItem>(WorldGrid, x, y, null);
-                var item = new MapCellItem(WorldGrid,cell);
-                cell.Item = item;
-                
+                cell.Item = new MapCellItem(WorldGrid,cell);
+
                 WorldGrid.SetCell(cell,x,y);   
             }
         }
@@ -36,6 +50,39 @@ public class MapManager : SingletonMonoBehaviour<MapManager>
     
     private void Start()
     {
-        
+        InitializeCellAdjacency();
+        InitializeCellItem();
     }
+
+
+    private void InitializeCellAdjacency()
+    {
+        for (int x = 0; x < GridWidth; x++)
+        {
+            for (int y = 0; y < GridHeight; y++)
+            {
+                var cell = WorldGrid.GetCell(x, y);
+                
+                foreach (var direction in AdjacencyDirections)
+                {
+                    var adjacencyCell = WorldGrid.GetCell(x + direction.x, y + direction.y); 
+                    if(adjacencyCell != null) cell.SetAdjacencyCell(adjacencyCell);
+                }
+            }
+        }
+    }
+    
+    private void InitializeCellItem()
+    {
+        for (int x = 0; x < GridWidth; x++)
+        {
+            for (int y = 0; y < GridHeight; y++)
+            {
+                var cell = WorldGrid.GetCell(x, y);
+                
+                cell.Item.MapCellGameObject = Instantiate(ResourceManager.Instance.TestItem, WorldGrid.GetWorldPositionOfNearestCell(x,y), Quaternion.identity, transform);
+            }
+        }
+    }
+
 }

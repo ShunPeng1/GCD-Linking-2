@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Shun_Grid_System;
 using UnityEngine;
 
-public class BaseGridXYGameObject : MonoBehaviour
+public class MapGameObject : MonoBehaviour
 {
     [SerializeField] protected GridXY<MapCellItem> Grid;
 

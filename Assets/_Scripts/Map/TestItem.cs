@@ -2,7 +2,7 @@
 using UnityEngine;
 using static UnityEngine.Physics2D;
 
-public class TestItem : BaseGridXYItemGameObject
+public class TestItem : MapCellGameObject
 {
     [SerializeField] private float _length;
 
@@ -31,8 +31,8 @@ public class TestItem : BaseGridXYItemGameObject
     {
         foreach (var direction in _directions)
         {
-            var hit = Raycast(transform.position, direction, 3, _wallLayerMask);
-            if (hit.transform != null)
+            //var hit = Raycast(transform.position, direction, 3, _wallLayerMask);
+            //if (hit.transform != null)
             {
                 Instantiate(ResourceManager.Instance.TestSquare, transform.position + (Vector3) direction, Quaternion.identity, transform);
             }
