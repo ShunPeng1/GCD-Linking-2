@@ -11,6 +11,17 @@ namespace _Scripts.Cards.Card_UI
             _cardGameObject = baseCardGameObject;
         }
         
+        public override void Select()
+        {
+            _cardGameObject.ExecuteAbility(this);
+        }
+
+        public override void Deselect()
+        {
+            
+        }
+
+        
         public override void Hover()
         {
             
@@ -20,12 +31,7 @@ namespace _Scripts.Cards.Card_UI
         {
             
         }
-
-        public override void Execute()
-        {
-            _cardGameObject.ExecuteAbility(this);
-        }
-
+        
         public override void DisableInteractable()
         {
             Interactable = false;

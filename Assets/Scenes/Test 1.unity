@@ -104842,7 +104842,7 @@ MonoBehaviour:
   _minZoomDistance: 5
   _maxZoomDistance: 20
   _zoomElasticity: 0.5
-  _scaleWithCameraObjects:
+  _scaleWithCameraZoomObjects:
   - {fileID: 930233319}
 --- !u!43 &2115675125
 Mesh:

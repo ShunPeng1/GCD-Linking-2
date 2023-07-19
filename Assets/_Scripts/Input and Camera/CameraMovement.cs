@@ -22,7 +22,7 @@ public class CameraMovement : MonoBehaviour
     private float _originZoomDistance;
 
     [Header("Scale with camera")] 
-    [SerializeField] private List<GameObject> _scaleWithCameraObjects;
+    [SerializeField] private List<GameObject> _scaleWithCameraZoomObjects;
 
     private void Awake()
     {
@@ -47,13 +47,13 @@ public class CameraMovement : MonoBehaviour
 
 
     // Store the initial mouse position
-    private void StartDragCamera()
+    public void StartDragCamera()
     {
         _lastMousePosition = _camera.ScreenToViewportPoint(Input.mousePosition);
         IsDraggingMouse = true;
     }
     
-    private void DragCamera()
+    public void DragCamera()
     {
         if (!IsDraggingMouse) return;
         
@@ -71,7 +71,7 @@ public class CameraMovement : MonoBehaviour
 
     }
 
-    private void HandleZooming()
+    public void HandleZooming()
     {
         // Get the scroll wheel input
         float scrollWheelInput = Input.GetAxis("Mouse ScrollWheel");
@@ -88,7 +88,7 @@ public class CameraMovement : MonoBehaviour
         // Update the camera position for zooming
         _camera.orthographicSize = newZoomDistance;
 
-        foreach (var scaleWithCameraObject in _scaleWithCameraObjects)
+        foreach (var scaleWithCameraObject in _scaleWithCameraZoomObjects)
         {
             scaleWithCameraObject.transform.localScale = Vector3.one * (newZoomDistance / _originZoomDistance);
         }

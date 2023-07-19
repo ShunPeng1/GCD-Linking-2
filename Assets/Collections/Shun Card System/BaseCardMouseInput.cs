@@ -18,7 +18,7 @@ public class BaseCardMouseInput : MonoBehaviour
 
     protected RaycastHit2D[] MouseCastHits;
 
-    protected void Update()
+    protected virtual void Update()
     {
         UpdateMousePosition();
         
@@ -48,9 +48,14 @@ public class BaseCardMouseInput : MonoBehaviour
     }
 
     
-    private void CastMouse()
+    protected void CastMouse()
     {
         MouseCastHits = Physics2D.RaycastAll(MouseWorldPosition, Vector2.zero);
+    }
+
+    protected GameObject GetFirstMouseCastHitGameObject()
+    {
+        return MouseCastHits.Length > 0 ? MouseCastHits[0].transform.gameObject : null;
     }
     
     protected TResult FindFirstInMouseCast<TResult>()
@@ -70,15 +75,15 @@ public class BaseCardMouseInput : MonoBehaviour
     }
 
     
-    protected void StartDragCard()
+    protected bool StartDragCard()
     {
         // Check for button first
         LastCardButton = FindFirstInMouseCast<BaseCardButton>();
 
         if (LastCardButton != null && LastCardButton.Interactable)
         {
-            LastCardButton.Execute();
-            return;
+            LastCardButton.Select();
+            return true;
         } 
 
         // Check for card game object second
@@ -87,16 +92,17 @@ public class BaseCardMouseInput : MonoBehaviour
         if (DraggingCard == null || !DraggingCard.Interactable)
         {
             DraggingCard = null;
-            return;
+            return false;
         }
         
         CardOffset = DraggingCard.transform.position - MouseWorldPosition;
         IsDraggingCard = true;
 
         DraggingCard.Select();
-        
+
         DetachCardToHolder();
 
+        return true;
     }
 
     protected void DragCard()
@@ -145,6 +151,7 @@ public class BaseCardMouseInput : MonoBehaviour
         
         LastCardHolder = null;
         LastCardRegion = null;
+        
     }
 
     protected void AttachCardToHolder()

@@ -3,9 +3,19 @@
 namespace Shun_Card_System
 {
     [RequireComponent(typeof(Collider2D))]
-    public class BaseCardButton : MonoBehaviour
+    public class BaseCardButton : MonoBehaviour, IMouseInteractable
     {
         public bool Interactable = true;
+
+        public virtual void Select()
+        {
+            
+        }
+
+        public virtual void Deselect()
+        {
+            
+        }
 
         public virtual void Hover()
         {
@@ -13,11 +23,6 @@ namespace Shun_Card_System
         }
         
         public virtual void Unhover()
-        {
-            
-        }
-
-        public virtual void Execute()
         {
             
         }
