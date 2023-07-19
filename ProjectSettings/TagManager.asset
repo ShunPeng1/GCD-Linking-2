@@ -13,8 +13,8 @@ TagManager:
   - UI
   - 
   - Character
-  - 
-  - Collision Tilemap
+  - Map Highlight
+  - Obstacle Tilemap
   - 
   - 
   - 
@@ -41,7 +41,10 @@ TagManager:
   - name: Background Tilemap
     uniqueID: 4066693411
     locked: 0
-  - name: Midground Tilemap
+  - name: Map Highlight
+    uniqueID: 2187398739
+    locked: 0
+  - name: Obstacle Tilemap
     uniqueID: 3195708635
     locked: 0
   - name: Default

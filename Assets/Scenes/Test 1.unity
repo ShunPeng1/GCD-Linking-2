@@ -465,6 +465,15 @@ MonoBehaviour:
   GridHeight: 30
   WidthSize: 3
   HeightSize: 3
+  AdjacencyDirections:
+  - {x: 0, y: 1}
+  - {x: 1, y: 1}
+  - {x: 1, y: 0}
+  - {x: 1, y: -1}
+  - {x: 0, y: -1}
+  - {x: -1, y: -1}
+  - {x: -1, y: 0}
+  - {x: -1, y: 1}
 --- !u!4 &398013865
 Transform:
   m_ObjectHideFlags: 0
@@ -6769,7 +6778,7 @@ MonoBehaviour:
   m_Intensity: 1
   m_LightVolumeIntensity: 1
   m_LightVolumeIntensityEnabled: 0
-  m_ApplyToSortingLayers: 9f95382e
+  m_ApplyToSortingLayers: 9f95382e530e6182
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
   m_LightOrder: 0
@@ -7599,7 +7608,7 @@ TilemapRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -228273885
-  m_SortingLayer: -2
+  m_SortingLayer: -3
   m_SortingOrder: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
@@ -103397,6 +103406,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e66884f322424135b7277ea384301f25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CellHighlighter: {fileID: 6047663085760228396, guid: 777ceec8482da2d4fba51d66b5944836, type: 3}
   TestItem: {fileID: 1149803492738386883, guid: 2fcc01b6a2eda6945a189477e4f23a49, type: 3}
   TestSquare: {fileID: 2166196614525618961, guid: 98bf9b48037b3f84a8003cb3ef8fc9c1, type: 3}
 --- !u!43 &1710515808
@@ -104827,6 +104837,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _dragSpeed: 500
   _smoothTime: 0.125
+  IsDraggingMouse: 0
   _zoomSpeed: 15
   _minZoomDistance: 5
   _maxZoomDistance: 20
