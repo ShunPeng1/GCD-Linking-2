@@ -104680,6 +104680,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3be0b347f86d6e241830cb4d316f9459, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _gameStartState:
+    MyStateEnum: 0
+  _gameOverState:
+    MyStateEnum: 1
+  _gamePauseState:
+    MyStateEnum: 2
+  _gameInteractMapState:
+    MyStateEnum: 3
+  _gameChooseCardStateState:
+    MyStateEnum: 4
+  _gameChangeSideStateState:
+    MyStateEnum: 5
 --- !u!1 &2069281034
 GameObject:
   m_ObjectHideFlags: 0

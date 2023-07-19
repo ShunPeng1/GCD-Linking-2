@@ -38,7 +38,7 @@ namespace Shun_State_Machine
         {
             if (_states.TryGetValue(stateEnum, out BaseState<TStateEnum> nextState))
             {
-                StateHistoryStrategy.Save(nextState, exitOldStateParameters, enterNewStateParameters);
+                StateHistoryStrategy?.Save(nextState, exitOldStateParameters, enterNewStateParameters);
                 SwitchState(nextState, exitOldStateParameters, enterNewStateParameters);
             }
             else
