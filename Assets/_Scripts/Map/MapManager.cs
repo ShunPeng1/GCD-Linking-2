@@ -7,7 +7,6 @@ using UnityUtilities;
 
 public class MapManager : SingletonMonoBehaviour<MapManager>
 {
-
     public GridXY<BaseGridXYItemGameObject> WorldGrid { get; private set;}
     public int GridWidth, GridHeight;
     public float WidthSize, HeightSize;
