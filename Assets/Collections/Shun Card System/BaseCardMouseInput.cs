@@ -8,6 +8,11 @@ public class BaseCardMouseInput : MonoBehaviour
 {
     protected Vector3 MouseWorldPosition;
     
+    
+    [Header("Hover Objects")]
+    protected IMouseInteractable LastHoverMouseInteractable = null;
+
+    
     [Header("Drag Objects")]
     protected bool IsDraggingCard = false;
     protected Vector3 CardOffset;
@@ -21,6 +26,7 @@ public class BaseCardMouseInput : MonoBehaviour
     protected virtual void Update()
     {
         UpdateMousePosition();
+        if(!IsDraggingCard) UpdateHoverObject();
         
         if (Input.GetMouseButtonDown(0))
         {
@@ -47,15 +53,49 @@ public class BaseCardMouseInput : MonoBehaviour
         MouseWorldPosition = new Vector3(worldMousePosition.x, worldMousePosition.y, 0);
     }
 
+    #region Hover
+
+    protected void UpdateHoverObject()
+    {
+        CastMouse();
+        var hoveringMouseInteractable = GetMouseInteractableInCastMouse();
+        if (hoveringMouseInteractable != LastHoverMouseInteractable)
+        {
+            LastHoverMouseInteractable?.EndHover();
+            hoveringMouseInteractable?.StartHover();
+            LastHoverMouseInteractable = hoveringMouseInteractable;
+        }
+    }
+    
+    
+    protected virtual IMouseInteractable GetMouseInteractableInCastMouse()
+    {
+        foreach (var hit in MouseCastHits)
+        {
+            var characterCardButton = hit.transform.gameObject.GetComponent<BaseCardButton>();
+            if (characterCardButton != null)
+            {
+                //Debug.Log("Mouse find "+ gameObject.name);
+                return characterCardButton;
+            }
+            
+            var characterCardGameObject = hit.transform.gameObject.GetComponent<BaseCardGameObject>();
+            if (characterCardGameObject != null)
+            {
+                //Debug.Log("Mouse find "+ gameObject.name);
+                return characterCardGameObject;
+            }
+        }
+
+        return null;
+    }
+
+    #endregion
+    
     
     protected void CastMouse()
     {
         MouseCastHits = Physics2D.RaycastAll(MouseWorldPosition, Vector2.zero);
-    }
-
-    protected GameObject GetFirstMouseCastHitGameObject()
-    {
-        return MouseCastHits.Length > 0 ? MouseCastHits[0].transform.gameObject : null;
     }
     
     protected TResult FindFirstInMouseCast<TResult>()

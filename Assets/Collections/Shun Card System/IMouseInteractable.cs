@@ -6,9 +6,9 @@
 
         public void Deselect();
 
-        public void Hover();
+        public void StartHover();
 
-        public void Unhover();
+        public void EndHover();
 
         public void DisableInteractable();
 

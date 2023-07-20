@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 namespace Shun_Card_System
 {
     [RequireComponent(typeof(Collider2D))]
-    public class BaseCardGameObject : MonoBehaviour
+    public class BaseCardGameObject : MonoBehaviour, IMouseInteractable
     {
         public bool Interactable = true;
         [SerializeField] protected bool ActivateOnValidate = false;
@@ -31,12 +31,12 @@ namespace Shun_Card_System
             
         }
 
-        public virtual void Hover()
+        public virtual void StartHover()
         {
             
         }
 
-        public virtual void Unhover()
+        public virtual void EndHover()
         {
             
         }

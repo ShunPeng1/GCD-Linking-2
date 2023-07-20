@@ -1,4 +1,5 @@
 ﻿using Shun_Card_System;
+using UnityEngine;
 
 namespace _Scripts.Cards.Card_UI
 {
@@ -22,12 +23,12 @@ namespace _Scripts.Cards.Card_UI
         }
 
         
-        public override void Hover()
+        public override void StartHover()
         {
             
         }
         
-        public override void Unhover()
+        public override void EndHover()
         {
             
         }

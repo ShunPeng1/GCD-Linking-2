@@ -17,12 +17,12 @@ namespace Shun_Card_System
             
         }
 
-        public virtual void Hover()
+        public virtual void StartHover()
         {
             
         }
         
-        public virtual void Unhover()
+        public virtual void EndHover()
         {
             
         }

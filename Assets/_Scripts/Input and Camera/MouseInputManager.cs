@@ -7,19 +7,12 @@ using UnityEngine;
 public class MouseInputManager : BaseCardMouseInput
 {
     [SerializeField] private CameraMovement _cameraMovement;
-    private IMouseInteractable _mouseInteractable;
     
     protected override void Update()
     {
         UpdateMousePosition();
-        CastMouse();
-
-        var button = FindFirstInMouseCast<CharacterCardButton>();
-        if (button != null)
-        {
-            _mouseInteractable = button;
-            button.Hover();
-        }
+        
+        
         
         if (Input.GetMouseButtonDown(0))
         {
@@ -38,4 +31,7 @@ public class MouseInputManager : BaseCardMouseInput
             EndDragCard();
         }
     }
+
+    
+
 }
