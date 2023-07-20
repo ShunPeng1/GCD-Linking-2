@@ -5,9 +5,10 @@ using UnityEngine;
 
 public class CellHighlighter : MapCellGameObject, IMouseInteractable
 {
+    public bool Interactable;
     [SerializeField] private SpriteRenderer _spriteRenderer;
 
-    [SerializeField] private float _validCellHighlightValue = 50f, _hoverHighlightValue = 50f;
+    [SerializeField] private float _validCellHighlightValue = 0.25f, _hoverHighlightValue = 0.25f;
     protected void Awake()
     {
         

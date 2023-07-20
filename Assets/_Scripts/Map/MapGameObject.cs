@@ -5,13 +5,8 @@ using UnityEngine;
 
 public class MapGameObject : MonoBehaviour
 {
-    protected GridXY<MapCellItem> Grid;
-
-    protected virtual void Start()
-    {
-        Grid = MapManager.Instance.WorldGrid;
-        
-    }
+    protected GridXY<MapCellItem> Grid => MapManager.Instance.WorldGrid;
+    
 
     public GridXYCell<MapCellItem> GetCell()
     {

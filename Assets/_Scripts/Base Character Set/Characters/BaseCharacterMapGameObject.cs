@@ -21,10 +21,11 @@ public class BaseCharacterMapGameObject : MapGameObject
     protected Dictionary<GridXYCell<MapCellItem>, double> AllMovableCellAndCost;
     protected IPathfindingAlgorithm<GridXY<MapCellItem>, GridXYCell<MapCellItem>, MapCellItem> PathfindingAlgorithm;
 
-
-    protected override void Start()
+    
+    
+    
+    protected void Start()
     {
-        base.Start();
         Rb = GetComponent<Rigidbody2D>();
         
     }
@@ -65,7 +66,7 @@ public class BaseCharacterMapGameObject : MapGameObject
 
     public virtual void MoveAbility()
     {
-        
+        ShowMovablePath();
     }
 
     public virtual  void SecondAbility()
@@ -79,7 +80,9 @@ public class BaseCharacterMapGameObject : MapGameObject
 
         foreach (var (cell, gCost) in AllMovableCellAndCost)
         {
-            cell.Item.CellHighlighter.StartHighlight();
+            var cellHighlighter = cell.Item.CellHighlighter;
+            cellHighlighter.Interactable = true;
+            cellHighlighter.StartHighlight();
         }
     }
 
@@ -87,7 +90,9 @@ public class BaseCharacterMapGameObject : MapGameObject
     {
         foreach (var (cell, gCost) in AllMovableCellAndCost)
         {
-            cell.Item.CellHighlighter.EndHighlight();
+            var cellHighlighter = cell.Item.CellHighlighter;
+            cellHighlighter.Interactable = false;
+            cellHighlighter.EndHighlight();
         }
     }
 

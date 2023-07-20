@@ -12,7 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d392d81fa5f464bac2638d4ea6d45c3, type: 3}
   m_Name: John
   m_EditorClassIdentifier: 
-  CharacterCardGameObjectPrefab: {fileID: 0}
-  WorldCharacterPrefab: {fileID: 0}
+  BaseCharacterCardGameObjectPrefab: {fileID: 0}
+  CharacterMapGameObjectPrefab: {fileID: 0}
   CharacterName: John
-  Range: 0
+  MoveCellCost: 5
+  MoveSpeed: 5
+  WallLayerMask:
+    serializedVersion: 2
+    m_Bits: 512
+  LightRange: 10

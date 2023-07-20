@@ -4,7 +4,7 @@ using Shun_Card_System;
 using UnityEngine;
 using UnityUtilities;
 
-public class BaseCardMouseInput : MonoBehaviour
+public class BaseCardMouseInput 
 {
     protected Vector3 MouseWorldPosition;
     protected RaycastHit2D[] MouseCastHits;

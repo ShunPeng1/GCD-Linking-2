@@ -57,7 +57,9 @@ namespace Shun_Grid_System
 
                 if (currentCell.FCost > cost)
                     continue;
-
+                
+                reachableCells[currentCell] = currentCell.GCost;
+                
                 foreach (TCell adjacentCell in currentCell.AdjacentCells)
                 {
                     if (visitedSet.Contains(adjacentCell))
@@ -75,7 +77,6 @@ namespace Shun_Grid_System
                         adjacentCell.FCost = newGCost + adjacentCell.HCost;
                         adjacentCell.ParentXZCell2D = currentCell;
                         
-                        reachableCells[adjacentCell] = newGCost;
                         if (!openSet.Contains(adjacentCell))
                         {
                             openSet.Enqueue(adjacentCell, adjacentCell.FCost);

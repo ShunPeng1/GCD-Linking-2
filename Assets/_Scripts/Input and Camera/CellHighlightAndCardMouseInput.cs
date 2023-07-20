@@ -5,21 +5,17 @@ using _Scripts.Managers;
 using Shun_Card_System;
 using Shun_Grid_System;
 using UnityEngine;
+using UnityUtilities;
 
-public class MouseInputManager : BaseCardMouseInput
+public class CellHighlightAndCardMouseInput : BaseCardMouseInput
 {
-    [SerializeField] private CameraMovement _cameraMovement;
-    private GridXY<MapCellItem> _grid;
-
-    protected void Start()
+    private Action<CellHighlighter> _finishedSelection;
+    protected void InitializeEnd(Action<CellHighlighter> finishedSelection)
     {
-        _grid = MapManager.Instance.WorldGrid;
+        _finishedSelection = finishedSelection;
     }
 
-    protected void InitializeGameStateFunctions()
-    {
-        
-    }
+    
     
     protected override void Update()
     {
@@ -29,6 +25,7 @@ public class MouseInputManager : BaseCardMouseInput
         if (Input.GetMouseButtonDown(0))
         {
             CastMouse();
+            
             StartDragCard();
         }
 
@@ -45,28 +42,38 @@ public class MouseInputManager : BaseCardMouseInput
         }
         
     }
+
+    protected bool CheckCellHighlight()
+    {
+        var cellHighlighter = FindFirstInMouseCast<CellHighlighter>();
+
+        if (cellHighlighter == null || !cellHighlighter.Interactable) return false;
+        
+        cellHighlighter.Select();
+        return true;
+
+    }
     
-    /*
     protected override IMouseInteractable GetMouseInteractableInCastMouse()
     {
         foreach (var hit in MouseCastHits)
         {
             var characterCardButton = hit.transform.gameObject.GetComponent<BaseCardButton>();
-            if (characterCardButton != null)
+            if (characterCardButton != null && characterCardButton.Interactable)
             {
                 //Debug.Log("Mouse find "+ gameObject.name);
                 return characterCardButton;
             }
 
             var characterCardGameObject = hit.transform.gameObject.GetComponent<BaseCardGameObject>();
-            if (characterCardGameObject != null)
+            if (characterCardGameObject != null && characterCardGameObject.Interactable)
             {
                 //Debug.Log("Mouse find "+ gameObject.name);
                 return characterCardGameObject;
             }
             
             var cellHighlighter = hit.transform.gameObject.GetComponent<CellHighlighter>();
-            if (cellHighlighter != null)
+            if (cellHighlighter != null  && cellHighlighter.Interactable)
             {
                 //Debug.Log("Mouse find "+ gameObject.name);
                 return cellHighlighter;
@@ -76,5 +83,5 @@ public class MouseInputManager : BaseCardMouseInput
         return null;
     }
 
-    */
+    
 }

@@ -277,10 +277,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Interactable: 1
   ActivateOnValidate: 0
-  _characterInformation: {fileID: 11400000, guid: 26908647a1d17b0488679fd12d1e9a3e, type: 2}
   _ability1Button: {fileID: 7018498707038222447}
   _ability2Button: {fileID: 7892379034427185041}
-  _cardVisualTransform: {fileID: 6056330397828168066}
+  _cardVisualTransform: {fileID: 3309244574523073680}
   _sortingGroup: {fileID: 3309244574523073685}
   _hoverEnlargeValue: 1.5
 --- !u!210 &3309244574523073685
@@ -936,7 +935,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -2964228502845533199, guid: d4c297781824cfb4a8bd3d25fdc369bb, type: 3}
       propertyPath: Interactable
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1897857033099686080, guid: d4c297781824cfb4a8bd3d25fdc369bb, type: 3}
       propertyPath: m_Name
@@ -1013,7 +1012,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -2964228502845533199, guid: d4c297781824cfb4a8bd3d25fdc369bb, type: 3}
       propertyPath: Interactable
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1897857033099686080, guid: d4c297781824cfb4a8bd3d25fdc369bb, type: 3}
       propertyPath: m_Name
