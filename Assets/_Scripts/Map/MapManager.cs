@@ -12,12 +12,6 @@ public class MapManager : SingletonMonoBehaviour<MapManager>
     public int GridWidth, GridHeight;
     public float WidthSize, HeightSize;
 
-    [Header("Tilemap and Layer")] 
-    [SerializeField] private LayerMask _wallLayerMask;
-
-    [Header("Pathfinding")] 
-    [SerializeField] private PathFindingCostFunction _pathFindingCostFunction;
-    
     [Header("Entities")]
     public BaseWorldCharacter[] Characters;
     
@@ -93,27 +87,7 @@ public class MapManager : SingletonMonoBehaviour<MapManager>
         }
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            Test(Characters[0]);
-        }
-    }
 
-    private void Test(BaseWorldCharacter character)
-    {
-        NonCollisionTilemapCellSelection selection = new NonCollisionTilemapCellSelection(WorldGrid, _wallLayerMask, WidthSize);
-        AStarPathFinding<GridXY<MapCellItem>, GridXYCell<MapCellItem>, MapCellItem> pathFinding = new(WorldGrid, selection, _pathFindingCostFunction);
-        
-        var allValidCell = pathFinding.FindAllCellsSmallerThanCost(character.GetCell(), character.MovingCost);
-
-        foreach (var cell in allValidCell)
-        {
-            cell.Item.CellHighlighter.StartHighlight();
-        }
-    }
-    
     
     
 }

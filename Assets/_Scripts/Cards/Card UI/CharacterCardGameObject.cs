@@ -42,7 +42,7 @@ namespace _Scripts.Cards.Card_UI
                 return;
             }
             
-            _executeAbilityBaseOnButton.Add(_ability1Button, _characterInformation.Ability1);
+            _executeAbilityBaseOnButton.Add(_ability1Button, _characterInformation.MoveAbility);
             _executeAbilityBaseOnButton.Add(_ability2Button, _characterInformation.Ability2);
         }
 

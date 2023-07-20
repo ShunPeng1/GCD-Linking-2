@@ -5,12 +5,9 @@ namespace _Scripts.Cards.Character_Information
     [CreateAssetMenu(fileName = "Character Information", menuName = "Character Information/John Information")]
     public class JohnCharacterInformation : CharacterInformation
     {
-        public override void Init()
-        {
-            
-        }
+        
 
-        public override void Ability1()
+        public override void MoveAbility()
         {
             Debug.Log("Ability 1");
         }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Shun_Grid_System;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
@@ -8,18 +9,23 @@ using UnityEngine.Rendering.Universal;
 
 public class BaseWorldCharacter : MapGameObject
 {
-    public float MovingCost = 5f;
+    public CharacterInformation CharacterInformation;
     
-    public float MoveSpeed = 5f;
-
+    
     protected Rigidbody2D Rb;
-    protected CharacterLight CharacterLight;
-    
+
+    [Header("Pathfinding")] 
+    protected TilemapAdjacencyCellSelection AdjacencyCellSelection;
+    protected Dictionary<GridXYCell<MapCellItem>, double> AllMovableCellAndCost;
+    protected IPathfindingAlgorithm<GridXY<MapCellItem>, GridXYCell<MapCellItem>, MapCellItem> PathfindingAlgorithm;
+
+
     protected override void Start()
     {
         base.Start();
         Rb = GetComponent<Rigidbody2D>();
-        CharacterLight = GetComponent<CharacterLight>();
+        
+        InitializePathfinding();
     }
 
     private void Update()
@@ -35,9 +41,35 @@ public class BaseWorldCharacter : MapGameObject
         Vector2 movement = new Vector2(horizontalInput, verticalInput);
         movement.Normalize();
 
-        Rb.AddForce(movement * MoveSpeed);
+        Rb.AddForce(movement * CharacterInformation.MoveSpeed);
         
         //Debug.Log(GetCell().XIndex + " " + GetCell().YIndex);
     }
+
+    protected virtual void InitializePathfinding()
+    {
+        AdjacencyCellSelection = new NonCollisionTilemapAdjacencyCellSelection(Grid, CharacterInformation.WallLayerMask, Grid.GetCellWorldSize().x);
+        PathfindingAlgorithm = new AStarPathFinding<GridXY<MapCellItem>, GridXYCell<MapCellItem>, MapCellItem>(Grid, AdjacencyCellSelection, PathFindingCostFunction.Manhattan);
+
+    }
+    
+    private void ShowMovablePath()
+    {
+        AllMovableCellAndCost = CharacterInformation.PathfindingAlgorithm.FindAllCellsSmallerThanCost(GetCell(), CharacterInformation.MoveCellCost);
+
+        foreach (var (cell, gCost) in AllMovableCellAndCost)
+        {
+            cell.Item.CellHighlighter.StartHighlight();
+        }
+    }
+
+    private void HideMovablePath()
+    {
+        foreach (var (cell, gCost) in AllMovableCellAndCost)
+        {
+            cell.Item.CellHighlighter.EndHighlight();
+        }
+    }
+
 
 }
