@@ -8,6 +8,8 @@ using UnityEngine.Rendering.Universal;
 
 public class BaseWorldCharacter : MapGameObject
 {
+    public float MovingCost = 5f;
+    
     public float MoveSpeed = 5f;
 
     protected Rigidbody2D Rb;

@@ -14,9 +14,9 @@ namespace Shun_Grid_System
         private IPathFindingDistanceCost _distanceCostFunction;
         private IPathFindingAdjacentCellSelection<TCell, TItem> _adjacentCellSelectionFunction;
 
-        public AStarPathFinding(TGrid gridXZ, IPathFindingAdjacentCellSelection<TCell, TItem> adjacentCellSelectionFunction, PathFindingCostFunction costFunctionType) : base(gridXZ)
+        public AStarPathFinding(TGrid gridXZ, IPathFindingAdjacentCellSelection<TCell, TItem> adjacentCellSelectionFunction = null, PathFindingCostFunction costFunctionType = PathFindingCostFunction.Manhattan) : base(gridXZ)
         {
-            _adjacentCellSelectionFunction = adjacentCellSelectionFunction;
+            _adjacentCellSelectionFunction = adjacentCellSelectionFunction ?? new PathFindingAllAdjacentCellAccept<TCell, TItem>();
             _distanceCostFunction = costFunctionType switch
             {
                 PathFindingCostFunction.Manhattan => new ManhattanDistanceCost(),
@@ -26,12 +26,7 @@ namespace Shun_Grid_System
                 _ => throw new ArgumentOutOfRangeException(nameof(costFunctionType), costFunctionType, null)
             };
         }
-    
-        public AStarPathFinding(TGrid gridXZ, IPathFindingDistanceCost pathFindingDistanceCost) : base(gridXZ)
-        {
-            _distanceCostFunction = pathFindingDistanceCost;
-        }
-        
+
         public override LinkedList<TCell> FirstTimeFindPath(TCell startCell, TCell endCell)
         {
             _startCell = startCell;
@@ -76,7 +71,7 @@ namespace Shun_Grid_System
                     if (newGCost < adjacentCell.GCost || !openSet.Contains(adjacentCell))
                     {
                         adjacentCell.GCost = newGCost;
-                        adjacentCell.HCost = GetDistanceCost(adjacentCell, _endCell);
+                        adjacentCell.HCost = 0;
                         adjacentCell.FCost = newGCost + adjacentCell.HCost;
                         adjacentCell.ParentXZCell2D = currentCell;
 

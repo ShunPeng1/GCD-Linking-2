@@ -25,7 +25,7 @@ namespace Shun_Card_System
         [SerializeField] protected MiddleInsertionStyle CardMiddleInsertionStyle = MiddleInsertionStyle.InsertInMiddle;
         protected BaseCardHolder TemporaryBaseCardHolder;
         protected int CardHoldingCount = 0;
-        
+
         protected virtual void Awake()
         {
             InitializeCardPlaceHolder();
@@ -120,12 +120,13 @@ namespace Shun_Card_System
             cardPlaceHolder.AttachCardGameObject(cardGameObject);
             
             CardHoldingCount ++;
-            UpdateCardPlaceHolderTransforms();
+            
+            OnSuccessfullyAddCard(cardGameObject, cardPlaceHolder);
                 
             return true;
         }
         
-        private bool AddCardAtMiddle(BaseCardGameObject cardGameObject, int index)
+        private  bool AddCardAtMiddle(BaseCardGameObject cardGameObject, int index)
         {
             if (CardHoldingCount >= MaxCardHold)
             {
@@ -137,13 +138,15 @@ namespace Shun_Card_System
             var cardPlaceHolder = _cardPlaceHolders[index];
             cardPlaceHolder.AttachCardGameObject(cardGameObject);
             
-            UpdateCardPlaceHolderTransforms();
             CardHoldingCount++;
+            
+            OnSuccessfullyAddCard(cardGameObject, cardPlaceHolder);
+            
             return true;
         }
         
         
-        protected void ShiftRight(int startIndex)
+        protected virtual void ShiftRight(int startIndex)
         {
             for (int i = _cardPlaceHolders.Count - 1; i > startIndex; i--)
             {
@@ -158,7 +161,7 @@ namespace Shun_Card_System
         }
         
         
-        protected void ShiftLeft(int startIndex)
+        protected virtual void ShiftLeft(int startIndex)
         {
             for (int i = startIndex; i < _cardPlaceHolders.Count - 1; i++)
             {
@@ -168,28 +171,29 @@ namespace Shun_Card_System
                 
                 _cardPlaceHolders[i].AttachCardGameObject(card);
                 
+                
                 //SmoothMove(card.transform, _cardPlaceHolders[i].transform.position);
 
             }
         }
         
-        public bool DetachCard(BaseCardGameObject cardGameObject)
+        public virtual bool RemoveCard(BaseCardGameObject cardGameObject)
         {
             for (int i = 0; i < _cardPlaceHolders.Count; i++)
             {
                 if (_cardPlaceHolders[i].CardGameObject != cardGameObject) continue;
-                
                 _cardPlaceHolders[i].DetachCardGameObject();
-                CardHoldingCount--;
                 
                 ShiftLeft(i);
+                CardHoldingCount--;
                 
+                OnSuccessfullyRemoveCard(cardGameObject, _cardPlaceHolders[i]);
                 return true;
             }
             return false;
         }
         
-        public bool DetachCard(BaseCardGameObject cardGameObject,BaseCardHolder cardHolder)
+        public virtual bool RemoveCard(BaseCardGameObject cardGameObject,BaseCardHolder cardHolder)
         {
             if (cardHolder.CardGameObject != cardGameObject) return false;
 
@@ -198,25 +202,26 @@ namespace Shun_Card_System
             ShiftLeft(_cardPlaceHolders.IndexOf(cardHolder));
             CardHoldingCount--;
 
+            OnSuccessfullyRemoveCard(cardGameObject, cardHolder);
             return true;
         }
         
-        public bool TakeOutTemporary(BaseCardGameObject cardGameObject,BaseCardHolder cardHolder)
+        public virtual bool TakeOutTemporary(BaseCardGameObject cardGameObject,BaseCardHolder cardHolder)
         {
-            if (!DetachCard(cardGameObject, cardHolder)) return false;
+            if (!RemoveCard(cardGameObject, cardHolder)) return false;
             
             TemporaryBaseCardHolder = cardHolder;
             return true;
         }
         
-        public void ReAddTemporary(BaseCardGameObject baseCardGameObject)
+        public virtual void ReAddTemporary(BaseCardGameObject baseCardGameObject)
         {
             AddCard(baseCardGameObject, TemporaryBaseCardHolder);
             
             TemporaryBaseCardHolder = null;
         }
 
-        public void RemoveTemporary(BaseCardGameObject baseCardGameObject)
+        public virtual void RemoveTemporary(BaseCardGameObject baseCardGameObject)
         {
             TemporaryBaseCardHolder = null;
         }
@@ -226,7 +231,11 @@ namespace Shun_Card_System
             movingObject.position = toPosition;
         }
 
-        protected virtual void UpdateCardPlaceHolderTransforms()
+        protected virtual void OnSuccessfullyAddCard(BaseCardGameObject baseCardGameObject, BaseCardHolder baseCardHolder)
+        {
+            
+        }
+        protected virtual void OnSuccessfullyRemoveCard(BaseCardGameObject baseCardGameObject, BaseCardHolder baseCardHolder)
         {
             
         }

@@ -33,9 +33,9 @@ namespace Shun_Grid_System
         private Dictionary<TCell, float> _dynamicObstacles = new(); // dynamicObstacle[x] = the cell that is found obstacle after find path and its found time
         
         
-        public DStarLitePathFinding(TGrid gridXZ, IPathFindingAdjacentCellSelection<TCell, TItem> adjacentCellSelectionFunc, PathFindingCostFunction costFunctionType) : base(gridXZ)
+        public DStarLitePathFinding(TGrid gridXZ, IPathFindingAdjacentCellSelection<TCell, TItem> adjacentCellSelectionFunction = null, PathFindingCostFunction costFunctionType = PathFindingCostFunction.Manhattan) : base(gridXZ)
         {
-            _adjacentCellSelectionFunction = adjacentCellSelectionFunc;
+            _adjacentCellSelectionFunction = adjacentCellSelectionFunction ?? new PathFindingAllAdjacentCellAccept<TCell, TItem>();
             _distanceCostFunction = costFunctionType switch
             {
                 PathFindingCostFunction.Manhattan => new ManhattanDistanceCost(),

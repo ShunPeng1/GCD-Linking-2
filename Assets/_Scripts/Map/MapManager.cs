@@ -11,19 +11,27 @@ public class MapManager : SingletonMonoBehaviour<MapManager>
     public GridXY<MapCellItem> WorldGrid { get; private set;}
     public int GridWidth, GridHeight;
     public float WidthSize, HeightSize;
+
+    [Header("Tilemap and Layer")] 
+    [SerializeField] private LayerMask _wallLayerMask;
+
+    [Header("Pathfinding")] 
+    [SerializeField] private PathFindingCostFunction _pathFindingCostFunction;
     
+    [Header("Entities")]
+    public BaseWorldCharacter[] Characters;
     
     [Header("Adjacency Cell")]
     [HideInInspector] public Vector2Int[] AdjacencyDirections = new[]
     {
         new Vector2Int(0, 1),
-        new Vector2Int(1, 1),
+        //new Vector2Int(1, 1),
         new Vector2Int(1, 0),
-        new Vector2Int(1, -1),
+        //new Vector2Int(1, -1),
         new Vector2Int(0, -1),
-        new Vector2Int(-1, -1),
+        //new Vector2Int(-1, -1),
         new Vector2Int(-1, 0),
-        new Vector2Int(-1, 1),
+        //new Vector2Int(-1, 1),
     };
     
     private void Awake()
@@ -53,7 +61,6 @@ public class MapManager : SingletonMonoBehaviour<MapManager>
         InitializeCellAdjacency();
         InitializeCellItem();
     }
-
 
     private void InitializeCellAdjacency()
     {
@@ -86,4 +93,27 @@ public class MapManager : SingletonMonoBehaviour<MapManager>
         }
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            Test(Characters[0]);
+        }
+    }
+
+    private void Test(BaseWorldCharacter character)
+    {
+        NonCollisionTilemapCellSelection selection = new NonCollisionTilemapCellSelection(WorldGrid, _wallLayerMask, WidthSize);
+        AStarPathFinding<GridXY<MapCellItem>, GridXYCell<MapCellItem>, MapCellItem> pathFinding = new(WorldGrid, selection, _pathFindingCostFunction);
+        
+        var allValidCell = pathFinding.FindAllCellsSmallerThanCost(character.GetCell(), character.MovingCost);
+
+        foreach (var cell in allValidCell)
+        {
+            cell.Item.CellHighlighter.StartHighlight();
+        }
+    }
+    
+    
+    
 }
