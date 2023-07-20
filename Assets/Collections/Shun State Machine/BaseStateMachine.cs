@@ -6,30 +6,26 @@ using UnityUtilities;
 
 namespace Shun_State_Machine
 {
-    public abstract class BaseStateMachine<TStateEnum> : MonoBehaviour where TStateEnum : Enum 
+    public class BaseStateMachine<TStateEnum> where TStateEnum : Enum 
     {
-        protected BaseState<TStateEnum> CurrentBaseState = new (default);
+        public BaseState<TStateEnum> CurrentBaseState = new (default);
         private Dictionary<TStateEnum, BaseState<TStateEnum>> _states = new ();
 
         [Header("History")] 
-        protected IStateHistoryStrategy<TStateEnum> StateHistoryStrategy;
+        public IStateHistoryStrategy<TStateEnum> StateHistoryStrategy;
 
-        protected virtual void Awake()
-        {
-            SetHistoryStrategy(new StackStateHistoryStrategy<TStateEnum>(10));
-        }
-
-        protected void SetHistoryStrategy(IStateHistoryStrategy<TStateEnum> historyStrategy)
+        
+        public void SetHistoryStrategy(IStateHistoryStrategy<TStateEnum> historyStrategy)
         {
             StateHistoryStrategy = historyStrategy;
         }
 
-        protected void AddState(BaseState<TStateEnum> baseState)
+        public void AddState(BaseState<TStateEnum> baseState)
         {
             _states[baseState.MyStateEnum] = baseState;
         }
 
-        protected void RemoveState(TStateEnum stateEnum)
+        public void RemoveState(TStateEnum stateEnum)
         {
             _states.Remove(stateEnum);
         }
@@ -54,8 +50,6 @@ namespace Shun_State_Machine
 
         private void SwitchState(BaseState<TStateEnum> nextState , object[] exitOldStateParameters = null, object[] enterNewStateParameters = null)
         {
-            Debug.Log(gameObject.name +" Change "+ CurrentBaseState.MyStateEnum+ " State To "+ nextState.MyStateEnum + " State");
-            
             CurrentBaseState.OnExitState(nextState.MyStateEnum,exitOldStateParameters);
             TStateEnum lastStateEnum = CurrentBaseState.MyStateEnum;
             CurrentBaseState = nextState;

@@ -1,6 +1,8 @@
 using System;
 using Shun_State_Machine;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
+using UnityUtilities;
 
 namespace _Scripts.Managers
 {
@@ -21,31 +23,38 @@ namespace _Scripts.Managers
         Imposter
     }
 
-    public class GameManager : BaseStateMachine<GameState>
+    public class GameManager : SingletonMonoBehaviour<GameManager>
     {
-        [SerializeField] private GameStartState _gameStartState = new (GameState.Start);
-        [SerializeField] private GameOverState _gameOverState = new (GameState.Over);
-        [SerializeField] private GamePauseState _gamePauseState = new (GameState.Pause);
-        [SerializeField] private GameInteractMapState _gameInteractMapState = new (GameState.InteractMap);
-        [SerializeField] private GameChooseCardState _gameChooseCardStateState = new (GameState.ChooseCard);
-        [SerializeField] private GameChangeSideState _gameChangeSideStateState = new (GameState.ChangeSide);
+        public readonly BaseStateMachine<GameState> BaseStateMachine = new BaseStateMachine<GameState>();
         
-        protected override void Awake()
+        public GameStartState GameStartState = new (GameState.Start);
+        public GameOverState GameOverState = new (GameState.Over);
+        public GamePauseState GamePauseState = new (GameState.Pause);
+        public GameInteractMapState GameInteractMapState = new (GameState.InteractMap);
+        public GameChooseCardState GameChooseCardStateState = new (GameState.ChooseCard);
+        public GameChangeSideState GameChangeSideStateState = new (GameState.ChangeSide);
+        
+        protected void Awake()
         {
             InitializeState();
         }
 
         void InitializeState()
         {
-            AddState(_gameStartState);
-            AddState(_gameOverState);
-            AddState(_gamePauseState);
-            AddState(_gameInteractMapState);
-            AddState(_gameChooseCardStateState);
-            AddState(_gameChangeSideStateState);
+            BaseStateMachine.AddState(GameStartState);
+            BaseStateMachine.AddState(GameOverState);
+            BaseStateMachine.AddState(GamePauseState);
+            BaseStateMachine.AddState(GameInteractMapState);
+            BaseStateMachine.AddState(GameChooseCardStateState);
+            BaseStateMachine.AddState(GameChangeSideStateState);
             
-            SetToState(GameState.Start);
+            BaseStateMachine.SetToState(GameState.Start);
 
+        }
+
+        private void Update()
+        {
+            BaseStateMachine.CurrentBaseState.ExecuteState();
         }
     }
 }
