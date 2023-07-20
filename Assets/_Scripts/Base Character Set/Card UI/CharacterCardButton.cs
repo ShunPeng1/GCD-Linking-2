@@ -5,9 +5,9 @@ namespace _Scripts.Cards.Card_UI
 {
     public class CharacterCardButton : BaseCardButton
     {
-        private CharacterCardGameObject _cardGameObject;
+        private BaseCharacterCardGameObject _cardGameObject;
 
-        public void Initialize(CharacterCardGameObject baseCardGameObject)
+        public void Initialize(BaseCharacterCardGameObject baseCardGameObject)
         {
             _cardGameObject = baseCardGameObject;
         }

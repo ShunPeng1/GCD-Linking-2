@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using _Scripts.Cards.Card_UI;
+using Shun_Card_System;
 using Shun_Grid_System;
 using UnityEngine;
 using UnityUtilities;
@@ -12,8 +14,17 @@ public class MapManager : SingletonMonoBehaviour<MapManager>
     public int GridWidth, GridHeight;
     public float WidthSize, HeightSize;
 
+    [Serializable]
+    public class CharacterSet
+    {
+        public CharacterInformation CharacterInformation;
+        public BaseCharacterMapGameObject MapGameObject;
+        public BaseCharacterCardGameObject CardGameObject;
+    }
+    
     [Header("Entities")]
-    public BaseWorldCharacter[] Characters;
+    public CharacterSet[] CharacterSets;
+    
     
     [Header("Adjacency Cell")]
     [HideInInspector] public Vector2Int[] AdjacencyDirections = new[]
@@ -54,6 +65,7 @@ public class MapManager : SingletonMonoBehaviour<MapManager>
     {
         InitializeCellAdjacency();
         InitializeCellItem();
+        InitializeCellCharacter();
     }
 
     private void InitializeCellAdjacency()
@@ -73,6 +85,7 @@ public class MapManager : SingletonMonoBehaviour<MapManager>
         }
     }
     
+    
     private void InitializeCellItem()
     {
         for (int x = 0; x < GridWidth; x++)
@@ -87,7 +100,14 @@ public class MapManager : SingletonMonoBehaviour<MapManager>
         }
     }
 
-
+    private void InitializeCellCharacter()
+    {
+        foreach (var characterSet in CharacterSets)
+        {
+            characterSet.MapGameObject.InitializeCharacter(characterSet.CharacterInformation,characterSet.CardGameObject);
+            characterSet.CardGameObject.InitializeCharacter(characterSet.CharacterInformation,characterSet.MapGameObject);
+        }
+    }
     
     
 }

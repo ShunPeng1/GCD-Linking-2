@@ -1,16 +1,18 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using _Scripts.Cards.Card_UI;
+using Shun_Card_System;
 using Shun_Grid_System;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
 
 
-public class BaseWorldCharacter : MapGameObject
+public class BaseCharacterMapGameObject : MapGameObject
 {
-    public CharacterInformation CharacterInformation;
-    
+    protected CharacterInformation CharacterInformation;
+    protected BaseCharacterCardGameObject CharacterCardGameObject;
     
     protected Rigidbody2D Rb;
 
@@ -25,9 +27,23 @@ public class BaseWorldCharacter : MapGameObject
         base.Start();
         Rb = GetComponent<Rigidbody2D>();
         
+    }
+
+    public void InitializeCharacter(CharacterInformation characterInformation, BaseCharacterCardGameObject characterCardGameObject )
+    {
+        CharacterInformation = characterInformation;
+        CharacterCardGameObject = characterCardGameObject;
+
         InitializePathfinding();
     }
 
+    protected virtual void InitializePathfinding()
+    {
+        AdjacencyCellSelection = new NonCollisionTilemapAdjacencyCellSelection(Grid, CharacterInformation.WallLayerMask, Grid.GetCellWorldSize().x);
+        PathfindingAlgorithm = new AStarPathFinding<GridXY<MapCellItem>, GridXYCell<MapCellItem>, MapCellItem>(Grid, AdjacencyCellSelection, PathFindingCostFunction.Manhattan);
+
+    }
+    
     private void Update()
     {
         
@@ -46,16 +62,20 @@ public class BaseWorldCharacter : MapGameObject
         //Debug.Log(GetCell().XIndex + " " + GetCell().YIndex);
     }
 
-    protected virtual void InitializePathfinding()
-    {
-        AdjacencyCellSelection = new NonCollisionTilemapAdjacencyCellSelection(Grid, CharacterInformation.WallLayerMask, Grid.GetCellWorldSize().x);
-        PathfindingAlgorithm = new AStarPathFinding<GridXY<MapCellItem>, GridXYCell<MapCellItem>, MapCellItem>(Grid, AdjacencyCellSelection, PathFindingCostFunction.Manhattan);
 
+    public virtual void MoveAbility()
+    {
+        
+    }
+
+    public virtual  void SecondAbility()
+    {
+        
     }
     
-    private void ShowMovablePath()
+    protected void ShowMovablePath()
     {
-        AllMovableCellAndCost = CharacterInformation.PathfindingAlgorithm.FindAllCellsSmallerThanCost(GetCell(), CharacterInformation.MoveCellCost);
+        AllMovableCellAndCost = PathfindingAlgorithm.FindAllCellsSmallerThanCost(GetCell(), CharacterInformation.MoveCellCost);
 
         foreach (var (cell, gCost) in AllMovableCellAndCost)
         {
@@ -63,7 +83,7 @@ public class BaseWorldCharacter : MapGameObject
         }
     }
 
-    private void HideMovablePath()
+    protected void HideMovablePath()
     {
         foreach (var (cell, gCost) in AllMovableCellAndCost)
         {

@@ -56,5 +56,7 @@ namespace _Scripts.Managers
         {
             BaseStateMachine.CurrentBaseState.ExecuteState();
         }
+        
+
     }
 }

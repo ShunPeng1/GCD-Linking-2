@@ -6,9 +6,10 @@ using UnityEngine.Rendering;
 
 namespace _Scripts.Cards.Card_UI
 {
-    public class CharacterCardGameObject : BaseCardGameObject
+    public class BaseCharacterCardGameObject : BaseCardGameObject
     {
-        [SerializeField] private CharacterInformation _characterInformation;
+        protected CharacterInformation CharacterInformation;
+        protected BaseCharacterMapGameObject CharacterMapGameObject;
         
         [Header("Child Components")]
         [SerializeField] private CharacterCardButton _ability1Button;
@@ -25,7 +26,6 @@ namespace _Scripts.Cards.Card_UI
         private void Start()
         {
             InitializeComponents();
-            InitializeInformation();
         }
 
         private void InitializeComponents()
@@ -34,16 +34,19 @@ namespace _Scripts.Cards.Card_UI
             _ability2Button.Initialize(this);
         }
         
-        private void InitializeInformation()
+        public void InitializeCharacter(CharacterInformation characterInformation, BaseCharacterMapGameObject characterMapGameObject )
         {
-            if (_characterInformation == null)
+            CharacterInformation = characterInformation;
+            CharacterMapGameObject = characterMapGameObject;
+        
+            if (CharacterInformation == null)
             {
                 Debug.LogWarning("No information in "+ gameObject.name);
                 return;
             }
             
-            _executeAbilityBaseOnButton.Add(_ability1Button, _characterInformation.MoveAbility);
-            _executeAbilityBaseOnButton.Add(_ability2Button, _characterInformation.Ability2);
+            _executeAbilityBaseOnButton.Add(_ability1Button, CharacterMapGameObject.MoveAbility);
+            _executeAbilityBaseOnButton.Add(_ability2Button, CharacterMapGameObject.SecondAbility);
         }
 
         public void ExecuteAbility(CharacterCardButton cardButton)

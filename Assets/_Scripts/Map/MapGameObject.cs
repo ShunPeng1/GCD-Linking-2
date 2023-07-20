@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class MapGameObject : MonoBehaviour
 {
-    [SerializeField] protected GridXY<MapCellItem> Grid;
+    protected GridXY<MapCellItem> Grid;
 
     protected virtual void Start()
     {
