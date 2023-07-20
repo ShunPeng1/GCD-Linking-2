@@ -39,15 +39,17 @@ namespace Shun_Grid_System
             return FindPath();
         }
 
-        public override LinkedList<TCell> FindAllCellsSmallerThanCost(TCell currentStartCell, double cost)
+        public override Dictionary<TCell, double> FindAllCellsSmallerThanCost(TCell currentStartCell, double cost)
         {
             Priority_Queue.SimplePriorityQueue<TCell, double> openSet = new Priority_Queue.SimplePriorityQueue<TCell, double>();
             HashSet<TCell> visitedSet = new HashSet<TCell>();
 
             openSet.Enqueue(currentStartCell, currentStartCell.FCost);
 
-            LinkedList<TCell> reachableCells = new LinkedList<TCell>();
+            Dictionary<TCell, double> reachableCells = new();
 
+            reachableCells[currentStartCell] = 0;
+            
             while (openSet.Count > 0)
             {
                 TCell currentCell = openSet.Dequeue();
@@ -55,8 +57,6 @@ namespace Shun_Grid_System
 
                 if (currentCell.FCost > cost)
                     continue;
-
-                reachableCells.AddLast(currentCell);
 
                 foreach (TCell adjacentCell in currentCell.AdjacentCells)
                 {
@@ -74,7 +74,8 @@ namespace Shun_Grid_System
                         adjacentCell.HCost = 0;
                         adjacentCell.FCost = newGCost + adjacentCell.HCost;
                         adjacentCell.ParentXZCell2D = currentCell;
-
+                        
+                        reachableCells[adjacentCell] = newGCost;
                         if (!openSet.Contains(adjacentCell))
                         {
                             openSet.Enqueue(adjacentCell, adjacentCell.FCost);

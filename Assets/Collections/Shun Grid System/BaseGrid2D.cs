@@ -102,7 +102,10 @@ namespace Shun_Grid_System
             return new (Width, Height);
         }
 
-    
+        public Vector2 GetCellWorldSize()
+        {
+            return new (CellWidthSize, CellHeightSize);
+        }
     
     }
 }

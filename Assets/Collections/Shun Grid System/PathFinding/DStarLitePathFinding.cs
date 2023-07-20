@@ -140,7 +140,7 @@ namespace Shun_Grid_System
             return FindPath(_startCell, _endCell);
         }
 
-        public override LinkedList<TCell> FindAllCellsSmallerThanCost(TCell currentStartNode, double cost)
+        public override Dictionary<TCell, double> FindAllCellsSmallerThanCost(TCell currentStartNode, double cost)
         {
             throw new NotImplementedException();
         }
