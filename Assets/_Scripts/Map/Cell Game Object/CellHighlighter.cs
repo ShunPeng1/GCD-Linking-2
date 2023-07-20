@@ -1,9 +1,9 @@
 ﻿
 using System;
-
+using Shun_Card_System;
 using UnityEngine;
 
-public class CellHighlighter : MapCellGameObject
+public class CellHighlighter : MapCellGameObject, IMouseInteractable
 {
     [SerializeField] private SpriteRenderer _spriteRenderer;
 
@@ -13,13 +13,33 @@ public class CellHighlighter : MapCellGameObject
         
     }
 
-    public void Hover()
+    public void StartHover()
     {
         _spriteRenderer.color += new Color(0, 0, 0, _highlightValue);
     }
 
-    public void Unhover()
+    public void EndHover()
     {
         _spriteRenderer.color -= new Color(0, 0, 0, _highlightValue);
+    }
+
+    public void Select()
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Deselect()
+    {
+        throw new NotImplementedException();
+    }
+
+    public void DisableInteractable()
+    {
+        throw new NotImplementedException();
+    }
+
+    public void EnableInteractable()
+    {
+        throw new NotImplementedException();
     }
 }

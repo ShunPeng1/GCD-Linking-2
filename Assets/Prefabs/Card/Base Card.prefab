@@ -934,6 +934,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3309244573876011155}
     m_Modifications:
+    - target: {fileID: -2964228502845533199, guid: d4c297781824cfb4a8bd3d25fdc369bb, type: 3}
+      propertyPath: Interactable
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1897857033099686080, guid: d4c297781824cfb4a8bd3d25fdc369bb, type: 3}
       propertyPath: m_Name
       value: Button 1
@@ -1007,6 +1011,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3309244573876011155}
     m_Modifications:
+    - target: {fileID: -2964228502845533199, guid: d4c297781824cfb4a8bd3d25fdc369bb, type: 3}
+      propertyPath: Interactable
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1897857033099686080, guid: d4c297781824cfb4a8bd3d25fdc369bb, type: 3}
       propertyPath: m_Name
       value: Button 2

@@ -7,22 +7,26 @@ using UnityUtilities;
 public class BaseCardMouseInput : MonoBehaviour
 {
     protected Vector3 MouseWorldPosition;
-    
+    protected RaycastHit2D[] MouseCastHits;
     
     [Header("Hover Objects")]
     protected IMouseInteractable LastHoverMouseInteractable = null;
+    public bool IsHoveringCard => LastHoverMouseInteractable != null;
 
-    
     [Header("Drag Objects")]
-    protected bool IsDraggingCard = false;
     protected Vector3 CardOffset;
     protected BaseCardGameObject DraggingCard;
     protected BaseCardRegion LastCardRegion;
     protected BaseCardHolder LastCardHolder;
     protected BaseCardButton LastCardButton;
 
-    protected RaycastHit2D[] MouseCastHits;
+    public bool IsDraggingCard
+    {
+        get;
+        private set;
+    }
 
+    
     protected virtual void Update()
     {
         UpdateMousePosition();
@@ -73,14 +77,14 @@ public class BaseCardMouseInput : MonoBehaviour
         foreach (var hit in MouseCastHits)
         {
             var characterCardButton = hit.transform.gameObject.GetComponent<BaseCardButton>();
-            if (characterCardButton != null)
+            if (characterCardButton != null && characterCardButton.Interactable)
             {
                 //Debug.Log("Mouse find "+ gameObject.name);
                 return characterCardButton;
             }
             
             var characterCardGameObject = hit.transform.gameObject.GetComponent<BaseCardGameObject>();
-            if (characterCardGameObject != null)
+            if (characterCardGameObject != null && characterCardGameObject.Interactable)
             {
                 //Debug.Log("Mouse find "+ gameObject.name);
                 return characterCardGameObject;
