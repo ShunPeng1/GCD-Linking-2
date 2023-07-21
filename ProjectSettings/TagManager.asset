@@ -14,8 +14,8 @@ TagManager:
   - 
   - Character
   - Map Highlight
+  - Wall Tilemap
   - Obstacle Tilemap
-  - 
   - 
   - 
   - 
@@ -52,6 +52,9 @@ TagManager:
     locked: 0
   - name: Foreground Tilemap
     uniqueID: 2074887101
+    locked: 0
+  - name: Human
+    uniqueID: 1519959067
     locked: 0
   - name: Overlay Tilemap
     uniqueID: 781901129
