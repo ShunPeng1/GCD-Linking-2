@@ -68,7 +68,7 @@ public class BaseCardMouseInput
 
     #region HOVER
 
-    protected void UpdateHoverObject()
+    protected virtual void UpdateHoverObject()
     {
         var hoveringMouseInteractableGameObject = FindAllIMouseInteractableInMouseCast();
 

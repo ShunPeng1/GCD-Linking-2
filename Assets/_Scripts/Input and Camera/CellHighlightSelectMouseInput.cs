@@ -1,17 +1,14 @@
 ﻿
 using System;
-
+using System.Collections.Generic;
 using Shun_Card_System;
 using Shun_Grid_System;
 using UnityEngine;
 
 
-public class CellHighlightSelectMouseInput
+public class CellHighlightSelectMouseInput : BaseCardMouseInput
 {
-    protected Vector3 MouseWorldPosition;
-    protected RaycastHit2D[] MouseCastHits;
 
-    
     protected GridXY<MapCellItem> Grid;
     protected Action<CellSelectHighlighter> FinishedSelection;
 
@@ -37,7 +34,7 @@ public class CellHighlightSelectMouseInput
         FinishedSelection.Invoke(cellSelectHighlighter);
     }
     
-    public virtual void UpdateMouseInput()
+    public override void UpdateMouseInput()
     {
         UpdateMousePosition();
         CastMouse();
@@ -49,20 +46,23 @@ public class CellHighlightSelectMouseInput
         InvokeFinishedSelection(FindFirstCellSelectInMouseCast());
 
     }
-    
-    protected void UpdateHoverObject()
+
+    protected override void UpdateHoverObject()
     {
-        var hoveringMouseInteractable = FindFirstCellSelectInMouseCast();
-        if (hoveringMouseInteractable != LastHoverCellSelectHighlighter)
-        {
-            if (LastHoverCellSelectHighlighter != null) LastHoverCellSelectHighlighter.EndHover();
-            if (hoveringMouseInteractable != null) hoveringMouseInteractable.StartHover();
-            LastHoverCellSelectHighlighter = hoveringMouseInteractable;
-        }
+        var hoveringMouseInteractableGameObject = FindFirstCellSelectInMouseCast();
+
+        if (hoveringMouseInteractableGameObject == LastHoverCellSelectHighlighter) return;
+        
+        if (LastHoverCellSelectHighlighter != null) LastHoverCellSelectHighlighter.EndHover();
+        if (hoveringMouseInteractableGameObject != null) hoveringMouseInteractableGameObject.StartHover();
+
+        LastHoverCellSelectHighlighter = hoveringMouseInteractableGameObject;
     }
-    
+
     protected virtual CellSelectHighlighter FindFirstCellSelectInMouseCast()
     {
+        CellSelectHighlighter result = null;
+        
         foreach (var hit in MouseCastHits)
         {
             var characterCardButton = hit.transform.gameObject.GetComponent<BaseCardButton>();
@@ -83,26 +83,13 @@ public class CellHighlightSelectMouseInput
             if (cellSelectHighlighter != null  && cellSelectHighlighter.Interactable)
             {
                 //Debug.Log("Mouse find "+ gameObject.name);
-                return cellSelectHighlighter;
+                result = cellSelectHighlighter;
             }
         }
 
-        return null;
+        return result;
     }
 
-    #region CAST
-
-    protected void UpdateMousePosition()
-    {
-        Vector3 worldMousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        MouseWorldPosition = new Vector3(worldMousePosition.x, worldMousePosition.y, 0);
-    }
-
-    protected void CastMouse()
-    {
-        MouseCastHits = Physics2D.RaycastAll(MouseWorldPosition, Vector2.zero);
-    }
-
-    #endregion
+    
     
 }

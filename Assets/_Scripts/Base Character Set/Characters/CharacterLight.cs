@@ -12,7 +12,7 @@ public class CharacterLight : MonoBehaviour
     [SerializeField] private int _rayCount = 36;
     [SerializeField] private LayerMask _wallLayerMask;
 
-    private void FixedUpdate()
+    private void Update()
     {
         UpdateLight();
     }
