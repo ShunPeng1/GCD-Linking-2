@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6047663085760228396}
   - component: {fileID: -2159847120361783999}
   m_Layer: 8
-  m_Name: Cell Highlighter
+  m_Name: Cell Select Highlighter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
