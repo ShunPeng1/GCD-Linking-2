@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Collections.Shun_Utility;
 using Shun_Card_System;
 using UnityEngine;
 using UnityUtilities;
@@ -10,8 +11,8 @@ public class BaseCardMouseInput
     protected RaycastHit2D[] MouseCastHits;
     
     [Header("Hover Objects")]
-    protected IMouseInteractable LastHoverMouseInteractable = null;
-    public bool IsHoveringCard => LastHoverMouseInteractable != null;
+    protected List<IMouseInteractable> LastHoverMouseInteractableGameObjects = new();
+    public bool IsHoveringCard => LastHoverMouseInteractableGameObjects.Count != 0;
 
     [Header("Drag Objects")]
     protected Vector3 CardOffset;
@@ -69,13 +70,21 @@ public class BaseCardMouseInput
 
     protected void UpdateHoverObject()
     {
-        var hoveringMouseInteractable = FindFirstIMouseInteractableInMouseCast();
-        if (hoveringMouseInteractable != LastHoverMouseInteractable)
+        var hoveringMouseInteractableGameObject = FindAllIMouseInteractableInMouseCast();
+
+        var endHoverInteractableGameObjects = SetOperations.SetDifference(LastHoverMouseInteractableGameObjects, hoveringMouseInteractableGameObject);
+        var startHoverInteractableGameObjects =  SetOperations.SetDifference(hoveringMouseInteractableGameObject, LastHoverMouseInteractableGameObjects);
+
+        foreach (var interactable in endHoverInteractableGameObjects)
         {
-            LastHoverMouseInteractable?.EndHover();
-            hoveringMouseInteractable?.StartHover();
-            LastHoverMouseInteractable = hoveringMouseInteractable;
+            interactable.EndHover();
         }
+        foreach (var interactable in startHoverInteractableGameObjects)
+        {
+            interactable.StartHover();
+        }
+
+        LastHoverMouseInteractableGameObjects = hoveringMouseInteractableGameObject;
     }
     
     
@@ -99,6 +108,28 @@ public class BaseCardMouseInput
         }
 
         return null;
+    }
+    
+    protected virtual List<IMouseInteractable> FindAllIMouseInteractableInMouseCast()
+    {
+        List<IMouseInteractable> mouseInteractableGameObjects = new(); 
+        foreach (var hit in MouseCastHits)
+        {
+            var characterCardButton = hit.transform.gameObject.GetComponent<BaseCardButton>();
+            if (characterCardButton != null && characterCardButton.Interactable)
+            {
+                mouseInteractableGameObjects.Add(characterCardButton);
+            }
+            
+            var characterCardGameObject = hit.transform.gameObject.GetComponent<BaseCardGameObject>();
+            if (characterCardGameObject != null && characterCardGameObject.Interactable)
+            {
+                //Debug.Log("Mouse find "+ gameObject.name);
+                mouseInteractableGameObjects.Add(characterCardGameObject);
+            }
+        }
+
+        return mouseInteractableGameObjects;
     }
     
     #endregion

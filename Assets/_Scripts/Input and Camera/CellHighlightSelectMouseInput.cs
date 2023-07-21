@@ -46,13 +46,13 @@ public class CellHighlightSelectMouseInput
         if (!Input.GetMouseButtonDown(0)) return;
         
         if (LastHoverCellSelectHighlighter != null) LastHoverCellSelectHighlighter.EndHover();
-        InvokeFinishedSelection(FindFirstIMouseInteractableInMouseCast());
+        InvokeFinishedSelection(FindFirstCellSelectInMouseCast());
 
     }
     
     protected void UpdateHoverObject()
     {
-        var hoveringMouseInteractable = FindFirstIMouseInteractableInMouseCast();
+        var hoveringMouseInteractable = FindFirstCellSelectInMouseCast();
         if (hoveringMouseInteractable != LastHoverCellSelectHighlighter)
         {
             if (LastHoverCellSelectHighlighter != null) LastHoverCellSelectHighlighter.EndHover();
@@ -61,21 +61,19 @@ public class CellHighlightSelectMouseInput
         }
     }
     
-    protected virtual CellSelectHighlighter FindFirstIMouseInteractableInMouseCast()
+    protected virtual CellSelectHighlighter FindFirstCellSelectInMouseCast()
     {
         foreach (var hit in MouseCastHits)
         {
             var characterCardButton = hit.transform.gameObject.GetComponent<BaseCardButton>();
             if (characterCardButton != null && characterCardButton.Interactable)
             {
-                //Debug.Log("Mouse find "+ gameObject.name);
                 return null;
             }
 
             var characterCardGameObject = hit.transform.gameObject.GetComponent<BaseCardGameObject>();
             if (characterCardGameObject != null && characterCardGameObject.Interactable)
             {
-                //Debug.Log("Mouse find "+ gameObject.name);
                 return null;
             }
 
