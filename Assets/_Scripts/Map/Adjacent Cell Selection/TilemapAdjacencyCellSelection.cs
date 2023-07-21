@@ -8,13 +8,12 @@ public class TilemapAdjacencyCellSelection : IPathFindingAdjacentCellSelection<G
 {
     protected GridXY<MapCellItem> Grid;
     protected LayerMask WallLayerMask;
-    protected float Distance;
+    
 
-    public TilemapAdjacencyCellSelection(GridXY<MapCellItem> grid, LayerMask wallLayerMask, float distance)
+    public TilemapAdjacencyCellSelection(GridXY<MapCellItem> grid, LayerMask wallLayerMask)
     {
         Grid = grid;
         WallLayerMask = wallLayerMask;
-        Distance = distance;
     }
 
     public virtual bool CheckMovableCell(GridXYCell<MapCellItem> from, GridXYCell<MapCellItem> to)

@@ -41,7 +41,7 @@ public class BaseCharacterMapGameObject : MapGameObject
 
     protected virtual void InitializePathfinding()
     {
-        AdjacencyCellSelection = new NonCollisionTilemapAdjacencyCellSelection(Grid, CharacterInformation.WallLayerMask, Grid.GetCellWorldSize().x);
+        AdjacencyCellSelection = new NonCollisionTilemapAdjacencyCellSelection(Grid, CharacterInformation.WallLayerMask);
         PathfindingAlgorithm = new AStarPathFinding<GridXY<MapCellItem>, GridXYCell<MapCellItem>, MapCellItem>(Grid, AdjacencyCellSelection, PathFindingCostFunction.Manhattan);
 
     }
