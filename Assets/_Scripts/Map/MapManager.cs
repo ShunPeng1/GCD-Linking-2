@@ -108,6 +108,7 @@ public class MapManager : SingletonMonoBehaviour<MapManager>
         
         foreach (var vent1 in VentMapGameObjects)
         {
+            
             foreach (var vent2 in VentMapGameObjects)
             {
                 if (vent1 == vent2) continue;
@@ -118,7 +119,7 @@ public class MapManager : SingletonMonoBehaviour<MapManager>
             }
         }
     }
-
+    
     
     private void InitializeCellCharacter()
     {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Shun_Grid_System;
 using UnityEngine;
 
-public class VentMapGameObject : MonoBehaviour
+public class VentMapGameObject : MapCellGameObject
 {
     private GridXY<MapCellItem> _grid;
     public GridXYCell<MapCellItem> Cell;
@@ -21,7 +21,7 @@ public class VentMapGameObject : MonoBehaviour
     {
         _grid = MapManager.Instance.WorldGrid;
         Cell = _grid.GetCell(transform.position);
-        
+        Cell.Item.AddInCellGameObject(this);
     }
 
     public void CloseVent()
