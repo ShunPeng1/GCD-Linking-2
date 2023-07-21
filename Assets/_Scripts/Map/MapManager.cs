@@ -105,7 +105,13 @@ public class MapManager : SingletonMonoBehaviour<MapManager>
     private void InitializeVent()
     {
         var distanceCost = new ManhattanDistanceCost();
-        
+
+
+        foreach (var vent in VentMapGameObjects)
+        {
+            vent.InitializeGrid();   
+        }
+
         foreach (var vent1 in VentMapGameObjects)
         {
             

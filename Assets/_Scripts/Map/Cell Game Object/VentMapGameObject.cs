@@ -16,9 +16,9 @@ public class VentMapGameObject : MapCellGameObject
     
     [SerializeField] private Animator _animator;
     
-    // Start is called before the first frame update
-    void Start()
+    public void InitializeGrid()
     {
+        
         _grid = MapManager.Instance.WorldGrid;
         Cell = _grid.GetCell(transform.position);
         Cell.Item.AddInCellGameObject(this);
