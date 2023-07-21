@@ -24,7 +24,7 @@ public class MapManager : SingletonMonoBehaviour<MapManager>
     
     [Header("Entities")]
     public CharacterSet[] CharacterSets;
-    
+    public VentMapGameObject[] VentMapGameObjects;
     
     [Header("Adjacency Cell")]
     [HideInInspector] public Vector2Int[] AdjacencyDirections = new[]
@@ -60,12 +60,14 @@ public class MapManager : SingletonMonoBehaviour<MapManager>
             }
         }
     }
+
     
     private void Start()
     {
         InitializeCellAdjacency();
         InitializeCellItem();
         InitializeCellCharacter();
+        InitializeVent();
     }
 
     private void InitializeCellAdjacency()
@@ -100,6 +102,24 @@ public class MapManager : SingletonMonoBehaviour<MapManager>
         }
     }
 
+    private void InitializeVent()
+    {
+        var distanceCost = new ManhattanDistanceCost();
+        
+        foreach (var vent1 in VentMapGameObjects)
+        {
+            foreach (var vent2 in VentMapGameObjects)
+            {
+                if (vent1 == vent2) continue;
+                
+                var difference = WorldGrid.GetIndexDifferenceAbsolute(vent1.Cell, vent2.Cell);
+                double discountCost = distanceCost.GetDistanceCost(difference.x, difference.y);
+                vent1.Cell.SetAdjacencyCell(vent2.Cell, 1 - discountCost );
+            }
+        }
+    }
+
+    
     private void InitializeCellCharacter()
     {
         foreach (var characterSet in CharacterSets)
