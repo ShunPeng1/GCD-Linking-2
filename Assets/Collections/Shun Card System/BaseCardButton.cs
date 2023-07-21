@@ -5,7 +5,7 @@ namespace Shun_Card_System
     [RequireComponent(typeof(Collider2D))]
     public class BaseCardButton : MonoBehaviour, IMouseInteractable
     {
-        public bool Interactable = true;
+        public bool Interactable;
 
         public virtual void Select()
         {

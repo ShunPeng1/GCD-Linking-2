@@ -4,7 +4,7 @@ using UnityUtilities;
 
 public class ResourceManager : SingletonMonoBehaviour<ResourceManager>
 {
-    public CellHighlighter CellHighlighter;
+    public CellSelectHighlighter CellSelectHighlighter;
     public TestItem TestItem;
     public GameObject TestSquare;
 

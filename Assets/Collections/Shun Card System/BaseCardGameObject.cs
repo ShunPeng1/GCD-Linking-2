@@ -8,7 +8,7 @@ namespace Shun_Card_System
     [RequireComponent(typeof(Collider2D))]
     public class BaseCardGameObject : MonoBehaviour, IMouseInteractable
     {
-        public bool Interactable = true;
+        public bool Interactable;
         [SerializeField] protected bool ActivateOnValidate = false;
         
         private void OnValidate()
@@ -20,6 +20,7 @@ namespace Shun_Card_System
         {
             
         }
+
 
         public virtual void Select()
         {

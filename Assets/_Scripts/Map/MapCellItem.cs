@@ -6,7 +6,7 @@ public class MapCellItem
     protected GridXYCell<MapCellItem> Cell;
 
     public MapCellGameObject MapCellGameObject;
-    public CellHighlighter CellHighlighter;
+    public CellSelectHighlighter CellSelectHighlighter;
     public MapCellItem(GridXY<MapCellItem> grid, GridXYCell<MapCellItem> cell)
     {
         Grid = grid;

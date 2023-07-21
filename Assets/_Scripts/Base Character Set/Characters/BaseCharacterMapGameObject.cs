@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using _Scripts.Cards.Card_UI;
+using _Scripts.Input_and_Camera;
 using Shun_Card_System;
 using Shun_Grid_System;
 using UnityEngine;
@@ -50,16 +51,9 @@ public class BaseCharacterMapGameObject : MapGameObject
         
     }
 
-    private void Move()
+    private void Move(CellSelectHighlighter cellSelectHighlighter)
     {
-        float horizontalInput = Input.GetAxis("Horizontal");
-        float verticalInput = Input.GetAxis("Vertical");
-
-        Vector2 movement = new Vector2(horizontalInput, verticalInput);
-        movement.Normalize();
-
-        Rb.AddForce(movement * CharacterInformation.MoveSpeed);
-        
+        transform.position = cellSelectHighlighter.transform.position;
         //Debug.Log(GetCell().XIndex + " " + GetCell().YIndex);
     }
 
@@ -67,8 +61,16 @@ public class BaseCharacterMapGameObject : MapGameObject
     public virtual void MoveAbility()
     {
         ShowMovablePath();
+        CellHighlightSelectMouseInput mouseInput = new CellHighlightSelectMouseInput(Grid, FinishSelectCell);
+        InputManager.Instance.ChangeMouseInput(mouseInput);
     }
 
+    private void FinishSelectCell(CellSelectHighlighter cellSelectHighlighter)
+    {
+        if (cellSelectHighlighter != null) Move(cellSelectHighlighter);
+        HideMovablePath();
+    }
+    
     public virtual  void SecondAbility()
     {
         
@@ -80,7 +82,7 @@ public class BaseCharacterMapGameObject : MapGameObject
 
         foreach (var (cell, gCost) in AllMovableCellAndCost)
         {
-            var cellHighlighter = cell.Item.CellHighlighter;
+            var cellHighlighter = cell.Item.CellSelectHighlighter;
             cellHighlighter.Interactable = true;
             cellHighlighter.StartHighlight();
         }
@@ -90,7 +92,7 @@ public class BaseCharacterMapGameObject : MapGameObject
     {
         foreach (var (cell, gCost) in AllMovableCellAndCost)
         {
-            var cellHighlighter = cell.Item.CellHighlighter;
+            var cellHighlighter = cell.Item.CellSelectHighlighter;
             cellHighlighter.Interactable = false;
             cellHighlighter.EndHighlight();
         }

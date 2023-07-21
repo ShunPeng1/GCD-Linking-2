@@ -95,7 +95,7 @@ public class MapManager : SingletonMonoBehaviour<MapManager>
                 var cell = WorldGrid.GetCell(x, y);
                 
                 //cell.Item.MapCellGameObject = Instantiate(ResourceManager.Instance.TestItem, WorldGrid.GetWorldPositionOfNearestCell(x,y), Quaternion.identity, transform);
-                cell.Item.CellHighlighter = Instantiate(ResourceManager.Instance.CellHighlighter, WorldGrid.GetWorldPositionOfNearestCell(x,y), Quaternion.identity, transform);
+                cell.Item.CellSelectHighlighter = Instantiate(ResourceManager.Instance.CellSelectHighlighter, WorldGrid.GetWorldPositionOfNearestCell(x,y), Quaternion.identity, transform);
             }
         }
     }

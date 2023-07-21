@@ -9,8 +9,9 @@ namespace Shun_Grid_System
         where TCell : BaseGridCell2D<TItem>
     {
         private TCell _startCell, _endCell;
-        private Dictionary<TCell, double> _hValues = new (); // rhsValues[x] = the current best estimate of the cost from x to the goal
         private Dictionary<TCell, double> _gValues = new (); // gValues[x] = the cost of the cheapest path from the start to x
+        private Dictionary<TCell, TCell> _predecessors = new (); // predecessors[x] = the cell that comes before x on the best path from the start to x
+        private Dictionary<TCell, float> _dynamicObstacles = new(); // dynamicObstacle[x] = the cell that is found obstacle after find path and its found time
         private IPathFindingDistanceCost _distanceCostFunction;
         private IPathFindingAdjacentCellSelection<TCell, TItem> _adjacentCellSelectionFunction;
 
@@ -31,6 +32,12 @@ namespace Shun_Grid_System
         {
             _startCell = startCell;
             _endCell = endCell;
+            _gValues = new (); 
+            _predecessors = new (); 
+            _dynamicObstacles = new();
+
+            _gValues[startCell] = 0;
+
             return FindPath();
         }
 
@@ -41,6 +48,12 @@ namespace Shun_Grid_System
 
         public override Dictionary<TCell, double> FindAllCellsSmallerThanCost(TCell currentStartCell, double cost)
         {
+            _startCell = currentStartCell;
+            _gValues = new (); 
+            _predecessors = new (); 
+            _dynamicObstacles = new();
+            _gValues[_startCell] = 0;
+            
             Priority_Queue.SimplePriorityQueue<TCell, double> openSet = new Priority_Queue.SimplePriorityQueue<TCell, double>();
             HashSet<TCell> visitedSet = new HashSet<TCell>();
 
@@ -55,10 +68,10 @@ namespace Shun_Grid_System
                 TCell currentCell = openSet.Dequeue();
                 visitedSet.Add(currentCell);
 
-                if (currentCell.FCost > cost)
+                if ( GetGValue(currentCell) > cost)
                     continue;
                 
-                reachableCells[currentCell] = currentCell.GCost;
+                reachableCells[currentCell] = GetGValue(currentCell);
                 
                 foreach (TCell adjacentCell in currentCell.AdjacentCells)
                 {
@@ -68,18 +81,21 @@ namespace Shun_Grid_System
                     if (!_adjacentCellSelectionFunction.CheckMovableCell(currentCell, adjacentCell))
                         continue;
 
-                    double newGCost = currentCell.GCost + GetDistanceCost(currentCell, adjacentCell);
+                    double newGCost = GetGValue(currentCell) + GetDistanceCost(currentCell, adjacentCell);
 
-                    if (newGCost < adjacentCell.GCost || !openSet.Contains(adjacentCell))
+                    if (newGCost < GetGValue(adjacentCell) || !openSet.Contains(adjacentCell))
                     {
+                        _gValues[adjacentCell] = newGCost;
+                        _predecessors[adjacentCell] = currentCell;
+                        
                         adjacentCell.GCost = newGCost;
                         adjacentCell.HCost = 0;
-                        adjacentCell.FCost = newGCost + adjacentCell.HCost;
+                        adjacentCell.FCost = newGCost;
                         adjacentCell.ParentXZCell2D = currentCell;
                         
                         if (!openSet.Contains(adjacentCell))
                         {
-                            openSet.Enqueue(adjacentCell, adjacentCell.FCost);
+                            openSet.Enqueue(adjacentCell, newGCost);
                         }
                     }
                 }
@@ -107,7 +123,7 @@ namespace Shun_Grid_System
 
                 if (currentMinFCostCell == _endCell)
                 {
-                    return RetracePath(_startCell, _endCell);;
+                    return RetracePath(_startCell, _endCell);
                 }
 
                 foreach (TCell adjacentCell in currentMinFCostCell.AdjacentCells)
@@ -118,20 +134,24 @@ namespace Shun_Grid_System
                     if (!_adjacentCellSelectionFunction.CheckMovableCell(currentMinFCostCell, adjacentCell)) 
                         continue;
                     
-                    double newGCostToNeighbour = currentMinFCostCell.GCost + GetDistanceCost(currentMinFCostCell, adjacentCell);
+                    double newGCostToNeighbour = GetGValue(currentMinFCostCell) + GetDistanceCost(currentMinFCostCell, adjacentCell);
                     
-                    if (newGCostToNeighbour < adjacentCell.GCost || !openSet.Contains(adjacentCell))
+                    if (newGCostToNeighbour < GetGValue(adjacentCell) || !openSet.Contains(adjacentCell))
                     {
                         double hCost = GetDistanceCost(adjacentCell, _endCell);
+                        double fCost = newGCostToNeighbour + hCost;
+                        
+                        _gValues[adjacentCell] = newGCostToNeighbour;
+                        _predecessors[adjacentCell] = currentMinFCostCell;
                         
                         adjacentCell.GCost = newGCostToNeighbour;
                         adjacentCell.HCost = hCost;
-                        adjacentCell.FCost = newGCostToNeighbour + hCost;
+                        adjacentCell.FCost = fCost;
                         adjacentCell.ParentXZCell2D = currentMinFCostCell;
 
                         if (!openSet.Contains(adjacentCell)) // Not in open set
                         {
-                            openSet.Enqueue(adjacentCell, adjacentCell.FCost);
+                            openSet.Enqueue(adjacentCell, fCost);
                         }
                     }
 
@@ -152,7 +172,7 @@ namespace Shun_Grid_System
             {
                 //Debug.Log("Path "+ currentCell.xIndex +" "+ currentCell.zIndex );
                 path.AddFirst(currentCell);
-                currentCell = (TCell)currentCell.ParentXZCell2D;
+                currentCell = _predecessors[currentCell];
             }
             path.AddFirst(start);
             return path;
@@ -163,6 +183,11 @@ namespace Shun_Grid_System
             var indexDifferenceAbsolute = Grid.GetIndexDifferenceAbsolute(start,end);
 
             return _distanceCostFunction.GetDistanceCost(indexDifferenceAbsolute.x, indexDifferenceAbsolute.y) + start.GetAdditionalAdjacentCellCost(end);
+        }
+        
+        private double GetGValue(TCell cell)
+        {
+            return _gValues.TryGetValue(cell, out double value) ? value : 0;
         }
     
     }

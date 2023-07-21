@@ -27,29 +27,29 @@ public class BaseCardMouseInput
     }
 
     
-    protected virtual void Update()
+    public virtual void UpdateMouseInput()
     {
         UpdateMousePosition();
+        CastMouse();
         if(!IsDraggingCard) UpdateHoverObject();
         
         if (Input.GetMouseButtonDown(0))
         {
-            CastMouse();
             StartDragCard();
         }
 
         if (Input.GetMouseButton(0))
         {
-            CastMouse();
             DragCard();
         }
 
         if (Input.GetMouseButtonUp(0))
         {
-            CastMouse();
             EndDragCard();
         }
     }
+
+    #region CAST
 
     protected void UpdateMousePosition()
     {
@@ -57,12 +57,19 @@ public class BaseCardMouseInput
         MouseWorldPosition = new Vector3(worldMousePosition.x, worldMousePosition.y, 0);
     }
 
-    #region Hover
+    protected void CastMouse()
+    {
+        MouseCastHits = Physics2D.RaycastAll(MouseWorldPosition, Vector2.zero);
+    }
+
+    #endregion
+    
+
+    #region HOVER
 
     protected void UpdateHoverObject()
     {
-        CastMouse();
-        var hoveringMouseInteractable = GetMouseInteractableInCastMouse();
+        var hoveringMouseInteractable = FindFirstIMouseInteractableInMouseCast();
         if (hoveringMouseInteractable != LastHoverMouseInteractable)
         {
             LastHoverMouseInteractable?.EndHover();
@@ -72,7 +79,7 @@ public class BaseCardMouseInput
     }
     
     
-    protected virtual IMouseInteractable GetMouseInteractableInCastMouse()
+    protected virtual IMouseInteractable FindFirstIMouseInteractableInMouseCast()
     {
         foreach (var hit in MouseCastHits)
         {
@@ -93,14 +100,9 @@ public class BaseCardMouseInput
 
         return null;
     }
-
+    
     #endregion
     
-    
-    protected void CastMouse()
-    {
-        MouseCastHits = Physics2D.RaycastAll(MouseWorldPosition, Vector2.zero);
-    }
     
     protected TResult FindFirstInMouseCast<TResult>()
     {
