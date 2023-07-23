@@ -20,6 +20,10 @@ namespace Shun_State_Machine
             StateHistoryStrategy = historyStrategy;
         }
 
+        public void ExecuteState(object[] parameters = null)
+        {
+            CurrentBaseState.ExecuteState(parameters);
+        }
         public void AddState(BaseState<TStateEnum> baseState)
         {
             _states[baseState.MyStateEnum] = baseState;

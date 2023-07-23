@@ -9,7 +9,7 @@ namespace _Scripts.Cards.Card_UI
     public class BaseCharacterCardGameObject : BaseCardGameObject
     {
         protected CharacterInformation CharacterInformation;
-        protected BaseCharacterMapMovableGameObject CharacterMapMovableGameObject;
+        protected BaseCharacterMapDynamicGameObject CharacterMapDynamicGameObject;
         
         [Header("Child Components")]
         public CharacterCardButton Ability1Button;
@@ -34,10 +34,10 @@ namespace _Scripts.Cards.Card_UI
             Ability2Button.Initialize(this);
         }
         
-        public void InitializeCharacter(CharacterInformation characterInformation, BaseCharacterMapMovableGameObject characterMapMovableGameObject )
+        public void InitializeCharacter(CharacterInformation characterInformation, BaseCharacterMapDynamicGameObject characterMapDynamicGameObject )
         {
             CharacterInformation = characterInformation;
-            CharacterMapMovableGameObject = characterMapMovableGameObject;
+            CharacterMapDynamicGameObject = characterMapDynamicGameObject;
         
             if (CharacterInformation == null)
             {
@@ -45,8 +45,8 @@ namespace _Scripts.Cards.Card_UI
                 return;
             }
             
-            _executeAbilityBaseOnButton.Add(Ability1Button, CharacterMapMovableGameObject.MoveAbility);
-            _executeAbilityBaseOnButton.Add(Ability2Button, CharacterMapMovableGameObject.SecondAbility);
+            _executeAbilityBaseOnButton.Add(Ability1Button, CharacterMapDynamicGameObject.MoveAbility);
+            _executeAbilityBaseOnButton.Add(Ability2Button, CharacterMapDynamicGameObject.SecondAbility);
         }
 
         public void ExecuteAbility(CharacterCardButton cardButton)

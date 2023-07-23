@@ -11,7 +11,7 @@ using UnityUtilities;
 public class CharacterInformation : BaseCardInformation
 {
     public BaseCharacterCardGameObject BaseCharacterCardGameObjectPrefab;
-    public BaseCharacterMapMovableGameObject CharacterMapMovableGameObjectPrefab;
+    public BaseCharacterMapDynamicGameObject CharacterMapDynamicGameObjectPrefab;
     
     
     [Header("Info")]

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: John
   m_EditorClassIdentifier: 
   BaseCharacterCardGameObjectPrefab: {fileID: 6445910396728917495, guid: f148fb24fafe8ee4c8885d760ce90d8d, type: 3}
-  CharacterMapMovableGameObjectPrefab: {fileID: 6609405708088228189, guid: d9270b8e290d761409888e832087d99b, type: 3}
+  CharacterMapDynamicGameObjectPrefab: {fileID: 6609405708088228189, guid: d9270b8e290d761409888e832087d99b, type: 3}
   CharacterName: John
   MoveCellCost: 5
   MoveSpeed: 10

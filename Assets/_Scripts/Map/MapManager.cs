@@ -18,10 +18,10 @@ public class MapManager : SingletonMonoBehaviour<MapManager>
     public class CharacterSet
     {
         public CharacterInformation CharacterInformation;
-        public BaseCharacterMapMovableGameObject CharacterMapGameObject;
+        public BaseCharacterMapDynamicGameObject CharacterMapGameObject;
         public BaseCharacterCardGameObject CharacterCardGameObject;
 
-        public CharacterSet(CharacterInformation characterInformation, BaseCharacterMapMovableGameObject characterMapGameObject, BaseCharacterCardGameObject characterCardGameObject)
+        public CharacterSet(CharacterInformation characterInformation, BaseCharacterMapDynamicGameObject characterMapGameObject, BaseCharacterCardGameObject characterCardGameObject)
         {
             CharacterInformation = characterInformation;
             CharacterMapGameObject = characterMapGameObject;
@@ -159,7 +159,7 @@ public class MapManager : SingletonMonoBehaviour<MapManager>
         foreach (var characterInformation in CharacterInformation)
         {
             var spawnPoint = GetRandomSpawnPoint();
-            var characterMap = Instantiate(characterInformation.CharacterMapMovableGameObjectPrefab, spawnPoint.position, spawnPoint.rotation, transform);
+            var characterMap = Instantiate(characterInformation.CharacterMapDynamicGameObjectPrefab, spawnPoint.position, spawnPoint.rotation, transform);
             var characterCard = Instantiate(characterInformation.BaseCharacterCardGameObjectPrefab);
             
             CharacterSet set = new CharacterSet(characterInformation, characterMap, characterCard);

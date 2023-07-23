@@ -1,5 +1,5 @@
 ﻿
-public class JohnCharacterMapGameObject : BaseCharacterMapMovableGameObject
+public class JohnCharacterMapGameObject : BaseCharacterMapDynamicGameObject
 {
     
 }
