@@ -9,6 +9,7 @@ namespace Shun_Grid_System
         [Header("Base")]
         public readonly List<BaseGridCell2D<TItem>> AdjacentCells = new();
         private readonly Dictionary<BaseGridCell2D<TItem> ,double> _adjacentCellCosts = new();
+        public readonly int XIndex, YIndex;
         public TItem Item;
         public bool IsObstacle = false;
 
@@ -19,8 +20,10 @@ namespace Shun_Grid_System
         public double GCost;
 
 
-        protected BaseGridCell2D(TItem item = default)
+        protected BaseGridCell2D(int xIndex, int yIndex, TItem item = default)
         {
+            XIndex = xIndex;
+            YIndex = yIndex;
             Item = item;
         }
 

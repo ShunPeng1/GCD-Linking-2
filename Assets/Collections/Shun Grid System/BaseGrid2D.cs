@@ -59,6 +59,11 @@ namespace Shun_Grid_System
             int y = Mathf.RoundToInt((worldPosition - WorldOriginPosition).y / CellHeightSize);
             return new Vector3(x * CellWidthSize, y * CellHeightSize, 0) + WorldOriginPosition;
         }
+        
+        public Vector3 GetWorldPositionOfNearestCell(TCell cell)
+        {
+            return GetWorldPositionOfNearestCell(cell.XIndex, cell.YIndex);
+        }
 
         public void SetCell(TCell cell, int xIndex, int yIndex)
         {
