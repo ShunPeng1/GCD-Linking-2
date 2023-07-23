@@ -2,23 +2,24 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityUtilities;
 
 [RequireComponent(typeof(Camera))]
 public class CameraMovement : MonoBehaviour
 {
     private Camera _camera;
-    
-    [Header("Drag")]
-    [SerializeField] private float _dragSpeed = 1f, _smoothTime = 0.2f;   // Speed of camera movement
+
+    [Header("Drag")] 
+    [SerializeField] private float _dragSpeed = 500f; // Speed of camera movement
+    [SerializeField] private float _smoothTime = 0.125f;
+    [SerializeField] private RangeFloat _verticalBoundPosition, _horizontalBoundPosition;
     private Vector3 _currentVelocity;
     private Vector3 _lastMousePosition;
     public bool IsDraggingMouse = false;
     
     [Header("Zoom")]
     [SerializeField] private float _zoomSpeed = 20f;    // Speed of camera zooming
-    [SerializeField] private float _minZoomDistance = 5f;    // Minimum distance for zooming
-    [SerializeField] private float _maxZoomDistance = 20f;   // Maximum distance for zooming
-    [SerializeField] private float _zoomElasticity = 0.5f;   // Elasticity factor for zooming
+    [SerializeField] private RangeFloat _zoomBound = new RangeFloat(5f, 20f);    // distance for zooming
     private float _originZoomDistance;
 
     [Header("Scale with camera")] 
@@ -64,9 +65,14 @@ public class CameraMovement : MonoBehaviour
         // Calculate the camera movement direction based on mouse movement
         Vector3 dragDirection = new Vector3(-mouseDelta.x, -mouseDelta.y, 0f);
         Vector3 targetPosition = _camera.transform.position + dragDirection * _dragSpeed;
+        Vector3 boundedTargetPosition =
+            new Vector3(
+                Mathf.Clamp(targetPosition.x, _horizontalBoundPosition.From, _horizontalBoundPosition.To),
+                Mathf.Clamp(targetPosition.y, _verticalBoundPosition.From, _verticalBoundPosition.To),
+                targetPosition.z);
         
         // Apply the drag movement
-        _camera.transform.position = Vector3.SmoothDamp(_camera.transform.position, targetPosition, ref _currentVelocity, _smoothTime);
+        _camera.transform.position = Vector3.SmoothDamp(_camera.transform.position, boundedTargetPosition, ref _currentVelocity, _smoothTime);
         _lastMousePosition = currentMousePosition;
 
     }
@@ -79,12 +85,8 @@ public class CameraMovement : MonoBehaviour
         // Calculate the new zoom distance
         float newZoomDistance = _camera.orthographicSize - (scrollWheelInput * _zoomSpeed);
 
-        // Apply elastic bounds to the zoom distance
-        if (newZoomDistance < _minZoomDistance)
-            newZoomDistance = Mathf.Lerp(_camera.orthographicSize, _minZoomDistance, _zoomElasticity * Time.deltaTime);
-        if (newZoomDistance > _maxZoomDistance)
-            newZoomDistance = Mathf.Lerp(_camera.orthographicSize, _maxZoomDistance, _zoomElasticity * Time.deltaTime);
-
+        newZoomDistance = Mathf.Clamp(newZoomDistance, _zoomBound.From, _zoomBound.To);
+        
         // Update the camera position for zooming
         _camera.orthographicSize = newZoomDistance;
 
