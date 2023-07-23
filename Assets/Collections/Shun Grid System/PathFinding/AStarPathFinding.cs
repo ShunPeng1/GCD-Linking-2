@@ -28,7 +28,7 @@ namespace Shun_Grid_System
             };
         }
 
-        public override LinkedList<TCell> FirstTimeFindPath(TCell startCell, TCell endCell)
+        public override LinkedList<TCell> FirstTimeFindPath(TCell startCell, TCell endCell, double maxCost = Double.PositiveInfinity)
         {
             _startCell = startCell;
             _endCell = endCell;
@@ -38,15 +38,15 @@ namespace Shun_Grid_System
 
             _gValues[startCell] = 0;
 
-            return FindPath();
+            return FindPath(maxCost);
         }
 
-        public override LinkedList<TCell> UpdatePathWithDynamicObstacle(TCell currentStartCell, List<TCell> foundDynamicObstacles)
+        public override LinkedList<TCell> UpdatePathWithDynamicObstacle(TCell currentStartCell, List<TCell> foundDynamicObstacles, double maxCost = Double.PositiveInfinity)
         {
-            return FindPath();
+            return FindPath(maxCost);
         }
 
-        public override Dictionary<TCell, double> FindAllCellsSmallerThanCost(TCell currentStartCell, double cost)
+        public override Dictionary<TCell, double> FindAllCellsSmallerThanCost(TCell currentStartCell, double maxCost = Double.PositiveInfinity)
         {
             _startCell = currentStartCell;
             _gValues = new (); 
@@ -68,7 +68,7 @@ namespace Shun_Grid_System
                 TCell currentCell = openSet.Dequeue();
                 visitedSet.Add(currentCell);
 
-                if ( GetGValue(currentCell) > cost)
+                if ( GetGValue(currentCell) > maxCost)
                     continue;
                 
                 reachableCells[currentCell] = GetGValue(currentCell);
@@ -109,7 +109,7 @@ namespace Shun_Grid_System
         /// 
         /// </summary>
         /// <returns> the path between start and end</returns>
-        private LinkedList<TCell> FindPath()
+        private LinkedList<TCell> FindPath(double maxCost = Double.PositiveInfinity)
         {
             Priority_Queue.SimplePriorityQueue<TCell, double> openSet = new (); // to be travelled set
             HashSet<TCell> visitedSet = new(); // travelled set 
@@ -121,6 +121,9 @@ namespace Shun_Grid_System
                 TCell currentMinFCostCell = openSet.Dequeue();
                 visitedSet.Add(currentMinFCostCell);
 
+                if ( GetGValue(currentMinFCostCell) > maxCost)
+                    continue;
+                
                 if (currentMinFCostCell == _endCell)
                 {
                     return RetracePath(_startCell, _endCell);
@@ -133,6 +136,7 @@ namespace Shun_Grid_System
                     
                     if (!_adjacentCellSelectionFunction.CheckMovableCell(currentMinFCostCell, adjacentCell)) 
                         continue;
+                    
                     
                     double newGCostToNeighbour = GetGValue(currentMinFCostCell) + GetDistanceCost(currentMinFCostCell, adjacentCell);
                     

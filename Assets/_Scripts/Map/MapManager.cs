@@ -46,7 +46,7 @@ public class MapManager : SingletonMonoBehaviour<MapManager>
 
 
     [Header("Adjacency Cell")]
-    [HideInInspector] public Vector2Int[] AdjacencyDirections = new[]
+    [SerializeField] private Vector2Int[] _adjacencyDirections = new[]
     {
         new Vector2Int(0, 1),
         //new Vector2Int(1, 1),
@@ -103,7 +103,7 @@ public class MapManager : SingletonMonoBehaviour<MapManager>
             {
                 var cell = WorldGrid.GetCell(x, y);
                 
-                foreach (var direction in AdjacencyDirections)
+                foreach (var direction in _adjacencyDirections)
                 {
                     var adjacencyCell = WorldGrid.GetCell(x + direction.x, y + direction.y); 
                     if(adjacencyCell != null) cell.SetAdjacencyCell(adjacencyCell);

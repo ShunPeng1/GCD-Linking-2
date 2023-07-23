@@ -13,9 +13,7 @@ using UnityEngine.Rendering.Universal;
 
 public class BaseCharacterMapDynamicGameObject : MapDynamicGameObject
 {
-    
-    [Header("Stat")] 
-    [SerializeField] protected float MaxMovementSpeed = 1f;
+    protected float MoveSpeed => CharacterInformation.MoveSpeed;
     
     protected CharacterInformation CharacterInformation;
     protected BaseCharacterCardGameObject CharacterCardGameObject;
@@ -71,6 +69,9 @@ public class BaseCharacterMapDynamicGameObject : MapDynamicGameObject
     {
         AdjacencyCellSelection = new NonCollisionTilemapAdjacencyCellSelection(CharacterInformation.WallLayerMask);
         PathfindingAlgorithm = new AStarPathFinding<GridXY<MapCellItem>, GridXYCell<MapCellItem>, MapCellItem>(Grid, AdjacencyCellSelection, PathFindingCostFunction.Manhattan);
+        
+        LastCellPosition = NextCellPosition = Grid.GetWorldPositionOfNearestCell(transform.position);
+
     }
     
     private void InitializeState()
@@ -115,7 +116,7 @@ public class BaseCharacterMapDynamicGameObject : MapDynamicGameObject
     protected void MoveAlongGrid()
     {
         // Move
-        transform.position = Vector3.MoveTowards(transform.position, NextCellPosition, MaxMovementSpeed * Time.fixedDeltaTime);
+        transform.position = Vector3.MoveTowards(transform.position, NextCellPosition, MoveSpeed * Time.fixedDeltaTime);
 
         IsBetween2Cells = true;
     }
@@ -159,7 +160,7 @@ public class BaseCharacterMapDynamicGameObject : MapDynamicGameObject
         var startCell = Grid.GetCell(startPosition);
         var endCell = Grid.GetCell(endPosition);
         
-        MovingPath = PathfindingAlgorithm.FirstTimeFindPath(startCell, endCell);
+        MovingPath = PathfindingAlgorithm.FirstTimeFindPath(startCell, endCell, CharacterInformation.MaxMoveCellCost);
 
         if (MovingPath != null) return true; 
         
@@ -200,7 +201,7 @@ public class BaseCharacterMapDynamicGameObject : MapDynamicGameObject
     
     protected void ShowMovablePath()
     {
-        AllMovableCellAndCost = PathfindingAlgorithm.FindAllCellsSmallerThanCost(GetCell(), CharacterInformation.MoveCellCost);
+        AllMovableCellAndCost = PathfindingAlgorithm.FindAllCellsSmallerThanCost(GetCell(), CharacterInformation.MaxMoveCellCost);
 
         foreach (var (cell, gCost) in AllMovableCellAndCost)
         {

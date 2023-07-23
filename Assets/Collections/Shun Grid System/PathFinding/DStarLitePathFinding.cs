@@ -75,14 +75,14 @@ namespace Shun_Grid_System
             }
         }
 
-        public override LinkedList<TCell> FirstTimeFindPath(TCell startCell, TCell endCell)
+        public override LinkedList<TCell> FirstTimeFindPath(TCell startCell, TCell endCell, double maxCost = Double.PositiveInfinity)
         {
             ResetPathFinding(startCell, endCell);
         
             return FindPath(startCell, endCell);
         }
 
-        public LinkedList<TCell> FindPath(TCell startCell, TCell endCell)
+        public LinkedList<TCell> FindPath(TCell startCell, TCell endCell, double maxCost = Double.PositiveInfinity)
         {
             while (_openCells.Count > 0 &&
                    (GetRhsValue(startCell) > CalculateKey(startCell, startCell) ||
@@ -127,7 +127,7 @@ namespace Shun_Grid_System
             return RetracePath(startCell, endCell);
         }
     
-        public override LinkedList<TCell> UpdatePathWithDynamicObstacle(TCell currentStartCell, List<TCell> foundDynamicObstacles)
+        public override LinkedList<TCell> UpdatePathWithDynamicObstacle(TCell currentStartCell, List<TCell> foundDynamicObstacles, double maxCost = Double.PositiveInfinity)
         {
             ResetPathFinding(currentStartCell, _endCell);
         
@@ -140,10 +140,11 @@ namespace Shun_Grid_System
             return FindPath(_startCell, _endCell);
         }
 
-        public override Dictionary<TCell, double> FindAllCellsSmallerThanCost(TCell currentStartNode, double cost)
+        public override Dictionary<TCell, double> FindAllCellsSmallerThanCost(TCell currentStartNode, double maxCost = Double.PositiveInfinity)
         {
             throw new NotImplementedException();
         }
+
 
         private void UpdateCell(TCell updateCell, TCell itsPredecessorCell = null)
         {

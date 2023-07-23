@@ -18,8 +18,8 @@ public class CharacterInformation : BaseCardInformation
     public string CharacterName;
 
     [Header("Grid")]
-    public float MoveCellCost;
-    public float MoveSpeed;
+    public float MaxMoveCellCost = 5;
+    public float MoveSpeed = 20;
     public LayerMask WallLayerMask;
     
     
