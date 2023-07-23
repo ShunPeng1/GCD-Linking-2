@@ -66,11 +66,11 @@ namespace Shun_Grid_System
             while (openSet.Count > 0)
             {
                 TCell currentCell = openSet.Dequeue();
-                visitedSet.Add(currentCell);
-
+                
                 if ( GetGValue(currentCell) > maxCost)
                     continue;
                 
+                visitedSet.Add(currentCell);
                 reachableCells[currentCell] = GetGValue(currentCell);
                 
                 foreach (TCell adjacentCell in currentCell.AdjacentCells)
@@ -119,10 +119,11 @@ namespace Shun_Grid_System
             while (openSet.Count > 0)
             {
                 TCell currentMinFCostCell = openSet.Dequeue();
-                visitedSet.Add(currentMinFCostCell);
-
+                
                 if ( GetGValue(currentMinFCostCell) > maxCost)
                     continue;
+                
+                visitedSet.Add(currentMinFCostCell);
                 
                 if (currentMinFCostCell == _endCell)
                 {

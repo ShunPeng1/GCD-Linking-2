@@ -6,6 +6,7 @@ using _Scripts.Input_and_Camera;
 using Shun_Card_System;
 using Shun_Grid_System;
 using Shun_State_Machine;
+using Shun_Utility;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
@@ -45,11 +46,11 @@ public class BaseCharacterMapDynamicGameObject : MapDynamicGameObject
 
     [Header("Components")]
     protected Animator Animator;
-
+    protected bool IsTweenAnimation = false;
+    private static readonly int XDirection = Animator.StringToHash("XDirection");
+    private static readonly int YDirection = Animator.StringToHash("YDirection");
 
     #region INITIALIZE
-
-    
     
     protected void Start()
     {
@@ -109,16 +110,22 @@ public class BaseCharacterMapDynamicGameObject : MapDynamicGameObject
     
     private void MoveToDestination(CharacterMovementState characterMovementState, object[] objects)
     {
-        MoveAlongGrid();
+        MoveAlongMovingPath();
         CheckArriveCell();
     }
 
-    protected void MoveAlongGrid()
+    protected void MoveAlongMovingPath()
     {
+        if (IsTweenAnimation) return;
+        
         // Move
         transform.position = Vector3.MoveTowards(transform.position, NextCellPosition, MoveSpeed * Time.fixedDeltaTime);
-
         IsBetween2Cells = true;
+        
+        //Animation
+        Animator.SetFloat(XDirection, ShunMath.GetSignOrZero(NextCellPosition.x - transform.position.x));
+        Animator.SetFloat(YDirection, ShunMath.GetSignOrZero(NextCellPosition.y - transform.position.y));
+        
     }
 
     protected bool CheckArriveCell()
