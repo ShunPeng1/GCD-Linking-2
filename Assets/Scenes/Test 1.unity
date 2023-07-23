@@ -412,6 +412,7 @@ MonoBehaviour:
   _cardPlaceHolders: []
   MaxCardHold: 4
   CardMiddleInsertionStyle: 1
+  _interactable: 1
 --- !u!1 &103436412
 GameObject:
   m_ObjectHideFlags: 0

@@ -83,7 +83,7 @@ public class BaseCharacterMapMovableGameObject : MapMovableGameObject
         foreach (var (cell, gCost) in AllMovableCellAndCost)
         {
             var cellHighlighter = cell.Item.CellSelectHighlighter;
-            cellHighlighter.Interactable = true;
+            cellHighlighter.EnableInteractable();
             cellHighlighter.StartHighlight();
         }
     }
@@ -93,7 +93,7 @@ public class BaseCharacterMapMovableGameObject : MapMovableGameObject
         foreach (var (cell, gCost) in AllMovableCellAndCost)
         {
             var cellHighlighter = cell.Item.CellSelectHighlighter;
-            cellHighlighter.Interactable = false;
+            cellHighlighter.DisableInteractable();;
             cellHighlighter.EndHighlight();
         }
     }

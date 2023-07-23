@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Shun_Card_System
 {
     [RequireComponent(typeof(Collider2D))]
-    public class BaseCardRegion : MonoBehaviour
+    public class BaseCardRegion : MonoBehaviour, IMouseInteractable
     {
         public enum MiddleInsertionStyle
         {
@@ -14,7 +14,6 @@ namespace Shun_Card_System
             InsertInMiddle,
             Cannot,
         }
-        
         [SerializeField] protected BaseCardHolder CardHolderPrefab;
         [SerializeField] protected Transform SpawnPlace;
         [SerializeField] protected Vector3 CardOffset = new Vector3(5f, 0 ,0);
@@ -26,6 +25,11 @@ namespace Shun_Card_System
         protected BaseCardHolder TemporaryBaseCardHolder;
         protected int CardHoldingCount = 0;
 
+        
+        [SerializeField]
+        private bool _interactable;
+        public bool Interactable { get => _interactable; protected set => _interactable = value;}
+        
         protected virtual void Awake()
         {
             InitializeCardPlaceHolder();
@@ -238,6 +242,36 @@ namespace Shun_Card_System
         protected virtual void OnSuccessfullyRemoveCard(BaseCardGameObject baseCardGameObject, BaseCardHolder baseCardHolder)
         {
             
+        }
+
+        public void Select()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Deselect()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void StartHover()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void EndHover()
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual void DisableInteractable()
+        {
+            Interactable = false;
+        }
+        
+        public virtual void EnableInteractable()
+        {
+            Interactable = true;
         }
     }
 }

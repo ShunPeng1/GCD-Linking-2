@@ -2,6 +2,8 @@
 {
     public interface IMouseInteractable
     {
+        public bool Interactable { get; }
+
         public void Select();
 
         public void Deselect();

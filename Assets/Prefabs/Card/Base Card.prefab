@@ -275,7 +275,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e356fc2156e04451a3c48b5cc7bb07f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Interactable: 1
+  _interactable: 1
   ActivateOnValidate: 0
   Ability1Button: {fileID: 7018498707038222447}
   Ability2Button: {fileID: 7892379034427185041}

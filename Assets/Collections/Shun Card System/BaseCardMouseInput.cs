@@ -172,13 +172,14 @@ public class BaseCardMouseInput
             return false;
         }
         
+
+        DetachCardToHolder();
+        
         CardOffset = DraggingCard.transform.position - MouseWorldPosition;
         IsDraggingCard = true;
 
         DraggingCard.Select();
-
-        DetachCardToHolder();
-
+        
         return true;
     }
 

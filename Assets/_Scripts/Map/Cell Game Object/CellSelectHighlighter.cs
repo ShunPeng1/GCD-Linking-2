@@ -5,7 +5,11 @@ using UnityEngine;
 
 public class CellSelectHighlighter : MapStaticGameObject, IMouseInteractable
 {
-    public bool Interactable;
+    
+    [SerializeField]
+    private bool _interactable = false;
+    public bool Interactable { get => _interactable; protected set => _interactable = value; }
+    
     [SerializeField] private SpriteRenderer _spriteRenderer;
 
     [SerializeField] private float _validCellHighlightValue = 0.25f, _hoverHighlightValue = 0.25f;
@@ -46,11 +50,11 @@ public class CellSelectHighlighter : MapStaticGameObject, IMouseInteractable
 
     public void DisableInteractable()
     {
-        throw new NotImplementedException();
+        Interactable = false;
     }
 
     public void EnableInteractable()
     {
-        throw new NotImplementedException();
+        Interactable = true;
     }
 }

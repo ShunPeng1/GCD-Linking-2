@@ -8,8 +8,8 @@ namespace _Scripts.Cards.Card_UI
         {
             var characterCardGameObject = (BaseCharacterCardGameObject) baseCardGameObject;
             
-            characterCardGameObject.Ability1Button.Interactable = true;
-            characterCardGameObject.Ability2Button.Interactable = true;
+            characterCardGameObject.Ability1Button.EnableInteractable();
+            characterCardGameObject.Ability2Button.EnableInteractable();
             
         }
 
@@ -17,8 +17,9 @@ namespace _Scripts.Cards.Card_UI
         {
             var characterCardGameObject = (BaseCharacterCardGameObject) baseCardGameObject;
             
-            characterCardGameObject.Ability1Button.Interactable = false;
-            characterCardGameObject.Ability2Button.Interactable = false;
+            
+            characterCardGameObject.Ability1Button.DisableInteractable();
+            characterCardGameObject.Ability2Button.DisableInteractable();
 
         }
     }
