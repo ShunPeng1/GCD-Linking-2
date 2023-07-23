@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Shun_Grid_System;
 using UnityEngine;
 
-public class VentMapGameObject : MapCellGameObject
+public class VentMapGameObject : MapStaticGameObject
 {
 
     [SerializeField] private bool _isOpen = true;

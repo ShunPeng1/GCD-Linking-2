@@ -33,7 +33,8 @@ namespace _Scripts.Managers
         public GameInteractMapState GameInteractMapState = new (GameState.InteractMap);
         public GameChooseCardState GameChooseCardStateState = new (GameState.ChooseCard);
         public GameChangeSideState GameChangeSideStateState = new (GameState.ChangeSide);
-        
+
+        public PlayerRole CurrentRolePlaying;
         protected void Awake()
         {
             InitializeState();

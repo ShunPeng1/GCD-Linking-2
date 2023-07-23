@@ -7,7 +7,7 @@ using UnityEngine;
 public class NonCollisionTilemapAdjacencyCellSelection : TilemapAdjacencyCellSelection
 {
 
-    public NonCollisionTilemapAdjacencyCellSelection(GridXY<MapCellItem> grid, LayerMask wallLayerMask) : base(grid, wallLayerMask)
+    public NonCollisionTilemapAdjacencyCellSelection(LayerMask wallLayerMask) : base(wallLayerMask)
     {
     }    
     
@@ -18,8 +18,13 @@ public class NonCollisionTilemapAdjacencyCellSelection : TilemapAdjacencyCellSel
         if (fromVent != null && toVent != null)
         {
             return fromVent.IsOpen && toVent.IsOpen;
-        } 
+        }
         
+        ExitMapGameObject fromExit = from.Item.GetFirstInCellGameObject<ExitMapGameObject>();
+        ExitMapGameObject toExit = to.Item.GetFirstInCellGameObject<ExitMapGameObject>();
+        if (fromExit != null) return false;
+
+
         var fromPosition = Grid.GetWorldPositionOfNearestCell(from.XIndex, from.YIndex);
         var toPosition = Grid.GetWorldPositionOfNearestCell(to.XIndex, to.YIndex);
         var hit = Physics2D.Linecast(fromPosition, toPosition, WallLayerMask);

@@ -10,7 +10,7 @@ using UnityEngine.Rendering.Universal;
 
 
 
-public class BaseCharacterMapGameObject : MapGameObject
+public class BaseCharacterMapMovableGameObject : MapMovableGameObject
 {
     protected CharacterInformation CharacterInformation;
     protected BaseCharacterCardGameObject CharacterCardGameObject;
@@ -41,7 +41,7 @@ public class BaseCharacterMapGameObject : MapGameObject
 
     protected virtual void InitializePathfinding()
     {
-        AdjacencyCellSelection = new NonCollisionTilemapAdjacencyCellSelection(Grid, CharacterInformation.WallLayerMask);
+        AdjacencyCellSelection = new NonCollisionTilemapAdjacencyCellSelection(CharacterInformation.WallLayerMask);
         PathfindingAlgorithm = new AStarPathFinding<GridXY<MapCellItem>, GridXYCell<MapCellItem>, MapCellItem>(Grid, AdjacencyCellSelection, PathFindingCostFunction.Manhattan);
 
     }

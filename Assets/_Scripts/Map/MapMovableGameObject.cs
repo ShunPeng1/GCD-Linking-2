@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Shun_Grid_System;
 using UnityEngine;
 
-public class MapGameObject : MonoBehaviour
+public class MapMovableGameObject : MonoBehaviour
 {
     protected GridXY<MapCellItem> Grid => MapManager.Instance.WorldGrid;
     

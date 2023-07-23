@@ -3,7 +3,7 @@ using System;
 using Shun_Card_System;
 using UnityEngine;
 
-public class CellSelectHighlighter : MapCellGameObject, IMouseInteractable
+public class CellSelectHighlighter : MapStaticGameObject, IMouseInteractable
 {
     public bool Interactable;
     [SerializeField] private SpriteRenderer _spriteRenderer;

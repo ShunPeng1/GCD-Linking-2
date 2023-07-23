@@ -4,13 +4,12 @@ using System.Collections.Generic;
 using Shun_Grid_System;
 using UnityEngine;
 
-public class MapCellGameObject : MonoBehaviour
+public class MapStaticGameObject : MonoBehaviour
 {
-    
-    protected GridXY<MapCellItem> Grid;
-    public GridXYCell<MapCellItem> Cell { get; private set; }
+    protected GridXY<MapCellItem> Grid => MapManager.Instance.WorldGrid;
+    public GridXYCell<MapCellItem> Cell => Grid.GetCell(transform.position);
     protected int XIndex, YIndex;
-    private bool _isInitializedGrid = false;
+    
 
     private void Start()
     {
@@ -19,12 +18,7 @@ public class MapCellGameObject : MonoBehaviour
 
     public void InitializeGrid()
     {
-        if (_isInitializedGrid) return;
-        
-        Grid = MapManager.Instance.WorldGrid;
-        Cell = Grid.GetCell(transform.position);
         Cell.Item.AddInCellGameObject(this);
-        _isInitializedGrid = true;
     }
     
     // Update is called once per frame

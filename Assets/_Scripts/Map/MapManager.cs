@@ -18,7 +18,7 @@ public class MapManager : SingletonMonoBehaviour<MapManager>
     public class CharacterSet
     {
         public CharacterInformation CharacterInformation;
-        public BaseCharacterMapGameObject MapGameObject;
+        public BaseCharacterMapMovableGameObject MapMovableGameObject;
         public BaseCharacterCardGameObject CardGameObject;
     }
     
@@ -108,10 +108,12 @@ public class MapManager : SingletonMonoBehaviour<MapManager>
         var distanceCost = new ManhattanDistanceCost();
 
 
+        /*
         foreach (var vent in VentMapGameObjects)
         {
             vent.InitializeGrid();   
         }
+        */
 
         foreach (var vent1 in VentMapGameObjects)
         {
@@ -132,8 +134,8 @@ public class MapManager : SingletonMonoBehaviour<MapManager>
     {
         foreach (var characterSet in CharacterSets)
         {
-            characterSet.MapGameObject.InitializeCharacter(characterSet.CharacterInformation,characterSet.CardGameObject);
-            characterSet.CardGameObject.InitializeCharacter(characterSet.CharacterInformation,characterSet.MapGameObject);
+            characterSet.MapMovableGameObject.InitializeCharacter(characterSet.CharacterInformation,characterSet.CardGameObject);
+            characterSet.CardGameObject.InitializeCharacter(characterSet.CharacterInformation,characterSet.MapMovableGameObject);
         }
     }
     

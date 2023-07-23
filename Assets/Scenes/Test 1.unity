@@ -1304,7 +1304,7 @@ MonoBehaviour:
   HeightSize: 3
   CharacterSets:
   - CharacterInformation: {fileID: 11400000, guid: 26908647a1d17b0488679fd12d1e9a3e, type: 2}
-    MapGameObject: {fileID: 1445088266}
+    MapMovableGameObject: {fileID: 1445088266}
     CardGameObject: {fileID: 115071642}
   VentMapGameObjects:
   - {fileID: 144725525}
@@ -47854,6 +47854,7 @@ MonoBehaviour:
     MyStateEnum: 4
   GameChangeSideStateState:
     MyStateEnum: 5
+  CurrentRolePlaying: 0
 --- !u!1 &2069281034
 GameObject:
   m_ObjectHideFlags: 0
