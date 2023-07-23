@@ -44,12 +44,15 @@ public class BaseCharacterMapDynamicGameObject : MapDynamicGameObject
         Moving
     }
 
-    [Header("Components")]
+    [Header("Animation")]
     protected Animator Animator;
     protected bool IsTweenAnimation = false;
     private static readonly int XDirection = Animator.StringToHash("XDirection");
     private static readonly int YDirection = Animator.StringToHash("YDirection");
 
+    [Header("Ability")] 
+    private bool _canForceEnd = true;
+    
     #region INITIALIZE
     
     protected void Start()
@@ -179,31 +182,46 @@ public class BaseCharacterMapDynamicGameObject : MapDynamicGameObject
 
     #endregion
 
-    #region ABILITY
+    #region MOVE_ABILITY
 
-    public virtual void MoveAbility()
+    public virtual void MoveAbility(Action externalSuccessSelectionAction = null, Action externalFailSelectionAction = null)
     {
         ShowMovablePath();
-        CellHighlightSelectMouseInput mouseInput = new CellHighlightSelectMouseInput(Grid, FinishSelectCell);
+        CellHighlightSelectMouseInput mouseInput = new CellHighlightSelectMouseInput(Grid, 
+            (CellSelectHighlighter cellSelectHighlighter) =>
+        {
+            if (CheckSelectedCellValid(cellSelectHighlighter))
+            {
+                HideMovablePath();
+            
+                _canForceEnd = false;
+            
+                var newTask = new CharacterMovementTask(
+                    CharacterMovementTask.StartPosition.NextCell,
+                    cellSelectHighlighter.transform.position, 
+                    () =>
+                    {
+                        StateMachine.SetToState(CharacterMovementState.Idling);
+                        externalSuccessSelectionAction?.Invoke();   
+                        _canForceEnd = true;
+                    });
+            
+                StateMachine.SetToState(CharacterMovementState.Moving, null, new object[]{newTask});
+
+                
+            }
+            else
+            {
+                HideMovablePath();
+                externalFailSelectionAction?.Invoke();
+            }
+        });
         InputManager.Instance.ChangeMouseInput(mouseInput);
     }
 
-    private void FinishSelectCell(CellSelectHighlighter cellSelectHighlighter)
+    private bool CheckSelectedCellValid(CellSelectHighlighter cellSelectHighlighter)
     {
-        if (cellSelectHighlighter != null)
-        {
-            var newTask = new CharacterMovementTask(
-                CharacterMovementTask.StartPosition.NextCell,
-                cellSelectHighlighter.transform.position, 
-                () => StateMachine.SetToState(CharacterMovementState.Idling));
-            StateMachine.SetToState(CharacterMovementState.Moving, null, new object[]{newTask});
-        }
-        HideMovablePath();
-    }
-    
-    public virtual void SecondAbility()
-    {
-        
+        return cellSelectHighlighter != null;
     }
     
     protected void ShowMovablePath()
@@ -228,6 +246,50 @@ public class BaseCharacterMapDynamicGameObject : MapDynamicGameObject
         }
     }
     
+    
+    public virtual bool ForceEndMoveAbility(Action externalSuccessForceEndAction = null, Action externalFailForceEndAction = null)
+    {
+        if (_canForceEnd)
+        {
+            InputManager.Instance.RemoveCurrentMouseInput();
+            HideMovablePath();
+            externalSuccessForceEndAction?.Invoke();
+            return true;
+        }
+        else
+        {
+            externalFailForceEndAction?.Invoke();
+            return false;
+        }
+    }
 
+    
     #endregion
+
+
+
+    #region SECOND_ABILITY
+    
+    public virtual void SecondAbility(Action externalSuccessSelectionAction = null, Action externalFailSelectionAction = null)
+    {
+        
+    }
+    
+    public virtual bool ForceEndSecondAbility(Action externalSuccessForceEndAction = null, Action externalFailForceEndAction = null)
+    {
+        if (_canForceEnd)
+        {
+            InputManager.Instance.RemoveCurrentMouseInput();
+            externalSuccessForceEndAction?.Invoke();
+            return true;
+        }
+        else
+        {
+            externalFailForceEndAction?.Invoke();
+            return false;
+        }
+    }
+    
+    #endregion
+    
 }

@@ -77,8 +77,8 @@ public class CellHighlightSelectMouseInput : BaseCardMouseInput
                 return null;
             }
 
-            MapCellItem mapCellItem = Grid.GetCell(MouseWorldPosition).Item;
-            CellSelectHighlighter cellSelectHighlighter = mapCellItem.CellSelectHighlighter;
+            MapCellItem mapCellItem = Grid.GetCell(MouseWorldPosition)?.Item;
+            CellSelectHighlighter cellSelectHighlighter = mapCellItem?.CellSelectHighlighter;
             
             if (cellSelectHighlighter != null  && cellSelectHighlighter.Interactable)
             {

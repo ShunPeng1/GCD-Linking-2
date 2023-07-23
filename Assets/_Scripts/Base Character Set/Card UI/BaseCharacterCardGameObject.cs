@@ -16,8 +16,10 @@ namespace _Scripts.Cards.Card_UI
         public CharacterCardButton Ability2Button;
         [SerializeField] private Transform _cardVisualTransform;
         [SerializeField] private SortingGroup _sortingGroup;
-        
-        private Dictionary<CharacterCardButton,Action> _executeAbilityBaseOnButton = new();
+
+        private CharacterCardButton _selectingButton;
+        private readonly Dictionary<CharacterCardButton,Action<Action, Action>> _executeAbilityBaseOnButton = new();
+        private readonly Dictionary<CharacterCardButton,Func<Action, Action, bool>> _forceEndAbilityBaseOnButton = new();
 
         [Header("Hover")] 
         
@@ -47,11 +49,44 @@ namespace _Scripts.Cards.Card_UI
             
             _executeAbilityBaseOnButton.Add(Ability1Button, CharacterMapDynamicGameObject.MoveAbility);
             _executeAbilityBaseOnButton.Add(Ability2Button, CharacterMapDynamicGameObject.SecondAbility);
+            
+            _forceEndAbilityBaseOnButton.Add(Ability1Button, CharacterMapDynamicGameObject.ForceEndMoveAbility);
+            _forceEndAbilityBaseOnButton.Add(Ability2Button, CharacterMapDynamicGameObject.ForceEndSecondAbility);
         }
 
-        public void ExecuteAbility(CharacterCardButton cardButton)
+        public virtual void ExecuteAbility(CharacterCardButton cardButton)
         {
-            _executeAbilityBaseOnButton[cardButton].Invoke();
+            if (_selectingButton == null)
+            {
+                _executeAbilityBaseOnButton[cardButton].Invoke(() => _selectingButton = null, () => _selectingButton = null);
+                _selectingButton = cardButton;
+            }
+            else if (_selectingButton == cardButton)
+            {
+                if (_forceEndAbilityBaseOnButton[cardButton].Invoke(null,null))
+                {
+                    _selectingButton.Deselect();
+                    _selectingButton = null;
+                }
+                else
+                {
+                    Debug.Log("Can not force end ability");
+                }
+            }
+            else if(_selectingButton != cardButton)
+            {
+                if (_forceEndAbilityBaseOnButton[_selectingButton].Invoke(null,null))
+                {
+                    _selectingButton.Deselect();
+                    _executeAbilityBaseOnButton[cardButton].Invoke(() => _selectingButton = null, () => _selectingButton = null);
+                    _selectingButton = cardButton;
+                }
+                else
+                {
+                    Debug.Log("Can not force end ability");
+                }
+            }
+
         }
 
         protected override void ValidateInformation()

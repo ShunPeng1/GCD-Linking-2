@@ -8,7 +8,7 @@ namespace _Scripts.Input_and_Camera
     public class InputManager : SingletonMonoBehaviour<InputManager>
     {
         [SerializeField] private CameraMovement _cameraMovement;
-        [SerializeField] private float _changeInputCooldown = 0.5f;
+        [SerializeField] private float _changeInputCooldown = 0.2f;
         
         private readonly BaseCardMouseInput _defaultMouseInput = new BaseCardMouseInput();
         private CellHighlightSelectMouseInput _currentMouseInput = null;
@@ -38,9 +38,10 @@ namespace _Scripts.Input_and_Camera
             _isInputInteractable = true;
         }
 
-        private void RemoveCurrentMouseInput()
+        public void RemoveCurrentMouseInput()
         {
             _currentMouseInput = null;
+            _isInputInteractable = true;
         }
         
     }
