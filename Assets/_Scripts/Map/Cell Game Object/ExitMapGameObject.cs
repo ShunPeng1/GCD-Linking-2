@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Shun_Grid_System;
 using UnityEngine;
 
-public class VentMapGameObject : MapCellGameObject
+public class ExitMapGameObject : MapCellGameObject
 {
 
     [SerializeField] private bool _isOpen = true;
@@ -13,14 +13,14 @@ public class VentMapGameObject : MapCellGameObject
     }
     
     [SerializeField] private Animator _animator;
-
-    public void CloseVent()
+    
+    public void CloseExit()
     {
         _isOpen = false;
         
     }
     
-    public void OpenVent()
+    public void OpenExit()
     {
         _isOpen = true;
         

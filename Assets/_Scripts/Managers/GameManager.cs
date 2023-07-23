@@ -17,7 +17,7 @@ namespace _Scripts.Managers
 
     }
 
-    public enum WhoseSide
+    public enum PlayerRole
     {
         Detective,
         Imposter

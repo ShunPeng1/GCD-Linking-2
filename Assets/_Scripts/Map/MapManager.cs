@@ -25,7 +25,8 @@ public class MapManager : SingletonMonoBehaviour<MapManager>
     [Header("Entities")]
     public CharacterSet[] CharacterSets;
     public VentMapGameObject[] VentMapGameObjects;
-    
+    public ExitMapGameObject[] ExitMapGameObjects;
+        
     [Header("Adjacency Cell")]
     [HideInInspector] public Vector2Int[] AdjacencyDirections = new[]
     {
