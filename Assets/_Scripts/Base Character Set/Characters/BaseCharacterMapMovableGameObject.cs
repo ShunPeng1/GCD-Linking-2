@@ -15,7 +15,6 @@ public class BaseCharacterMapMovableGameObject : MapMovableGameObject
     protected CharacterInformation CharacterInformation;
     protected BaseCharacterCardGameObject CharacterCardGameObject;
     
-    protected Rigidbody2D Rb;
 
     [Header("Pathfinding")] 
     protected TilemapAdjacencyCellSelection AdjacencyCellSelection;
@@ -23,12 +22,11 @@ public class BaseCharacterMapMovableGameObject : MapMovableGameObject
     protected IPathfindingAlgorithm<GridXY<MapCellItem>, GridXYCell<MapCellItem>, MapCellItem> PathfindingAlgorithm;
 
     
-    
+    protected Animator Animator;
     
     protected void Start()
     {
-        Rb = GetComponent<Rigidbody2D>();
-        
+        Animator = GetComponent<Animator>();
     }
 
     public void InitializeCharacter(CharacterInformation characterInformation, BaseCharacterCardGameObject characterCardGameObject )
@@ -44,11 +42,6 @@ public class BaseCharacterMapMovableGameObject : MapMovableGameObject
         AdjacencyCellSelection = new NonCollisionTilemapAdjacencyCellSelection(CharacterInformation.WallLayerMask);
         PathfindingAlgorithm = new AStarPathFinding<GridXY<MapCellItem>, GridXYCell<MapCellItem>, MapCellItem>(Grid, AdjacencyCellSelection, PathFindingCostFunction.Manhattan);
 
-    }
-    
-    private void Update()
-    {
-        
     }
 
     private void Move(CellSelectHighlighter cellSelectHighlighter)

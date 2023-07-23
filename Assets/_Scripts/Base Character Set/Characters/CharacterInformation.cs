@@ -7,8 +7,8 @@ using UnityEngine;
 using UnityUtilities;
 
 
-//[CreateAssetMenu(fileName = "Character Information", menuName = "Character Information/")]
-public abstract class CharacterInformation : BaseCardInformation
+[CreateAssetMenu(fileName = "Character Information", menuName = "Character Information")]
+public class CharacterInformation : BaseCardInformation
 {
     public BaseCharacterCardGameObject BaseCharacterCardGameObjectPrefab;
     public BaseCharacterMapMovableGameObject CharacterMapMovableGameObjectPrefab;
