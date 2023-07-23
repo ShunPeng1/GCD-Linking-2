@@ -2,14 +2,14 @@
 
 namespace _Scripts.Cards.Card_UI
 {
-    public class HandCardRegion : BaseCardRegion
+    public class PlayCardRegion : BaseCardRegion
     {
         protected override void OnSuccessfullyAddCard(BaseCardGameObject baseCardGameObject, BaseCardHolder baseCardHolder)
         {
             var characterCardGameObject = (BaseCharacterCardGameObject) baseCardGameObject;
             
-            characterCardGameObject.Ability1Button.Interactable = false;
-            characterCardGameObject.Ability2Button.Interactable = false;
+            characterCardGameObject.Ability1Button.Interactable = true;
+            characterCardGameObject.Ability2Button.Interactable = true;
             
         }
 
@@ -17,8 +17,8 @@ namespace _Scripts.Cards.Card_UI
         {
             var characterCardGameObject = (BaseCharacterCardGameObject) baseCardGameObject;
             
-            characterCardGameObject.Ability1Button.Interactable = true;
-            characterCardGameObject.Ability2Button.Interactable = true;
+            characterCardGameObject.Ability1Button.Interactable = false;
+            characterCardGameObject.Ability2Button.Interactable = false;
 
         }
     }

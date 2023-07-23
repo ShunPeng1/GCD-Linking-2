@@ -35,7 +35,7 @@ namespace Shun_Card_System
             if (CardGameObject == null) return null;
             
             BaseCardGameObject detachedCard = CardGameObject;
-            detachedCard.transform.SetParent(null);
+            detachedCard.transform.SetParent(CardRegion.transform.parent);
             CardGameObject = null;
 
             return detachedCard;

@@ -344,32 +344,14 @@ GameObject:
   m_Component:
   - component: {fileID: 82308249}
   - component: {fileID: 82308247}
-  - component: {fileID: 82308246}
+  - component: {fileID: 82308250}
   m_Layer: 0
-  m_Name: Card Region
+  m_Name: Hand Card Region
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &82308246
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 82308245}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2e8624ac260ae6b44b8df03b986705da, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  CardHolderPrefab: {fileID: 7996352030391422562, guid: 4a3e3d488cc1a384cadec690e0cde667, type: 3}
-  SpawnPlace: {fileID: 493518954}
-  CardOffset: {x: 4, y: 0, z: 0}
-  _cardPlaceHolders: []
-  MaxCardHold: 4
-  CardMiddleInsertionStyle: 1
 --- !u!61 &82308247
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -412,6 +394,24 @@ Transform:
   m_Father: {fileID: 930233320}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &82308250
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 82308245}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: adf0b6cae95146a0bf62b7bb1e288623, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CardHolderPrefab: {fileID: 7996352030391422562, guid: 4a3e3d488cc1a384cadec690e0cde667, type: 3}
+  SpawnPlace: {fileID: 493518954}
+  CardOffset: {x: 4, y: 0, z: 0}
+  _cardPlaceHolders: []
+  MaxCardHold: 4
+  CardMiddleInsertionStyle: 1
 --- !u!1 &103436412
 GameObject:
   m_ObjectHideFlags: 0

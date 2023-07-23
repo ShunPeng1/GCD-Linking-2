@@ -12,8 +12,8 @@ namespace _Scripts.Cards.Card_UI
         protected BaseCharacterMapMovableGameObject CharacterMapMovableGameObject;
         
         [Header("Child Components")]
-        [SerializeField] private CharacterCardButton _ability1Button;
-        [SerializeField] private CharacterCardButton _ability2Button;
+        public CharacterCardButton Ability1Button;
+        public CharacterCardButton Ability2Button;
         [SerializeField] private Transform _cardVisualTransform;
         [SerializeField] private SortingGroup _sortingGroup;
         
@@ -30,8 +30,8 @@ namespace _Scripts.Cards.Card_UI
 
         private void InitializeComponents()
         {
-            _ability1Button.Initialize(this);
-            _ability2Button.Initialize(this);
+            Ability1Button.Initialize(this);
+            Ability2Button.Initialize(this);
         }
         
         public void InitializeCharacter(CharacterInformation characterInformation, BaseCharacterMapMovableGameObject characterMapMovableGameObject )
@@ -45,8 +45,8 @@ namespace _Scripts.Cards.Card_UI
                 return;
             }
             
-            _executeAbilityBaseOnButton.Add(_ability1Button, CharacterMapMovableGameObject.MoveAbility);
-            _executeAbilityBaseOnButton.Add(_ability2Button, CharacterMapMovableGameObject.SecondAbility);
+            _executeAbilityBaseOnButton.Add(Ability1Button, CharacterMapMovableGameObject.MoveAbility);
+            _executeAbilityBaseOnButton.Add(Ability2Button, CharacterMapMovableGameObject.SecondAbility);
         }
 
         public void ExecuteAbility(CharacterCardButton cardButton)
