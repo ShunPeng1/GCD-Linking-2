@@ -14,19 +14,37 @@ public class MapManager : SingletonMonoBehaviour<MapManager>
     public int GridWidth, GridHeight;
     public float WidthSize, HeightSize;
 
-    [Serializable]
+    
     public class CharacterSet
     {
         public CharacterInformation CharacterInformation;
-        public BaseCharacterMapMovableGameObject MapMovableGameObject;
-        public BaseCharacterCardGameObject CardGameObject;
+        public BaseCharacterMapMovableGameObject CharacterMapGameObject;
+        public BaseCharacterCardGameObject CharacterCardGameObject;
+
+        public CharacterSet(CharacterInformation characterInformation, BaseCharacterMapMovableGameObject characterMapGameObject, BaseCharacterCardGameObject characterCardGameObject)
+        {
+            CharacterInformation = characterInformation;
+            CharacterMapGameObject = characterMapGameObject;
+            CharacterCardGameObject = characterCardGameObject;
+        }
     }
+
+    [Header("Card Region")] 
+    [SerializeField] private HandCardRegion _handCardRegion;
+    [SerializeField] private PlayCardRegion _playCardRegion;
     
     [Header("Entities")]
-    public CharacterSet[] CharacterSets;
+    public CharacterInformation[] CharacterInformation;
     public VentMapGameObject[] VentMapGameObjects;
     public ExitMapGameObject[] ExitMapGameObjects;
-        
+    public Transform[] SpawnPointsInLight;
+    public Transform[] SpawnPointsInDark;
+    
+    [Header("Sets")]
+    private Dictionary<CharacterInformation, CharacterSet> _characterSets = new();
+    private RandomBag<Transform> _spawnPointBags;
+
+
     [Header("Adjacency Cell")]
     [HideInInspector] public Vector2Int[] AdjacencyDirections = new[]
     {
@@ -43,9 +61,10 @@ public class MapManager : SingletonMonoBehaviour<MapManager>
     private void Awake()
     {
         InitializeGrid();
+        InitializeBag();
     }
 
-    void InitializeGrid()
+    private void InitializeGrid()
     {
         WorldGrid = new GridXY<MapCellItem>(GridWidth, GridHeight, WidthSize, HeightSize , transform.position);
 
@@ -62,12 +81,17 @@ public class MapManager : SingletonMonoBehaviour<MapManager>
         }
     }
 
+    private void InitializeBag()
+    {
+        var spawnPoints = Shun_Utility.SetOperations.MergeArrays(SpawnPointsInLight, SpawnPointsInDark);
+        _spawnPointBags = new RandomBag<Transform>(spawnPoints, 1);
+    }
     
     private void Start()
     {
         InitializeCellAdjacency();
         InitializeCellItem();
-        InitializeCellCharacter();
+        InitializeCharacters();
         InitializeVent();
     }
 
@@ -130,13 +154,26 @@ public class MapManager : SingletonMonoBehaviour<MapManager>
     }
     
     
-    private void InitializeCellCharacter()
+    private void InitializeCharacters()
     {
-        foreach (var characterSet in CharacterSets)
+        foreach (var characterInformation in CharacterInformation)
         {
-            characterSet.MapMovableGameObject.InitializeCharacter(characterSet.CharacterInformation,characterSet.CardGameObject);
-            characterSet.CardGameObject.InitializeCharacter(characterSet.CharacterInformation,characterSet.MapMovableGameObject);
+            var spawnPoint = GetRandomSpawnPoint();
+            var characterMap = Instantiate(characterInformation.CharacterMapMovableGameObjectPrefab, spawnPoint.position, spawnPoint.rotation, transform);
+            var characterCard = Instantiate(characterInformation.BaseCharacterCardGameObjectPrefab);
+            
+            CharacterSet set = new CharacterSet(characterInformation, characterMap, characterCard);
+            _characterSets[characterInformation] = set;
+            _handCardRegion.AddCard(characterCard, null);
+            
+            characterMap.InitializeCharacter(characterInformation,characterCard);
+            characterCard.InitializeCharacter(characterInformation,characterMap);
         }
+    }
+
+    private Transform GetRandomSpawnPoint()
+    {
+        return _spawnPointBags.PopRandomItem();
     }
     
     

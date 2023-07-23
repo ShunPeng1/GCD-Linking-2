@@ -8,7 +8,7 @@ namespace _Scripts.Managers
 {
     public enum GameState
     {
-        Start,
+        StartRound,
         Over,
         Pause,
         InteractMap,
@@ -27,7 +27,7 @@ namespace _Scripts.Managers
     {
         public readonly BaseStateMachine<GameState> BaseStateMachine = new BaseStateMachine<GameState>();
         
-        public GameStartState GameStartState = new (GameState.Start);
+        public GameStartRoundState GameStartRoundState = new (GameState.StartRound);
         public GameOverState GameOverState = new (GameState.Over);
         public GamePauseState GamePauseState = new (GameState.Pause);
         public GameInteractMapState GameInteractMapState = new (GameState.InteractMap);
@@ -42,14 +42,14 @@ namespace _Scripts.Managers
 
         void InitializeState()
         {
-            BaseStateMachine.AddState(GameStartState);
+            BaseStateMachine.AddState(GameStartRoundState);
             BaseStateMachine.AddState(GameOverState);
             BaseStateMachine.AddState(GamePauseState);
             BaseStateMachine.AddState(GameInteractMapState);
             BaseStateMachine.AddState(GameChooseCardStateState);
             BaseStateMachine.AddState(GameChangeSideStateState);
             
-            BaseStateMachine.SetToState(GameState.Start);
+            BaseStateMachine.SetToState(GameState.StartRound);
 
         }
 
