@@ -24,12 +24,7 @@ public class CharacterInformation : BaseCardInformation
 
     [Header("Ability")] 
     public int Ability1UseCount = 1, Ability2UseCount = 1;
-    
-    
-    [Header("Lights")]
-    public float LightRange;
-    
-    
-    
-    
+
+    [Header("Light")] 
+    public LightInformation LightInformation;
 }

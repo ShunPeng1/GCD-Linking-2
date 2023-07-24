@@ -98,6 +98,11 @@ namespace _Scripts.Managers
 
         public void EndRound()
         {
+            foreach (var baseCharacterMapDynamicGameObject in MapManager.Instance.SearchAllInDarkCharacter())
+            {
+                Debug.Log(baseCharacterMapDynamicGameObject.gameObject.name+" is in Dark");
+            }
+            
             StartRound();
         }
 

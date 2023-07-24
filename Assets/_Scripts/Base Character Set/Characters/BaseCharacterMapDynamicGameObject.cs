@@ -15,8 +15,9 @@ using UnityEngine.Rendering.Universal;
 public class BaseCharacterMapDynamicGameObject : MapDynamicGameObject
 {
 
-    [Header("Components")] [SerializeField]
-    protected CharacterMovementVisual CharacterMovementVisual;
+    [Header("Components")] 
+    public CharacterLight CharacterLight;
+    public CharacterMovementVisual CharacterMovementVisual;
     public CharacterInformation CharacterInformation { get; protected set; }
     protected BaseCharacterCardGameObject CharacterCardGameObject;
 
@@ -106,6 +107,7 @@ public class BaseCharacterMapDynamicGameObject : MapDynamicGameObject
         CreateInitialPath(transform.position, CurrentMovementTask.GoalCellPosition);
 
         CheckArriveCell();
+        ExtractNextCellInPath();
     }
     
     private void MoveToDestination(CharacterMovementState characterMovementState, object[] objects)
@@ -117,6 +119,7 @@ public class BaseCharacterMapDynamicGameObject : MapDynamicGameObject
     protected virtual void MoveAlongMovingPath()
     {
         CharacterMovementVisual.Move(LastMovingCell, NextMovingCell);
+        CharacterLight.UpdateLight();
         IsBetween2Cells = true;
     }
 

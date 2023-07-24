@@ -20,4 +20,6 @@ MonoBehaviour:
   WallLayerMask:
     serializedVersion: 2
     m_Bits: 1536
-  LightRange: 10
+  Ability1UseCount: 1
+  Ability2UseCount: 0
+  LightInformation: {fileID: 0}

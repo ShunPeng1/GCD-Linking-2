@@ -1,12 +1,12 @@
 using System;
-using System.Collections;
+
 using System.Collections.Generic;
-using _Scripts.Cards.Card_UI;
-using _Scripts.Managers;
-using Shun_Card_System;
+
 using Shun_Grid_System;
 using UnityEngine;
 using UnityUtilities;
+using Random = UnityEngine.Random;
+
 
 public class MapManager : SingletonMonoBehaviour<MapManager>
 {
@@ -16,10 +16,10 @@ public class MapManager : SingletonMonoBehaviour<MapManager>
     public int GridWidth, GridHeight;
     public float WidthSize, HeightSize;
 
-    
-    
 
-    [Header("Entities")]
+    [Header("Entities")] 
+    public List<BaseCharacterMapDynamicGameObject> CharacterMapGameObjects;
+    public List<CharacterLight> CharacterLights;
     public VentMapGameObject[] VentMapGameObjects;
     public ExitMapGameObject[] ExitMapGameObjects;
     public Transform[] SpawnPointsInLight;
@@ -29,7 +29,8 @@ public class MapManager : SingletonMonoBehaviour<MapManager>
     private RandomBag<Transform> _spawnPointBags;
 
 
-    [Header("Adjacency Cell")]
+    [Header("Adjacency Cell")] 
+    [SerializeField] private LayerMask _lightCastLayerMask;
     [SerializeField] private Vector2Int[] _adjacencyDirections = new[]
     {
         new Vector2Int(0, 1),
@@ -132,13 +133,45 @@ public class MapManager : SingletonMonoBehaviour<MapManager>
     public BaseCharacterMapDynamicGameObject CreateCharacterMapGameObject(BaseCharacterMapDynamicGameObject prefab)
     {
         var spawnPoint = GetRandomSpawnPoint();
-        return Instantiate(prefab, spawnPoint.position, spawnPoint.rotation, MapParent.transform);
+        var character = Instantiate(prefab, spawnPoint.position, spawnPoint.rotation, MapParent.transform);
+        
+        CharacterMapGameObjects.Add(character);
+        CharacterLights.Add(character.CharacterLight);
+
+        character.name += " " + Random.Range(1,1000);
+        
+        return character;
     }
 
     private Transform GetRandomSpawnPoint()
     {
         return _spawnPointBags.PopRandomItem();
     }
-    
-    
+
+    public List<BaseCharacterMapDynamicGameObject> SearchAllInDarkCharacter()
+    {
+        List<BaseCharacterMapDynamicGameObject> charactersInDark = new();
+        foreach (var checkingCharacter in CharacterMapGameObjects)
+        {
+            bool isInDark = true;
+            foreach (var castingCharacter in CharacterLights)
+            {
+                if (checkingCharacter.CharacterLight == castingCharacter) continue;
+
+                if (!castingCharacter.TryCastToCharacter(checkingCharacter)) continue;
+                
+                isInDark = false;
+                break;
+
+            }
+
+            if (isInDark)
+            {
+                charactersInDark.Add(checkingCharacter);
+            }
+        }
+
+        return charactersInDark;
+    }
+
 }
