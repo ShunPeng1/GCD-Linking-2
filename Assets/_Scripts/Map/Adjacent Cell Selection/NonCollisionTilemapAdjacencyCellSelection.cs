@@ -17,7 +17,7 @@ public class NonCollisionTilemapAdjacencyCellSelection : TilemapAdjacencyCellSel
         VentMapGameObject toVent = to.Item.GetFirstInCellGameObject<VentMapGameObject>();
         if (fromVent != null && toVent != null)
         {
-            return fromVent.IsOpen && toVent.IsOpen;
+            return fromVent.IsUnlock && toVent.IsUnlock;
         }
         
         ExitMapGameObject fromExit = from.Item.GetFirstInCellGameObject<ExitMapGameObject>();

@@ -1,6 +1,7 @@
 ﻿
 
 using System;
+using DG.Tweening;
 using Shun_Grid_System;
 using Shun_Utility;
 using UnityEngine;
@@ -18,7 +19,10 @@ public class CharacterMovementVisual : MonoBehaviour
     private static readonly int XDirection = Animator.StringToHash("XDirection");
     private static readonly int YDirection = Animator.StringToHash("YDirection");
 
-    
+
+    [Header("Vent Animation")] 
+    [SerializeField] private float _enterAndExitVentDuration = 0.333f;
+    [SerializeField] private Ease _characterMoveEase;
     public virtual void Move(GridXYCell<MapCellItem> lastCell, GridXYCell<MapCellItem> nextCell)
     {
         if (IsTweenAnimation) return;
@@ -51,8 +55,24 @@ public class CharacterMovementVisual : MonoBehaviour
     {
         IsTweenAnimation = true;
 
-        transform.position = nextVent.transform.position;
+        Sequence mySequence = DOTween.Sequence();
         
-        IsTweenAnimation = false;
+        mySequence.InsertCallback(0f, () => lastVent.UseVent(true));
+        //mySequence.Append(transform.DOMoveY(1, _enterAndExitDuration).SetRelative());
+        
+        mySequence.InsertCallback(_enterAndExitVentDuration, 
+            () => {
+                lastVent.UseVent(false);
+                nextVent.UseVent(true);
+            });
+       
+        mySequence.InsertCallback(_enterAndExitVentDuration * 2, 
+            () => {
+                nextVent.UseVent(false);
+                transform.position = nextVent.transform.position;
+                IsTweenAnimation = false;
+            });
+        
+        
     }
 }

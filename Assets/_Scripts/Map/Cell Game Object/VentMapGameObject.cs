@@ -6,24 +6,28 @@ using UnityEngine;
 public class VentMapGameObject : MapStaticGameObject
 {
 
-    [SerializeField] private bool _isOpen = true;
-    public bool IsOpen { 
-        get => _isOpen;
-        set => _isOpen = value;
+    [SerializeField] private bool _isUnlock = true;
+    public bool IsUnlock { 
+        get => _isUnlock;
+        set => _isUnlock = value;
     }
     
     [SerializeField] private Animator _animator;
+    private static readonly int IsOpen = Animator.StringToHash("IsOpen");
 
-    public void CloseVent()
+    public void LockVent()
     {
-        _isOpen = false;
-        
+        _isUnlock = false;
     }
     
-    public void OpenVent()
+    public void UnlockVent()
     {
-        _isOpen = true;
-        
+        _isUnlock = true;
+    }
+
+    public void UseVent(bool isOpen)
+    {
+        _animator.SetBool(IsOpen, isOpen);
     }
 
 }
