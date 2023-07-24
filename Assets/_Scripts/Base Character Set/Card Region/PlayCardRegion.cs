@@ -4,6 +4,8 @@ namespace _Scripts.Cards.Card_UI
 {
     public class PlayCardRegion : BaseCardRegion
     {
+        
+        
         protected override void OnSuccessfullyAddCard(BaseCardGameObject baseCardGameObject, BaseCardHolder baseCardHolder)
         {
             var characterCardGameObject = (BaseCharacterCardGameObject) baseCardGameObject;
@@ -22,5 +24,8 @@ namespace _Scripts.Cards.Card_UI
             characterCardGameObject.Ability2Button.DisableInteractable();
 
         }
+        
+        
+        
     }
 }

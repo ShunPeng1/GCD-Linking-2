@@ -277,9 +277,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _interactable: 1
   ActivateOnValidate: 0
+  _isScaleWithOriginalParent: 1
+  _originalParent: {fileID: 0}
+  _currentParent: {fileID: 0}
   Ability1Button: {fileID: 7018498707038222447}
   Ability2Button: {fileID: 7892379034427185041}
-  _cardVisualTransform: {fileID: 3309244574523073680}
+  _cardVisualTransform: {fileID: 6056330397828168066}
   _sortingGroup: {fileID: 3309244574523073685}
   _hoverEnlargeValue: 1.5
 --- !u!210 &3309244574523073685

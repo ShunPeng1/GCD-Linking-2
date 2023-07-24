@@ -21,10 +21,14 @@ public class CharacterInformation : BaseCardInformation
     public float MaxMoveCellCost = 5;
     public float MoveSpeed = 20;
     public LayerMask WallLayerMask;
+
+    [Header("Ability")] 
+    public int Ability1UseCount = 1, Ability2UseCount = 1;
     
     
     [Header("Lights")]
     public float LightRange;
+    
     
     
     

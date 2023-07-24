@@ -20,6 +20,9 @@ namespace _Scripts.Cards.Card_UI
         private CharacterCardButton _selectingButton;
         private readonly Dictionary<CharacterCardButton,Action<Action, Action>> _executeAbilityBaseOnButton = new();
         private readonly Dictionary<CharacterCardButton,Func<Action, Action, bool>> _forceEndAbilityBaseOnButton = new();
+        private readonly Dictionary<CharacterCardButton, int> _remainingUseCountBaseOnButtons = new();
+        private readonly Dictionary<CharacterCardButton, int> _originalUseCountBaseOnButtons = new();
+        
 
         [Header("Hover")] 
         
@@ -52,13 +55,20 @@ namespace _Scripts.Cards.Card_UI
             
             _forceEndAbilityBaseOnButton.Add(Ability1Button, CharacterMapDynamicGameObject.ForceEndMoveAbility);
             _forceEndAbilityBaseOnButton.Add(Ability2Button, CharacterMapDynamicGameObject.ForceEndSecondAbility);
+            
+            _originalUseCountBaseOnButtons.Add(Ability1Button, CharacterInformation.Ability1UseCount);
+            _originalUseCountBaseOnButtons.Add(Ability2Button, CharacterInformation.Ability2UseCount);
+
+            ResetAbilityUse();
         }
 
         public virtual void ExecuteAbility(CharacterCardButton cardButton)
         {
+            if (_remainingUseCountBaseOnButtons[cardButton] <= 0) return;
+            
             if (_selectingButton == null)
             {
-                _executeAbilityBaseOnButton[cardButton].Invoke(() => _selectingButton = null, () => _selectingButton = null);
+                _executeAbilityBaseOnButton[cardButton].Invoke(() => SuccessfullySelectionAbility(_selectingButton), () => _selectingButton = null);
                 _selectingButton = cardButton;
             }
             else if (_selectingButton == cardButton)
@@ -89,6 +99,38 @@ namespace _Scripts.Cards.Card_UI
 
         }
 
+        protected virtual void SuccessfullySelectionAbility(CharacterCardButton cardButton)
+        {
+            _selectingButton = null;
+            cardButton.DisableInteractable();
+            _remainingUseCountBaseOnButtons[cardButton]--;
+
+            if (CheckAllExhaustUse())
+            {
+                // End Card
+            }
+        }
+
+        protected virtual bool CheckAllExhaustUse()
+        {
+            int totalCount = 0;
+            foreach (var (cardButton, count) in _remainingUseCountBaseOnButtons)
+            {
+                totalCount += count;
+            }
+
+            return totalCount <= 0;
+        }
+        
+        protected virtual void ResetAbilityUse()
+        {
+            foreach (var (cardButton, count) in _originalUseCountBaseOnButtons)
+            {
+                _remainingUseCountBaseOnButtons[cardButton] = count;
+                cardButton.EnableInteractable();
+            }
+        }
+        
         protected override void ValidateInformation()
         {
             

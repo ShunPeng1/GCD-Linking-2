@@ -17,24 +17,8 @@ public class MapManager : SingletonMonoBehaviour<MapManager>
     public float WidthSize, HeightSize;
 
     
-    public class CharacterSet
-    {
-        public CharacterInformation CharacterInformation;
-        public BaseCharacterMapDynamicGameObject CharacterMapGameObject;
-        public BaseCharacterCardGameObject CharacterCardGameObject;
-
-        public CharacterSet(CharacterInformation characterInformation, BaseCharacterMapDynamicGameObject characterMapGameObject, BaseCharacterCardGameObject characterCardGameObject)
-        {
-            CharacterInformation = characterInformation;
-            CharacterMapGameObject = characterMapGameObject;
-            CharacterCardGameObject = characterCardGameObject;
-        }
-    }
-
-    [Header("Card Region")] 
-    [SerializeField] private HandCardRegion _handCardRegion;
-    [SerializeField] private PlayCardRegion _playCardRegion;
     
+
     [Header("Entities")]
     public VentMapGameObject[] VentMapGameObjects;
     public ExitMapGameObject[] ExitMapGameObjects;
@@ -42,7 +26,6 @@ public class MapManager : SingletonMonoBehaviour<MapManager>
     public Transform[] SpawnPointsInDark;
     
     [Header("Sets")]
-    private Dictionary<CharacterInformation, CharacterSet> _characterSets = new();
     private RandomBag<Transform> _spawnPointBags;
 
 
@@ -94,7 +77,6 @@ public class MapManager : SingletonMonoBehaviour<MapManager>
         InitializeCellAdjacency();
         InitializeCellItem();
         InitializeVent();
-        InitializeCharacters();
     }
 
     private void InitializeCellAdjacency()
@@ -146,23 +128,11 @@ public class MapManager : SingletonMonoBehaviour<MapManager>
         }
     }
     
-    
-    private void InitializeCharacters()
+
+    public BaseCharacterMapDynamicGameObject CreateCharacterMapGameObject(BaseCharacterMapDynamicGameObject prefab)
     {
-        var charactersInformation = GameManager.Instance.CharactersInformation;
-        foreach (var characterInformation in charactersInformation)
-        {
-            var spawnPoint = GetRandomSpawnPoint();
-            var characterMap = Instantiate(characterInformation.CharacterMapDynamicGameObjectPrefab, spawnPoint.position, spawnPoint.rotation, MapParent.transform);
-            var characterCard = Instantiate(characterInformation.BaseCharacterCardGameObjectPrefab);
-            
-            CharacterSet set = new CharacterSet(characterInformation, characterMap, characterCard);
-            _characterSets[characterInformation] = set;
-            _handCardRegion.AddCard(characterCard, null);
-            
-            characterMap.InitializeCharacter(characterInformation,characterCard);
-            characterCard.InitializeCharacter(characterInformation,characterMap);
-        }
+        var spawnPoint = GetRandomSpawnPoint();
+        return Instantiate(prefab, spawnPoint.position, spawnPoint.rotation, MapParent.transform);
     }
 
     private Transform GetRandomSpawnPoint()

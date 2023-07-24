@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Shun_State_Machine;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
@@ -35,12 +36,18 @@ namespace _Scripts.Managers
         public GameChangeSideState GameChangeSideStateState = new (GameState.ChangeSide);
 
         
-        public CharacterInformation[] CharactersInformation;
-        
+        [SerializeField] private CharacterInformation[] _charactersInformation;
+        public readonly Dictionary<CharacterInformation, CharacterSet> CharacterSets = new();
+
         public PlayerRole CurrentRolePlaying;
         protected void Awake()
         {
             InitializeState();
+        }
+
+        protected void Start()
+        {
+            InitializeCharacters();
         }
 
         void InitializeState()
@@ -61,6 +68,23 @@ namespace _Scripts.Managers
             BaseStateMachine.CurrentBaseState.ExecuteState();
         }
         
+        private void InitializeCharacters()
+        {
+            
+            foreach (var characterInformation in _charactersInformation)
+            {
+                var characterMap = MapManager.Instance.CreateCharacterMapGameObject(
+                    characterInformation.CharacterMapDynamicGameObjectPrefab);
+                var characterCard = CardManager.Instance.CreateCharacterMapGameObject(
+                    characterInformation.BaseCharacterCardGameObjectPrefab);
+            
+                CharacterSet set = new CharacterSet(characterInformation, characterMap, characterCard);
+                CharacterSets[characterInformation] = set;
+
+                characterMap.InitializeCharacter(characterInformation,characterCard);
+                characterCard.InitializeCharacter(characterInformation,characterMap);
+            }
+        }
         
     }
     
