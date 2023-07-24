@@ -22,4 +22,4 @@ MonoBehaviour:
     m_Bits: 1536
   Ability1UseCount: 1
   Ability2UseCount: 0
-  LightInformation: {fileID: 0}
+  LightInformation: {fileID: 11400000, guid: b0ea5d6f8f0ddd64f8fb705c4c93c360, type: 2}
