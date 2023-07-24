@@ -13,6 +13,7 @@ namespace Shun_Card_System
         [HideInInspector] public int IndexInRegion;
         public BaseCardGameObject CardGameObject;
 
+        
         public void InitializeRegion(BaseCardRegion cardRegion, int indexInRegion)
         {
             CardRegion = cardRegion;
@@ -25,7 +26,8 @@ namespace Shun_Card_System
             if (cardGameObject == null) return;
             
             CardGameObject = cardGameObject;
-            CardGameObject.transform.SetParent(transform);
+            CardGameObject.transform.SetParent(transform, true);
+            
             CardGameObject.DisableInteractable();
             AttachCardVisual();
         }
@@ -35,7 +37,10 @@ namespace Shun_Card_System
             if (CardGameObject == null) return null;
             
             BaseCardGameObject detachedCard = CardGameObject;
-            detachedCard.transform.SetParent(CardRegion.transform.parent);
+            
+            detachedCard.transform.SetParent(CardRegion.transform.parent, true);
+            
+            
             CardGameObject = null;
 
             return detachedCard;
@@ -46,5 +51,7 @@ namespace Shun_Card_System
             CardGameObject.transform.localPosition = Vector3.zero;
             CardGameObject.EnableInteractable();
         }
+        
+        
     }
 }

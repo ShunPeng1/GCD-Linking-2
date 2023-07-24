@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Shun_Card_System
 {
@@ -40,5 +41,7 @@ namespace Shun_Card_System
         {
             Interactable = true;
         }
+
+        
     }
 }
