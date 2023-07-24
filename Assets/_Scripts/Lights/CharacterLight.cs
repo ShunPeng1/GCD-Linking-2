@@ -87,7 +87,6 @@ public class CharacterLight : MonoBehaviour
 
     public bool TryCastToCharacter(BaseCharacterMapDynamicGameObject checkingCharacter)
     {
-        
         var direction = checkingCharacter.transform.position - transform.position ;
         
         // Ignore collisions between this character and other objects for this raycast.
@@ -100,17 +99,10 @@ public class CharacterLight : MonoBehaviour
         
         Physics2D.IgnoreCollision(GetComponent<Collider2D>(), GetComponent<Collider2D>(), false);
 
-        if ((hit2D.collider != null))
-        {
-            Debug.DrawLine(transform.position, hit2D.transform.position, Color.blue, 1000f);
-
-            if (hit2D.collider.transform.gameObject.GetComponent<BaseCharacterMapDynamicGameObject>() ==
-                checkingCharacter) return true;
-        }
-
         
         Debug.Log("Cast from "+gameObject.name + " to "+ checkingCharacter.gameObject + " doesn't found "+ direction + " direction and "+ _lightRange +" range, " + " it hit " + hit2D.collider );
-        return false;
+        return (hit2D.collider != null) && 
+               (hit2D.collider.transform.gameObject.GetComponent<BaseCharacterMapDynamicGameObject>() == checkingCharacter);
 
     }
 }
