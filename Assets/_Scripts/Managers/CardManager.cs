@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using _Scripts.Cards.Card_UI;
+using _Scripts.Managers;
 using Shun_Card_System;
 using UnityEngine;
 using UnityUtilities;
@@ -35,16 +36,43 @@ public class CardManager : SingletonMonoBehaviour<CardManager>
     
     public void AddFromDeckToHand()
     {
+
         for (int i = 0; i < _startRoundAddCardCount; i++)
         {
             _handCardRegion.AddCard(_deckCardBag.PopRandomItem());
         }
     }
 
+    public void LockPlayCard()
+    {
+        _playCardRegion.DisableInteractable();
+    }
+    
+    public void UnlockPlayCard()
+    {
+        _playCardRegion.EnableInteractable();
+    }
+    
     public void ExhaustCard(BaseCardGameObject baseCardGameObject)
     {
         _playCardRegion.RemoveCard(baseCardGameObject);
         _exhaustCardRegion.AddCard(baseCardGameObject);
+        
+        _playCardRegion.EnableInteractable();
+        
+        if(_handCardRegion.CardHoldingCount == 0) GameManager.Instance.EndRound();
     }
+
+    public void ShuffleBackToDeck()
+    {
+        if (_deckCardRegion.CardHoldingCount != 0) return;
+
+        foreach (var card in _exhaustCardRegion.GetAllCardGameObjects())
+        {
+            _exhaustCardRegion.RemoveCard(card);
+            _deckCardRegion.AddCard(card);
+        }
+    }
+    
 
 }

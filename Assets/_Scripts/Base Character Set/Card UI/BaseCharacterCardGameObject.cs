@@ -70,6 +70,8 @@ namespace _Scripts.Cards.Card_UI
             {
                 _executeAbilityBaseOnButton[cardButton].Invoke(() => SuccessfullySelectionAbility(_selectingButton), () => _selectingButton = null);
                 _selectingButton = cardButton;
+
+                LockCardPlay();
             }
             else if (_selectingButton == cardButton)
             {
@@ -77,6 +79,7 @@ namespace _Scripts.Cards.Card_UI
                 {
                     _selectingButton.Deselect();
                     _selectingButton = null;
+                    UnlockCardPlay();
                 }
                 else
                 {
@@ -88,7 +91,7 @@ namespace _Scripts.Cards.Card_UI
                 if (_forceEndAbilityBaseOnButton[_selectingButton].Invoke(null,null))
                 {
                     _selectingButton.Deselect();
-                    _executeAbilityBaseOnButton[cardButton].Invoke(() => _selectingButton = null, () => _selectingButton = null);
+                    _executeAbilityBaseOnButton[cardButton].Invoke(() => SuccessfullySelectionAbility(_selectingButton), () => _selectingButton = null);
                     _selectingButton = cardButton;
                 }
                 else
@@ -96,6 +99,7 @@ namespace _Scripts.Cards.Card_UI
                     Debug.Log("Can not force end ability");
                 }
             }
+            
 
         }
 
@@ -108,9 +112,25 @@ namespace _Scripts.Cards.Card_UI
             if (CheckAllExhaustUse())
             {
                 // End Card
+                CardManager.Instance.ExhaustCard(this);
+                ResetAbilityUse();
+            }
+            else
+            {
+                
             }
         }
 
+        protected void LockCardPlay()
+        {
+            CardManager.Instance.LockPlayCard();
+        }
+
+        protected void UnlockCardPlay()
+        {
+            CardManager.Instance.UnlockPlayCard();
+        }
+        
         protected virtual bool CheckAllExhaustUse()
         {
             int totalCount = 0;

@@ -23,8 +23,8 @@ namespace Shun_Card_System
         [SerializeField] protected int MaxCardHold;
         [SerializeField] protected MiddleInsertionStyle CardMiddleInsertionStyle = MiddleInsertionStyle.InsertInMiddle;
         protected BaseCardHolder TemporaryBaseCardHolder;
-        protected int CardHoldingCount = 0;
-
+        public int CardHoldingCount { get; private set; } 
+        
         
         [SerializeField]
         private bool _interactable;

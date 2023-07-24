@@ -89,14 +89,16 @@ namespace _Scripts.Managers
             }
         }
 
-        private void StartRound()
+        public void StartRound()
         {
+            
+            CardManager.Instance.ShuffleBackToDeck();
             CardManager.Instance.AddFromDeckToHand();
         }
 
-        private void EndRound()
+        public void EndRound()
         {
-            
+            StartRound();
         }
 
         private void SwapPlayingRole()

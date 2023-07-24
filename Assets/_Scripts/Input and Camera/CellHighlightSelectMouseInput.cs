@@ -44,7 +44,9 @@ public class CellHighlightSelectMouseInput : BaseCardMouseInput
         if (!Input.GetMouseButtonDown(0)) return;
         
         if (LastHoverCellSelectHighlighter != null) LastHoverCellSelectHighlighter.EndHover();
-        InvokeFinishedSelection(FindFirstCellSelectInMouseCast());
+        
+        var foundCell = FindFirstCellSelectInMouseCast();
+        if (foundCell != null) InvokeFinishedSelection(foundCell);
 
     }
 
