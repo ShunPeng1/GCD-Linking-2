@@ -99,7 +99,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ff7485705298d04f801dde12ffad4d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _isOpen: 1
+  _isUnlock: 1
   _animator: {fileID: 4328152091826742401}
 --- !u!114 &2315559895233799649
 MonoBehaviour:
@@ -124,7 +124,7 @@ MonoBehaviour:
   m_ApplyToSortingLayers: 00000000dba47abebd43ac7b49dd9a2e23d164f2
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
-  m_LightOrder: 0
+  m_LightOrder: 5
   m_AlphaBlendOnOverlap: 0
   m_OverlapOperation: 1
   m_NormalMapDistance: 3

@@ -34,6 +34,9 @@ namespace _Scripts.Managers
         public GameChooseCardState GameChooseCardStateState = new (GameState.ChooseCard);
         public GameChangeSideState GameChangeSideStateState = new (GameState.ChangeSide);
 
+        
+        public CharacterInformation[] CharactersInformation;
+        
         public PlayerRole CurrentRolePlaying;
         protected void Awake()
         {
@@ -58,6 +61,9 @@ namespace _Scripts.Managers
             BaseStateMachine.CurrentBaseState.ExecuteState();
         }
         
-
+        
     }
+    
+    
+    
 }

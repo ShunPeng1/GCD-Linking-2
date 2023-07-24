@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using Shun_Card_System;
 using UnityEngine;
 using UnityUtilities;
 

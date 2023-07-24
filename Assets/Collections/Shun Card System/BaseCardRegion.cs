@@ -99,7 +99,9 @@ namespace Shun_Card_System
 
         public bool AddCard(BaseCardGameObject cardGameObject, BaseCardHolder cardHolder)
         {
-            if (cardHolder == null || cardHolder.IndexInRegion >= CardHoldingCount)
+            if (!Interactable) return false;
+            
+            if ( cardHolder == null || cardHolder.IndexInRegion >= CardHoldingCount)
             {
                 return AddCardAtBack(cardGameObject);
             }
@@ -183,6 +185,8 @@ namespace Shun_Card_System
         
         public virtual bool RemoveCard(BaseCardGameObject cardGameObject)
         {
+            if (!Interactable) return false;
+
             for (int i = 0; i < _cardPlaceHolders.Count; i++)
             {
                 if (_cardPlaceHolders[i].CardGameObject != cardGameObject) continue;
@@ -199,6 +203,8 @@ namespace Shun_Card_System
         
         public virtual bool RemoveCard(BaseCardGameObject cardGameObject,BaseCardHolder cardHolder)
         {
+            if (!Interactable) return false;
+
             if (cardHolder.CardGameObject != cardGameObject) return false;
 
             cardHolder.DetachCardGameObject();
@@ -212,6 +218,8 @@ namespace Shun_Card_System
         
         public virtual bool TakeOutTemporary(BaseCardGameObject cardGameObject,BaseCardHolder cardHolder)
         {
+            if (!Interactable) return false;
+
             if (!RemoveCard(cardGameObject, cardHolder)) return false;
             
             TemporaryBaseCardHolder = cardHolder;

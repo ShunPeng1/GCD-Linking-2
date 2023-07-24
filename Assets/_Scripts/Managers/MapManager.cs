@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using _Scripts.Cards.Card_UI;
+using _Scripts.Managers;
 using Shun_Card_System;
 using Shun_Grid_System;
 using UnityEngine;
@@ -9,7 +10,8 @@ using UnityUtilities;
 
 public class MapManager : SingletonMonoBehaviour<MapManager>
 {
-    [field: Header("Grid")]
+    [field: Header("Grid")] 
+    public Transform MapParent;
     public GridXY<MapCellItem> WorldGrid { get; private set;}
     public int GridWidth, GridHeight;
     public float WidthSize, HeightSize;
@@ -34,7 +36,6 @@ public class MapManager : SingletonMonoBehaviour<MapManager>
     [SerializeField] private PlayCardRegion _playCardRegion;
     
     [Header("Entities")]
-    public CharacterInformation[] CharacterInformation;
     public VentMapGameObject[] VentMapGameObjects;
     public ExitMapGameObject[] ExitMapGameObjects;
     public Transform[] SpawnPointsInLight;
@@ -62,11 +63,12 @@ public class MapManager : SingletonMonoBehaviour<MapManager>
     {
         InitializeGrid();
         InitializeBag();
+        
     }
 
     private void InitializeGrid()
     {
-        WorldGrid = new GridXY<MapCellItem>(GridWidth, GridHeight, WidthSize, HeightSize , transform.position);
+        WorldGrid = new GridXY<MapCellItem>(GridWidth, GridHeight, WidthSize, HeightSize , MapParent.transform.position);
 
         for (int x = 0; x < GridWidth; x++)
         {
@@ -91,8 +93,8 @@ public class MapManager : SingletonMonoBehaviour<MapManager>
     {
         InitializeCellAdjacency();
         InitializeCellItem();
-        InitializeCharacters();
         InitializeVent();
+        InitializeCharacters();
     }
 
     private void InitializeCellAdjacency()
@@ -120,9 +122,8 @@ public class MapManager : SingletonMonoBehaviour<MapManager>
             for (int y = 0; y < GridHeight; y++)
             {
                 var cell = WorldGrid.GetCell(x, y);
-                
-                //cell.Item.MapCellGameObject = Instantiate(ResourceManager.Instance.TestItem, WorldGrid.GetWorldPositionOfNearestCell(x,y), Quaternion.identity, transform);
-                cell.Item.CellSelectHighlighter = Instantiate(ResourceManager.Instance.CellSelectHighlighter, WorldGrid.GetWorldPositionOfNearestCell(x,y), Quaternion.identity, transform);
+
+                cell.Item.CellSelectHighlighter = Instantiate(ResourceManager.Instance.CellSelectHighlighter, WorldGrid.GetWorldPositionOfNearestCell(x,y), Quaternion.identity, MapParent.transform);
             }
         }
     }
@@ -130,14 +131,6 @@ public class MapManager : SingletonMonoBehaviour<MapManager>
     private void InitializeVent()
     {
         var distanceCost = new ManhattanDistanceCost();
-
-
-        /*
-        foreach (var vent in VentMapGameObjects)
-        {
-            vent.InitializeGrid();   
-        }
-        */
 
         foreach (var vent1 in VentMapGameObjects)
         {
@@ -156,10 +149,11 @@ public class MapManager : SingletonMonoBehaviour<MapManager>
     
     private void InitializeCharacters()
     {
-        foreach (var characterInformation in CharacterInformation)
+        var charactersInformation = GameManager.Instance.CharactersInformation;
+        foreach (var characterInformation in charactersInformation)
         {
             var spawnPoint = GetRandomSpawnPoint();
-            var characterMap = Instantiate(characterInformation.CharacterMapDynamicGameObjectPrefab, spawnPoint.position, spawnPoint.rotation, transform);
+            var characterMap = Instantiate(characterInformation.CharacterMapDynamicGameObjectPrefab, spawnPoint.position, spawnPoint.rotation, MapParent.transform);
             var characterCard = Instantiate(characterInformation.BaseCharacterCardGameObjectPrefab);
             
             CharacterSet set = new CharacterSet(characterInformation, characterMap, characterCard);

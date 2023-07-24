@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using Shun_Card_System;
+using Shun_Card_System;
 using Shun_Grid_System;
 using UnityEngine;
 
