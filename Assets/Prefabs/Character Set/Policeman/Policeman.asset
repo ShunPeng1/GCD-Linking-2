@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34c9d505dc914b3483558add7ac61e09, type: 3}
+  m_Name: Policeman
+  m_EditorClassIdentifier: 
+  BaseCharacterCardGameObjectPrefab: {fileID: 7928324009480736404, guid: 9afbf31be7ad2e742ace365408199423, type: 3}
+  CharacterMapDynamicGameObjectPrefab: {fileID: 1999589914, guid: 48b6bc0bbaff7de44885020305824b64, type: 3}
+  PortraitButtonRect: {fileID: 5804057826200580115, guid: c92774cf5e2673d4baa68de2a785b587, type: 3}
+  CharacterName: 
+  MaxMoveCellCost: 5
+  MoveSpeed: 10
+  WallLayerMask:
+    serializedVersion: 2
+    m_Bits: 1536
+  Ability1UseCount: 1
+  Ability2UseCount: 0
+  Ability1Description: Ability 1 Description
+  Ability2Description: Ability 1 Description
+  LightInformation: {fileID: 0}
