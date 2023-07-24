@@ -14,15 +14,18 @@ using UnityEngine.Rendering.Universal;
 
 public class BaseCharacterMapDynamicGameObject : MapDynamicGameObject
 {
-    protected float MoveSpeed => CharacterInformation.MoveSpeed;
-    
-    protected CharacterInformation CharacterInformation;
+
+    [Header("Components")] [SerializeField]
+    protected CharacterMovementVisual CharacterMovementVisual;
+    public CharacterInformation CharacterInformation { get; protected set; }
     protected BaseCharacterCardGameObject CharacterCardGameObject;
-    
+
+    public float MoveSpeed => CharacterInformation.MoveSpeed;
+
     
     [Header("Grid")]
-    public Vector3 NextCellPosition;
-    public Vector3 LastCellPosition;
+    public GridXYCell<MapCellItem> NextMovingCell;
+    public GridXYCell<MapCellItem> LastMovingCell;
     public bool IsBetween2Cells = true;
     protected LinkedList<GridXYCell<MapCellItem>> MovingPath;
     protected CharacterMovementTask CurrentMovementTask;
@@ -44,12 +47,7 @@ public class BaseCharacterMapDynamicGameObject : MapDynamicGameObject
         Moving
     }
 
-    [Header("Animation")]
-    protected Animator Animator;
-    protected bool IsTweenAnimation = false;
-    private static readonly int XDirection = Animator.StringToHash("XDirection");
-    private static readonly int YDirection = Animator.StringToHash("YDirection");
-
+    
     [Header("Ability")] 
     private bool _canForceEnd = true;
     
@@ -57,7 +55,6 @@ public class BaseCharacterMapDynamicGameObject : MapDynamicGameObject
     
     protected void Start()
     {
-        Animator = GetComponent<Animator>();
         InitializeState();
     }
 
@@ -74,7 +71,7 @@ public class BaseCharacterMapDynamicGameObject : MapDynamicGameObject
         AdjacencyCellSelection = new NonCollisionTilemapAdjacencyCellSelection(CharacterInformation.WallLayerMask);
         PathfindingAlgorithm = new AStarPathFinding<GridXY<MapCellItem>, GridXYCell<MapCellItem>, MapCellItem>(Grid, AdjacencyCellSelection, PathFindingCostFunction.Manhattan);
         
-        LastCellPosition = NextCellPosition = Grid.GetWorldPositionOfNearestCell(transform.position);
+        LastMovingCell = NextMovingCell = Grid.GetCell(transform.position);
 
     }
     
@@ -117,23 +114,17 @@ public class BaseCharacterMapDynamicGameObject : MapDynamicGameObject
         CheckArriveCell();
     }
 
-    protected void MoveAlongMovingPath()
+    protected virtual void MoveAlongMovingPath()
     {
-        if (IsTweenAnimation) return;
-        
-        // Move
-        transform.position = Vector3.MoveTowards(transform.position, NextCellPosition, MoveSpeed * Time.fixedDeltaTime);
+        CharacterMovementVisual.Move(LastMovingCell, NextMovingCell);
         IsBetween2Cells = true;
-        
-        //Animation
-        Animator.SetFloat(XDirection, ShunMath.GetSignOrZero(NextCellPosition.x - transform.position.x));
-        Animator.SetFloat(YDirection, ShunMath.GetSignOrZero(NextCellPosition.y - transform.position.y));
-        
     }
 
-    protected bool CheckArriveCell()
+    private bool CheckArriveCell()
     {
-        if (Vector3.Distance(transform.position, NextCellPosition) != 0) return true;
+        Vector3 nextCellPosition = Grid.GetWorldPositionOfNearestCell(NextMovingCell);
+
+        if (Vector3.Distance(transform.position, nextCellPosition) != 0) return true;
             
         IsBetween2Cells = false;
         if (CurrentMovementTask != null && transform.position == CurrentMovementTask.GoalCellPosition)
@@ -146,25 +137,25 @@ public class BaseCharacterMapDynamicGameObject : MapDynamicGameObject
         ExtractNextCellInPath();
         return true;
     }
-    
-    protected void ExtractNextCellInPath()
+
+    private void ExtractNextCellInPath()
     {
         if (MovingPath == null || MovingPath.Count == 0)
         {
-            LastCellPosition = NextCellPosition;
+            LastMovingCell = NextMovingCell;
             return;
         }
         
-        var nextNextCell = MovingPath.First.Value;
+        var nextNextMovingCell = MovingPath.First.Value;
         MovingPath.RemoveFirst(); // the next standing node
 
-        Vector3 nextNextCellPosition = Grid.GetWorldPositionOfNearestCell(nextNextCell.XIndex, nextNextCell.YIndex) ;
+        Vector3 nextNextCellPosition = Grid.GetWorldPositionOfNearestCell(nextNextMovingCell.XIndex, nextNextMovingCell.YIndex) ;
 
-        LastCellPosition = NextCellPosition;
-        NextCellPosition = nextNextCellPosition;
+        LastMovingCell = NextMovingCell;
+        NextMovingCell = nextNextMovingCell;
         //Debug.Log(gameObject.name + " Get Next Cell " + NextCellPosition);
     }
-
+    
     protected bool CreateInitialPath(Vector3 startPosition, Vector3 endPosition)
     {
         var startCell = Grid.GetCell(startPosition);
@@ -179,7 +170,7 @@ public class BaseCharacterMapDynamicGameObject : MapDynamicGameObject
 
         return false;
     }
-
+    
     #endregion
 
     #region MOVE_ABILITY
