@@ -48,6 +48,9 @@ namespace _Scripts.Managers
         protected void Start()
         {
             InitializeCharacters();
+            CardManager.Instance.Initialize();
+
+            StartRound();
         }
 
         void InitializeState()
@@ -84,6 +87,26 @@ namespace _Scripts.Managers
                 characterMap.InitializeCharacter(characterInformation,characterCard);
                 characterCard.InitializeCharacter(characterInformation,characterMap);
             }
+        }
+
+        private void StartRound()
+        {
+            CardManager.Instance.AddFromDeckToHand();
+        }
+
+        private void EndRound()
+        {
+            
+        }
+
+        private void SwapPlayingRole()
+        {
+            CurrentRolePlaying = CurrentRolePlaying switch
+            {
+                PlayerRole.Detective => PlayerRole.Imposter,
+                PlayerRole.Imposter => PlayerRole.Detective,
+                _ => throw new ArgumentOutOfRangeException()
+            };
         }
         
     }

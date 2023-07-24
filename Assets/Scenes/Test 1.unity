@@ -17608,8 +17608,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _handCardRegion: {fileID: 734855584}
   _playCardRegion: {fileID: 8170925472789329259}
-  _discardCardRegion: {fileID: 1965224856}
+  _exhaustCardRegion: {fileID: 1965224856}
   _deckCardRegion: {fileID: 4417979384645452186}
+  _startRoundAddCardCount: 4
 --- !u!114 &734855584 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8299054843014282570, guid: 6fe38d2d8a812cc4e883766c6a8febce, type: 3}
@@ -47599,7 +47600,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3221032574887615011, guid: a005a02e208518c48ae981a27eeb1959, type: 3}
       propertyPath: m_Name
-      value: Discard Card Region
+      value: Exhaust Card Region
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a005a02e208518c48ae981a27eeb1959, type: 3}
