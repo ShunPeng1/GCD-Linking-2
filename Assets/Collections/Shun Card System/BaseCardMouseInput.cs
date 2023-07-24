@@ -242,7 +242,7 @@ namespace Shun_Card_System
             if (dropHolder == null)
             {
                 if (dropRegion != null && dropRegion != LastCardRegion 
-                                       && dropRegion.AddCard(DraggingCard, dropHolder)) // Successfully add to the drop region
+                                       && dropRegion.TryAddCard(DraggingCard, dropHolder)) // Successfully add to the drop region
                 {
                     if (LastCardHolder != null) // remove the temporary in last region
                     {
@@ -258,7 +258,7 @@ namespace Shun_Card_System
             {
                 if (dropRegion == null) dropRegion = dropHolder.CardRegion;
             
-                if (!dropRegion.AddCard(DraggingCard, dropHolder))
+                if (!dropRegion.TryAddCard(DraggingCard, dropHolder))
                 {
                     if(LastCardRegion != null) LastCardRegion.ReAddTemporary(DraggingCard);
                 }

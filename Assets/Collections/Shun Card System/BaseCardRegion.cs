@@ -29,7 +29,9 @@ namespace Shun_Card_System
         [SerializeField]
         private bool _interactable;
         public bool Interactable { get => _interactable; protected set => _interactable = value;}
-        
+
+        #region INITIALIZE
+
         protected virtual void Awake()
         {
             InitializeCardPlaceHolder();
@@ -57,7 +59,12 @@ namespace Shun_Card_System
             }
             
         }
+        
+        #endregion
 
+        #region OPERATION
+
+        
         public List<BaseCardGameObject> GetAllCardGameObjects(bool getNull = false)
         {
             List<BaseCardGameObject> result = new();
@@ -211,6 +218,17 @@ namespace Shun_Card_System
             return true;
         }
         
+        
+        #endregion
+
+        #region MOUSE_INPUT
+        
+        public virtual bool TryAddCard(BaseCardGameObject cardGameObject, BaseCardHolder cardHolder = null)
+        {
+            if (!Interactable) return false;
+            return AddCard(cardGameObject, cardHolder);
+        }
+        
         public virtual bool TakeOutTemporary(BaseCardGameObject cardGameObject,BaseCardHolder cardHolder)
         {
             if (!Interactable) return false;
@@ -232,6 +250,9 @@ namespace Shun_Card_System
         {
             TemporaryBaseCardHolder = null;
         }
+        
+        
+        #endregion
 
         protected virtual void SmoothMove(Transform movingObject, Vector3 toPosition)
         {
