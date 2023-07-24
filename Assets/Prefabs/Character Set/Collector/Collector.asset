@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34c9d505dc914b3483558add7ac61e09, type: 3}
+  m_Name: Collector
+  m_EditorClassIdentifier: 
+  BaseCharacterCardGameObjectPrefab: {fileID: 8962101026936846624, guid: a5cce061deeb37940ad7db27a203cb12, type: 3}
+  CharacterMapDynamicGameObjectPrefab: {fileID: 4982841041291895874, guid: d7a52a2590f0ebf47a818b1bd011a505, type: 3}
+  PortraitButtonRect: {fileID: 2961032907028652608, guid: 5a46fb162a627e04a857b5ed6921a71d, type: 3}
+  CharacterName: Oppo
+  MaxMoveCellCost: 5
+  MoveSpeed: 10
+  WallLayerMask:
+    serializedVersion: 2
+    m_Bits: 1536
+  Ability1UseCount: 1
+  Ability2UseCount: 0
+  Ability1Description: Ability 1 Description
+  Ability2Description: Ability 1 Description
+  LightInformation: {fileID: 11400000, guid: b0ea5d6f8f0ddd64f8fb705c4c93c360, type: 2}

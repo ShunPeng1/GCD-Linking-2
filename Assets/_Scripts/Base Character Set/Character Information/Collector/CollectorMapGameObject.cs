@@ -1,5 +1,5 @@
 ﻿
-public class CollectorGirdMapGameObject : BaseCharacterMapDynamicGameObject
+public class CollectorMapGameObject : BaseCharacterMapDynamicGameObject
 {
     
 }
