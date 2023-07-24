@@ -39,7 +39,9 @@ public class CardManager : SingletonMonoBehaviour<CardManager>
 
         for (int i = 0; i < _startRoundAddCardCount; i++)
         {
-            _handCardRegion.AddCard(_deckCardBag.PopRandomItem());
+            var card = _deckCardBag.PopRandomItem();
+            _deckCardRegion.RemoveCard(card);
+            _handCardRegion.AddCard(card);
         }
     }
 
