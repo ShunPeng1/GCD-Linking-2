@@ -47314,8 +47314,8 @@ MonoBehaviour:
   _currentTurnFormat: '''s Turn'
   _currentTurnPopInOffset: {x: 0, y: -500, z: 0}
   _currentTurnPopInDuration: 0.5
-  _currentTurnPopShowDuration: 2
-  _currentTurnPopEase: 0
+  _currentTurnPopShowDuration: 1.5
+  _currentTurnPopEase: 27
   _imposterRecognitionCanvasGroup: {fileID: 1286445089}
   _imposterRecognitionPanel: {fileID: 1061069149}
   _imposterRecognitionText: {fileID: 415872938}
