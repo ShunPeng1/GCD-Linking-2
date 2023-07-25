@@ -107,12 +107,15 @@ namespace _Scripts.Cards.Card_UI
             _selectingButton = null;
             cardButton.DisableInteractable();
             _remainingUseCountBaseOnButtons[cardButton]--;
-
+            
+            UnlockCardPlay();
+            
             if (CheckAllExhaustUse())
             {
                 // End Card
                 CardManager.Instance.ExhaustCard(this);
                 ResetAbilityUse();
+                
             }
             else
             {

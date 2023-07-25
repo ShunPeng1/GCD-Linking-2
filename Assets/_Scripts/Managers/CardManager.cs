@@ -48,11 +48,13 @@ public class CardManager : SingletonMonoBehaviour<CardManager>
     public void LockPlayCard()
     {
         _playCardRegion.DisableInteractable();
+        _handCardRegion.DisableInteractable();
     }
     
     public void UnlockPlayCard()
     {
         _playCardRegion.EnableInteractable();
+        _handCardRegion.EnableInteractable();
     }
     
     public void ExhaustCard(BaseCardGameObject baseCardGameObject)
