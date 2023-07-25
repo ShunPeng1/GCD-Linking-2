@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BaseCharacterCardGameObjectPrefab: {fileID: 4063144564229208273, guid: 37d77ca7eed6f7141bfa3196beba0a12, type: 3}
   CharacterMapDynamicGameObjectPrefab: {fileID: 2509046602339728011, guid: efe5518ec40fa054b97b1f055ac511cd, type: 3}
-  PortraitButtonRect: {fileID: 4207590802793953190, guid: d65b2746e93907846879e6550e90ebc1, type: 3}
+  PortraitButtonRectPrefab: {fileID: 4207590802793953190, guid: d65b2746e93907846879e6550e90ebc1, type: 3}
   CharacterName: Fang
   MaxMoveCellCost: 5
   MoveSpeed: 10

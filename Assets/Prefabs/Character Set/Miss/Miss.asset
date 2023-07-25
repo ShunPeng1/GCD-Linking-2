@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BaseCharacterCardGameObjectPrefab: {fileID: 1872037069832199136, guid: d74fc08edcd910e489071de1cd974968, type: 3}
   CharacterMapDynamicGameObjectPrefab: {fileID: 2097545772, guid: 9d1cf1df60b17ef40a72eaed5c1a6f9b, type: 3}
-  PortraitButtonRect: {fileID: 5659443152011262983, guid: 8a5d37e97da051a43844968a0e710dd4, type: 3}
+  PortraitButtonRectPrefab: {fileID: 5659443152011262983, guid: 8a5d37e97da051a43844968a0e710dd4, type: 3}
   CharacterName: Lily
   MaxMoveCellCost: 5
   MoveSpeed: 10

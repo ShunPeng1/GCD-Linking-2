@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BaseCharacterCardGameObjectPrefab: {fileID: 7475486431823642696, guid: cd8de14fe846266429e3355b2e3760df, type: 3}
   CharacterMapDynamicGameObjectPrefab: {fileID: 70362273, guid: 70031b11d0d0af240ba5e0dd096a5da4, type: 3}
-  PortraitButtonRect: {fileID: 212570473184928993, guid: 821e115bc6030f04884190b020d7ecf4, type: 3}
+  PortraitButtonRectPrefab: {fileID: 212570473184928993, guid: 821e115bc6030f04884190b020d7ecf4, type: 3}
   CharacterName: Kenny
   MaxMoveCellCost: 5
   MoveSpeed: 10

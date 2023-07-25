@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 using UnityUtilities;
 
@@ -25,6 +26,10 @@ public class CameraMovement : MonoBehaviour
     [Header("Scale with camera")] 
     [SerializeField] private List<GameObject> _scaleWithCameraZoomObjects;
 
+    [Header("Focus")] 
+    [SerializeField] private float _focusTweenDuration = 0.5f;
+    [SerializeField] private Ease _focusEase;
+    
     private void Awake()
     {
         _camera = Camera.main;
@@ -94,5 +99,27 @@ public class CameraMovement : MonoBehaviour
         {
             scaleWithCameraObject.transform.localScale = Vector3.one * (newZoomDistance / _originZoomDistance);
         }
+    }
+    
+    
+    public void MoveAndZoomToGameObject(GameObject targetGameObject)
+    {
+        // Calculate the target position for the camera
+        Vector3 targetPosition = targetGameObject.transform.position;
+        Vector3 boundedTargetPosition =
+            new Vector3(
+                Mathf.Clamp(targetPosition.x, _horizontalBoundPosition.From, _horizontalBoundPosition.To),
+                Mathf.Clamp(targetPosition.y, _verticalBoundPosition.From, _verticalBoundPosition.To),
+                transform.position.z);
+
+        // Animate camera movement to the target position
+        _camera.transform.DOMove(boundedTargetPosition, _focusTweenDuration).SetEase(_focusEase);
+
+        // Calculate the new zoom distance for the camera
+        float newZoomDistance = _originZoomDistance * (targetGameObject.transform.localScale.x);
+        newZoomDistance = Mathf.Clamp(newZoomDistance, _zoomBound.From, _zoomBound.To);
+
+        // Animate camera zoom to the new zoom distance
+        _camera.DOOrthoSize(newZoomDistance, _focusTweenDuration).SetEase(_focusEase);
     }
 }

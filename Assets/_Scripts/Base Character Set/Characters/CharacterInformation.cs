@@ -13,7 +13,7 @@ public class CharacterInformation : BaseCardInformation
     [Header("Prefabs")]
     public BaseCharacterCardGameObject BaseCharacterCardGameObjectPrefab;
     public BaseCharacterMapDynamicGameObject CharacterMapDynamicGameObjectPrefab;
-    public PortraitButtonRect PortraitButtonRect;
+    public PortraitButtonRect PortraitButtonRectPrefab;
     
     [Header("Info")]
     public string CharacterName;

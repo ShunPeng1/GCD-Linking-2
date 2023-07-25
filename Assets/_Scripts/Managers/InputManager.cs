@@ -8,7 +8,7 @@ namespace _Scripts.Input_and_Camera
 {
     public class InputManager : SingletonMonoBehaviour<InputManager>
     {
-        [SerializeField] private CameraMovement _cameraMovement;
+        public CameraMovement CameraMovement;
         [SerializeField] private float _changeInputCooldown = 0.2f;
         
         private readonly BaseCardMouseInput _defaultMouseInput = new BaseCardMouseInput();

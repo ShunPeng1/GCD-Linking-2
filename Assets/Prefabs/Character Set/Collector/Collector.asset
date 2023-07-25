@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BaseCharacterCardGameObjectPrefab: {fileID: 8962101026936846624, guid: a5cce061deeb37940ad7db27a203cb12, type: 3}
   CharacterMapDynamicGameObjectPrefab: {fileID: 4982841041291895874, guid: d7a52a2590f0ebf47a818b1bd011a505, type: 3}
-  PortraitButtonRect: {fileID: 2961032907028652608, guid: 5a46fb162a627e04a857b5ed6921a71d, type: 3}
+  PortraitButtonRectPrefab: {fileID: 2961032907028652608, guid: 5a46fb162a627e04a857b5ed6921a71d, type: 3}
   CharacterName: Oppo
   MaxMoveCellCost: 5
   MoveSpeed: 10

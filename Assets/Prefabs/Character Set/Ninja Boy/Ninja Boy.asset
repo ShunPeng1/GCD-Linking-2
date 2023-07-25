@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BaseCharacterCardGameObjectPrefab: {fileID: 2429621006754030333, guid: 39528160e22099246be05039b4c45801, type: 3}
   CharacterMapDynamicGameObjectPrefab: {fileID: 1450177792449202611, guid: ee07b0f170cd2f043afc677babb91658, type: 3}
-  PortraitButtonRect: {fileID: 2590853419457726634, guid: d755492c1ec8e59449b13913a5f7882a, type: 3}
+  PortraitButtonRectPrefab: {fileID: 2590853419457726634, guid: d755492c1ec8e59449b13913a5f7882a, type: 3}
   CharacterName: Hanz
   MaxMoveCellCost: 5
   MoveSpeed: 10

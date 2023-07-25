@@ -80,12 +80,15 @@ namespace _Scripts.Managers
                     characterInformation.CharacterMapDynamicGameObjectPrefab);
                 var characterCard = CardManager.Instance.CreateCharacterMapGameObject(
                     characterInformation.BaseCharacterCardGameObjectPrefab);
+                var characterPortrait =
+                    UiManager.Instance.CreatePortraitButton(characterInformation.PortraitButtonRectPrefab);
             
-                CharacterSet set = new CharacterSet(characterInformation, characterMap, characterCard);
+                CharacterSet set = new CharacterSet(characterInformation, characterMap, characterCard, characterPortrait);
                 CharacterSets[characterInformation] = set;
 
                 characterMap.InitializeCharacter(characterInformation,characterCard);
                 characterCard.InitializeCharacter(characterInformation,characterMap);
+                characterPortrait.InitializeCharacter(characterInformation, characterMap);
             }
         }
 

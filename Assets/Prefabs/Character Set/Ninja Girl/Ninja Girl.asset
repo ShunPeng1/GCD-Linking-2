@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BaseCharacterCardGameObjectPrefab: {fileID: 4817635229831402553, guid: e9abaf4e6ce7f0f4cb1be2660657aaef, type: 3}
   CharacterMapDynamicGameObjectPrefab: {fileID: 7585191472267442928, guid: 55bff60255a547e4984087dc67f0b993, type: 3}
-  PortraitButtonRect: {fileID: 1133740268583423605, guid: c4162607a34d3584482311feebb97e52, type: 3}
+  PortraitButtonRectPrefab: {fileID: 1133740268583423605, guid: c4162607a34d3584482311feebb97e52, type: 3}
   CharacterName: Ni
   MaxMoveCellCost: 5
   MoveSpeed: 10
