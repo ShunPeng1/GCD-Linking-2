@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7996352030391422561}
   - component: {fileID: 7996352030391422560}
   - component: {fileID: 7996352030391422563}
-  - component: {fileID: 7996352030391422562}
+  - component: {fileID: 6280582275261379514}
   m_Layer: 0
   m_Name: Card Holder
   m_TagString: Untagged
@@ -112,7 +112,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 4, y: 7}
   m_EdgeRadius: 0
---- !u!114 &7996352030391422562
+--- !u!114 &6280582275261379514
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -121,9 +121,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 7996352030391422565}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 54443a62c8d0109448b6e0ab2eeef86e, type: 3}
+  m_Script: {fileID: 11500000, guid: 14df680376d64a6bbda39fdf556f0f06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   CardRegion: {fileID: 0}
   IndexInRegion: 0
   CardGameObject: {fileID: 0}
+  _addDuration: 0.25
+  _addEase: 8

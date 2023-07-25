@@ -99,10 +99,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5bc393742df44c687e81e5db07dfa21, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Interactable: 0
+  _interactable: 0
   _spriteRenderer: {fileID: 5153590514547019757}
   _validCellHighlightValue: 0.5
   _hoverHighlightValue: 0.5
+  _animator: {fileID: -1557342770918682652}
 --- !u!61 &-2159847120361783999
 BoxCollider2D:
   m_ObjectHideFlags: 0

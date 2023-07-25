@@ -49320,10 +49320,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 930233320}
     m_Modifications:
-    - target: {fileID: 2277777576576257099, guid: 02215e9fb82e8b544b91b426de1298bf, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 12
-      objectReference: {fileID: 0}
     - target: {fileID: 3162348009324545202, guid: 02215e9fb82e8b544b91b426de1298bf, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -49395,14 +49391,6 @@ PrefabInstance:
     - target: {fileID: 8299054843014282565, guid: 6fe38d2d8a812cc4e883766c6a8febce, type: 3}
       propertyPath: m_Name
       value: Hand Card Region
-      objectReference: {fileID: 0}
-    - target: {fileID: 8299054843014282567, guid: 6fe38d2d8a812cc4e883766c6a8febce, type: 3}
-      propertyPath: m_Size.x
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 8299054843014282567, guid: 6fe38d2d8a812cc4e883766c6a8febce, type: 3}
-      propertyPath: m_Offset.x
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8299054843014282569, guid: 6fe38d2d8a812cc4e883766c6a8febce, type: 3}
       propertyPath: m_RootOrder
