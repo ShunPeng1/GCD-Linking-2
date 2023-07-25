@@ -24,7 +24,7 @@ public class PortraitButtonRect : MonoBehaviour
 
     private void ZoomToCharacter()
     {
-        InputManager.Instance.CameraMovement.MoveAndZoomToGameObject(_characterMapGameObject.gameObject);
+        InputManager.Instance.CameraMovement.FocusOnGameObject(_characterMapGameObject.gameObject);
         
     }
     

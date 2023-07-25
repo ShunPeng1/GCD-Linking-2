@@ -9,8 +9,8 @@ namespace _Scripts.Cards.Card_UI
     public class BaseCharacterCardGameObject : BaseCardGameObject
     {
         protected CharacterInformation CharacterInformation;
-        protected BaseCharacterMapDynamicGameObject CharacterMapDynamicGameObject;
-        
+        public BaseCharacterMapDynamicGameObject CharacterMapDynamicGameObject { get; protected set; }
+
         [Header("Child Components")]
         public CharacterCardButton Ability1Button;
         public CharacterCardButton Ability2Button;

@@ -1,4 +1,6 @@
-﻿using Shun_Card_System;
+﻿using _Scripts.Input_and_Camera;
+using Shun_Card_System;
+using UnityEngine;
 
 namespace _Scripts.Cards.Card_UI
 {
@@ -12,6 +14,8 @@ namespace _Scripts.Cards.Card_UI
             
             characterCardGameObject.Ability1Button.EnableInteractable();
             characterCardGameObject.Ability2Button.EnableInteractable();
+            
+            InputManager.Instance.CameraMovement.FocusOnGameObject(characterCardGameObject.CharacterMapDynamicGameObject.gameObject);
             
         }
 

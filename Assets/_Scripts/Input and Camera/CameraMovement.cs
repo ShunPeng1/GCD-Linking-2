@@ -102,7 +102,7 @@ public class CameraMovement : MonoBehaviour
     }
     
     
-    public void MoveAndZoomToGameObject(GameObject targetGameObject)
+    public void FocusOnGameObject(GameObject targetGameObject)
     {
         // Calculate the target position for the camera
         Vector3 targetPosition = targetGameObject.transform.position;
