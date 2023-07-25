@@ -260,6 +260,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _button: {fileID: 3409343322780988325}
+  _animator: {fileID: 7043522985156979615}
 --- !u!114 &3409343322780988325
 MonoBehaviour:
   m_ObjectHideFlags: 0

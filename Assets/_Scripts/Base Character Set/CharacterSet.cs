@@ -1,4 +1,6 @@
 ﻿using _Scripts.Cards.Card_UI;
+using _Scripts.DataWrapper;
+using _Scripts.Lights;
 
 public class CharacterSet
 {
@@ -6,12 +8,14 @@ public class CharacterSet
     public BaseCharacterMapDynamicGameObject CharacterMapGameObject;
     public BaseCharacterCardGameObject CharacterCardGameObject;
     public PortraitButtonRect CharacterPortraitButton;
-    
-    public CharacterSet(CharacterInformation characterInformation, BaseCharacterMapDynamicGameObject characterMapGameObject, BaseCharacterCardGameObject characterCardGameObject, PortraitButtonRect characterPortraitButton)
+    public ObservableData<CharacterRecognitionState> CharacterRecognition;
+
+    public CharacterSet(CharacterInformation characterInformation, BaseCharacterMapDynamicGameObject characterMapGameObject, BaseCharacterCardGameObject characterCardGameObject, PortraitButtonRect characterPortraitButton, ObservableData<CharacterRecognitionState> characterRecognition)
     {
         CharacterInformation = characterInformation;
         CharacterMapGameObject = characterMapGameObject;
         CharacterCardGameObject = characterCardGameObject;
         CharacterPortraitButton = characterPortraitButton;
+        CharacterRecognition = characterRecognition;
     }
 }

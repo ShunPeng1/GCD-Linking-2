@@ -8,8 +8,8 @@ namespace _Scripts.Cards.Card_UI
 {
     public class BaseCharacterCardGameObject : BaseCardGameObject
     {
-        protected CharacterInformation CharacterInformation;
-        public BaseCharacterMapDynamicGameObject CharacterMapDynamicGameObject { get; protected set; }
+        public CharacterSet CharacterSet { get; private set; }
+
 
         [Header("Child Components")]
         public CharacterCardButton Ability1Button;
@@ -39,25 +39,24 @@ namespace _Scripts.Cards.Card_UI
             Ability2Button.Initialize(this);
         }
         
-        public void InitializeCharacter(CharacterInformation characterInformation, BaseCharacterMapDynamicGameObject characterMapDynamicGameObject )
+        public void InitializeCharacter(CharacterSet characterSet)
         {
-            CharacterInformation = characterInformation;
-            CharacterMapDynamicGameObject = characterMapDynamicGameObject;
-        
-            if (CharacterInformation == null)
+            CharacterSet = characterSet;
+            
+            if (CharacterSet.CharacterInformation == null)
             {
                 Debug.LogWarning("No information in "+ gameObject.name);
                 return;
             }
             
-            _executeAbilityBaseOnButton.Add(Ability1Button, CharacterMapDynamicGameObject.MoveAbility);
-            _executeAbilityBaseOnButton.Add(Ability2Button, CharacterMapDynamicGameObject.SecondAbility);
+            _executeAbilityBaseOnButton.Add(Ability1Button, CharacterSet.CharacterMapGameObject.MoveAbility);
+            _executeAbilityBaseOnButton.Add(Ability2Button, CharacterSet.CharacterMapGameObject.SecondAbility);
             
-            _forceEndAbilityBaseOnButton.Add(Ability1Button, CharacterMapDynamicGameObject.ForceEndMoveAbility);
-            _forceEndAbilityBaseOnButton.Add(Ability2Button, CharacterMapDynamicGameObject.ForceEndSecondAbility);
+            _forceEndAbilityBaseOnButton.Add(Ability1Button, CharacterSet.CharacterMapGameObject.ForceEndMoveAbility);
+            _forceEndAbilityBaseOnButton.Add(Ability2Button, CharacterSet.CharacterMapGameObject.ForceEndSecondAbility);
             
-            _originalUseCountBaseOnButtons.Add(Ability1Button, CharacterInformation.Ability1UseCount);
-            _originalUseCountBaseOnButtons.Add(Ability2Button, CharacterInformation.Ability2UseCount);
+            _originalUseCountBaseOnButtons.Add(Ability1Button, CharacterSet.CharacterInformation.Ability1UseCount);
+            _originalUseCountBaseOnButtons.Add(Ability2Button, CharacterSet.CharacterInformation.Ability2UseCount);
 
             ResetAbilityUse();
         }

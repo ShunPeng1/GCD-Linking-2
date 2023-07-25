@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using _Scripts.DataWrapper;
+using _Scripts.Lights;
 using Shun_State_Machine;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
@@ -80,15 +82,17 @@ namespace _Scripts.Managers
                     characterInformation.CharacterMapDynamicGameObjectPrefab);
                 var characterCard = CardManager.Instance.CreateCharacterMapGameObject(
                     characterInformation.BaseCharacterCardGameObjectPrefab);
-                var characterPortrait =
-                    UiManager.Instance.CreatePortraitButton(characterInformation.PortraitButtonRectPrefab);
-            
-                CharacterSet set = new CharacterSet(characterInformation, characterMap, characterCard, characterPortrait);
+                var characterPortrait = UiManager.Instance.CreatePortraitButton(
+                    characterInformation.PortraitButtonRectPrefab);
+                var characterRecognition =
+                    new ObservableData<CharacterRecognitionState>(CharacterRecognitionState.InDark);
+                
+                CharacterSet set = new CharacterSet(characterInformation, characterMap, characterCard, characterPortrait, characterRecognition);
                 CharacterSets[characterInformation] = set;
 
-                characterMap.InitializeCharacter(characterInformation,characterCard);
-                characterCard.InitializeCharacter(characterInformation,characterMap);
-                characterPortrait.InitializeCharacter(characterInformation, characterMap);
+                characterMap.InitializeCharacter(set);
+                characterCard.InitializeCharacter(set);
+                characterPortrait.InitializeCharacter(set);
             }
         }
 
@@ -101,10 +105,7 @@ namespace _Scripts.Managers
 
         public void EndRound()
         {
-            foreach (var baseCharacterMapDynamicGameObject in MapManager.Instance.SearchAllInDarkCharacter())
-            {
-                Debug.Log(baseCharacterMapDynamicGameObject.gameObject.name+" is in Dark");
-            }
+            MapManager.Instance.UpdateAllCharacterRecognition();
             
             StartRound();
         }

@@ -1,7 +1,7 @@
 using System;
 
 using System.Collections.Generic;
-
+using _Scripts.Lights;
 using Shun_Grid_System;
 using UnityEngine;
 using UnityUtilities;
@@ -148,30 +148,37 @@ public class MapManager : SingletonMonoBehaviour<MapManager>
         return _spawnPointBags.PopRandomItem();
     }
 
-    public List<BaseCharacterMapDynamicGameObject> SearchAllInDarkCharacter()
+    public void UpdateAllCharacterRecognition()
     {
-        List<BaseCharacterMapDynamicGameObject> charactersInDark = new();
+        
         foreach (var checkingCharacter in CharacterMapGameObjects)
         {
-            bool isInDark = true;
-            foreach (var castingCharacter in CharacterLights)
-            {
-                if (checkingCharacter.CharacterLight == castingCharacter) continue;
-
-                if (!castingCharacter.TryCastToCharacter(checkingCharacter)) continue;
-                
-                isInDark = false;
-                break;
-
-            }
-
-            if (isInDark)
-            {
-                charactersInDark.Add(checkingCharacter);
-            }
+            UpdateCharacterRecognition(checkingCharacter);
         }
 
-        return charactersInDark;
+        
+    }
+
+    public void UpdateCharacterRecognition(BaseCharacterMapDynamicGameObject checkingCharacter)
+    {
+    
+        var currentCharacterRecognition = checkingCharacter.CharacterSet.CharacterRecognition;
+        if (currentCharacterRecognition.Value == CharacterRecognitionState.Innocent) return;
+        
+        bool isInDark = true;
+        foreach (var castingCharacter in CharacterLights)
+        {
+            if (checkingCharacter.CharacterLight == castingCharacter) continue;
+
+            if (!castingCharacter.TryCastToCharacter(checkingCharacter)) continue;
+            
+            isInDark = false;
+            break;
+
+        }
+
+        currentCharacterRecognition.Value = isInDark ? CharacterRecognitionState.InDark : CharacterRecognitionState.InLight;
+        
     }
 
 }

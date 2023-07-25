@@ -15,7 +15,7 @@ namespace _Scripts.Cards.Card_UI
             characterCardGameObject.Ability1Button.EnableInteractable();
             characterCardGameObject.Ability2Button.EnableInteractable();
             
-            InputManager.Instance.CameraMovement.FocusOnGameObject(characterCardGameObject.CharacterMapDynamicGameObject.gameObject);
+            InputManager.Instance.CameraMovement.FocusOnGameObject(characterCardGameObject.CharacterSet.CharacterMapGameObject.gameObject);
             
         }
 

@@ -18,11 +18,13 @@ public class BaseCharacterMapDynamicGameObject : MapDynamicGameObject
     [Header("Components")] 
     public CharacterLight CharacterLight;
     public CharacterMovementVisual CharacterMovementVisual;
-    public CharacterInformation CharacterInformation { get; protected set; }
-    protected BaseCharacterCardGameObject CharacterCardGameObject;
+    
+    public CharacterSet CharacterSet { get; protected set; }
 
-    public float MoveSpeed => CharacterInformation.MoveSpeed;
-
+    public float MoveSpeed => CharacterSet.CharacterInformation.MoveSpeed;
+    private float MaxMoveCellCost => CharacterSet.CharacterInformation.MaxMoveCellCost;
+    private LayerMask WallLayerMask => CharacterSet.CharacterInformation.WallLayerMask;
+    
     
     [Header("Grid")]
     public GridXYCell<MapCellItem> NextMovingCell;
@@ -59,17 +61,16 @@ public class BaseCharacterMapDynamicGameObject : MapDynamicGameObject
         InitializeState();
     }
 
-    public void InitializeCharacter(CharacterInformation characterInformation, BaseCharacterCardGameObject characterCardGameObject )
+    public void InitializeCharacter(CharacterSet characterSet)
     {
-        CharacterInformation = characterInformation;
-        CharacterCardGameObject = characterCardGameObject;
+        CharacterSet = characterSet;
 
         InitializePathfinding();
     }
     
     protected virtual void InitializePathfinding()
     {
-        AdjacencyCellSelection = new NonCollisionTilemapAdjacencyCellSelection(CharacterInformation.WallLayerMask);
+        AdjacencyCellSelection = new NonCollisionTilemapAdjacencyCellSelection(WallLayerMask);
         PathfindingAlgorithm = new AStarPathFinding<GridXY<MapCellItem>, GridXYCell<MapCellItem>, MapCellItem>(Grid, AdjacencyCellSelection, PathFindingCostFunction.Manhattan);
         
         LastMovingCell = NextMovingCell = Grid.GetCell(transform.position);
@@ -164,7 +165,7 @@ public class BaseCharacterMapDynamicGameObject : MapDynamicGameObject
         var startCell = Grid.GetCell(startPosition);
         var endCell = Grid.GetCell(endPosition);
         
-        MovingPath = PathfindingAlgorithm.FirstTimeFindPath(startCell, endCell, CharacterInformation.MaxMoveCellCost);
+        MovingPath = PathfindingAlgorithm.FirstTimeFindPath(startCell, endCell, MaxMoveCellCost);
 
         if (MovingPath != null) return true; 
         
@@ -196,7 +197,10 @@ public class BaseCharacterMapDynamicGameObject : MapDynamicGameObject
                     () =>
                     {
                         StateMachine.SetToState(CharacterMovementState.Idling);
+                        
                         externalSuccessSelectionAction?.Invoke();   
+                        MapManager.Instance.UpdateAllCharacterRecognition();
+                        
                         _canForceEnd = true;
                     });
             
@@ -218,9 +222,10 @@ public class BaseCharacterMapDynamicGameObject : MapDynamicGameObject
         return cellSelectHighlighter != null;
     }
     
+    
     protected void ShowMovablePath()
     {
-        AllMovableCellAndCost = PathfindingAlgorithm.FindAllCellsSmallerThanCost(GetCell(), CharacterInformation.MaxMoveCellCost);
+        AllMovableCellAndCost = PathfindingAlgorithm.FindAllCellsSmallerThanCost(GetCell(), MaxMoveCellCost);
 
         foreach (var (cell, gCost) in AllMovableCellAndCost)
         {

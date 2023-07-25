@@ -46741,6 +46741,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CellSelectHighlighter: {fileID: 6047663085760228396, guid: 777ceec8482da2d4fba51d66b5944836, type: 3}
+  InnocentSprite: {fileID: 0}
 --- !u!1 &1793653590
 GameObject:
   m_ObjectHideFlags: 0
