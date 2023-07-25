@@ -25,6 +25,7 @@ namespace _Scripts.Managers
         [SerializeField] private CanvasGroup _currentTurnCanvasGroup;
         [SerializeField] private RectTransform _currentTurnPanel;
         [SerializeField] private Image _currentTurnImage;
+        [SerializeField] private Button _currentTurnButton;
         [SerializeField] private TMP_Text _currentTurnText;
         [SerializeField] private string _currentTurnFormat = "'s Turn";
         
@@ -33,7 +34,7 @@ namespace _Scripts.Managers
         [SerializeField] private float _currentTurnPopShowDuration = 2f;
         [SerializeField] private Ease _currentTurnPopEase;
         private Vector3 _currentTurnPopDestination;
-        private Sequence _popInSequence;
+        private Sequence _currentTurnPopInSequence;
         
         
         [Header("Imposter Recognition")] 
@@ -44,7 +45,14 @@ namespace _Scripts.Managers
 
         private void Start()
         {
+            InitializeCurrentTurnGroup();
+        }
+
+        void InitializeCurrentTurnGroup()
+        {
+            
             _currentTurnPopDestination = _currentTurnPanel.position;
+            _currentTurnButton.onClick.AddListener(() => _currentTurnPopInSequence.Complete());
         }
 
         private readonly List<PortraitButtonRect> _portraitButtonRects = new(); 
@@ -84,15 +92,15 @@ namespace _Scripts.Managers
 
             _currentTurnText.text = GameManager.Instance.CurrentRolePlaying + _currentTurnFormat;
 
-            _popInSequence.Complete();
-            _popInSequence = DOTween.Sequence();
+            _currentTurnPopInSequence.Complete();
+            _currentTurnPopInSequence = DOTween.Sequence();
             
             Vector3 originalDestination = _currentTurnPopDestination;
             Vector3 popInDestination = _currentTurnPopDestination + _currentTurnPopInOffset;
             
-            _popInSequence.Append(_currentTurnPanel.DOMove(popInDestination, _currentTurnPopInDuration).SetEase(_currentTurnPopEase));
-            _popInSequence.AppendInterval(_currentTurnPopShowDuration);
-            _popInSequence.Append(_currentTurnPanel.DOMove(originalDestination, _currentTurnPopInDuration).SetEase(_currentTurnPopEase));
+            _currentTurnPopInSequence.Append(_currentTurnPanel.DOMove(popInDestination, _currentTurnPopInDuration).SetEase(_currentTurnPopEase));
+            _currentTurnPopInSequence.AppendInterval(_currentTurnPopShowDuration);
+            _currentTurnPopInSequence.Append(_currentTurnPanel.DOMove(originalDestination, _currentTurnPopInDuration).SetEase(_currentTurnPopEase));
             
         }
 
