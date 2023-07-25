@@ -63,7 +63,10 @@ public class CardManager : SingletonMonoBehaviour<CardManager>
         _playCardRegion.EnableInteractable();
         
         if(_handCardRegion.CardHoldingCount == 0) GameManager.Instance.EndRound();
+        else GameManager.Instance.EndTurn();
     }
+    
+    
 
     public void ShuffleBackToDeck()
     {

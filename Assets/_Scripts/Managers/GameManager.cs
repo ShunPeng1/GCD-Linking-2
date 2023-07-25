@@ -6,6 +6,7 @@ using Shun_State_Machine;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
 using UnityUtilities;
+using Random = UnityEngine.Random;
 
 namespace _Scripts.Managers
 {
@@ -39,6 +40,7 @@ namespace _Scripts.Managers
 
         
         [SerializeField] private CharacterInformation[] _charactersInformation;
+        public CharacterSet ImposterSet;
         public readonly Dictionary<CharacterInformation, CharacterSet> CharacterSets = new();
 
         public PlayerRole CurrentRolePlaying;
@@ -52,6 +54,7 @@ namespace _Scripts.Managers
             InitializeCharacters();
             CardManager.Instance.Initialize();
 
+            CreateImposter();
             StartRound();
         }
 
@@ -96,9 +99,24 @@ namespace _Scripts.Managers
             }
         }
 
-        public void StartRound()
+        private void CreateImposter()
+        {
+            var imposterCharacterInformation = _charactersInformation[ Random.Range(0, _charactersInformation.Length) ];
+            ImposterSet = CharacterSets[imposterCharacterInformation];
+        }
+
+        private void StartTurn()
         {
             
+        }
+
+        public void EndTurn()
+        {
+            SwapPlayingRole();
+        }
+
+        private void StartRound()
+        {
             CardManager.Instance.ShuffleBackToDeck();
             CardManager.Instance.AddFromDeckToHand();
         }
@@ -108,6 +126,7 @@ namespace _Scripts.Managers
             MapManager.Instance.UpdateAllCharacterRecognition();
             
             StartRound();
+            SwapPlayingRole();
         }
 
         private void SwapPlayingRole()
@@ -118,6 +137,8 @@ namespace _Scripts.Managers
                 PlayerRole.Imposter => PlayerRole.Detective,
                 _ => throw new ArgumentOutOfRangeException()
             };
+            
+            UiManager.Instance.UpdateRolePlaying(CurrentRolePlaying);
         }
         
     }
