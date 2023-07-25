@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using _Scripts.Lights;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -20,6 +22,12 @@ namespace _Scripts.Managers
         [SerializeField] private TMP_Text _currentTurnText;
         [SerializeField] private string _currentTurnFormat = "'s Turn";
         
+        [Header("Current Turn")] 
+        [SerializeField] private RectTransform _lastRoundPanel;
+        [SerializeField] private TMP_Text _imposterRecognitionText;
+        [SerializeField] private string _imposterRecognitionFormat = "Was In ";
+
+        
         private readonly List<PortraitButtonRect> _portraitButtonRects = new(); 
         public PortraitButtonRect CreatePortraitButton(PortraitButtonRect portraitButtonRectPrefab)
         {
@@ -28,14 +36,27 @@ namespace _Scripts.Managers
             return portraitButtonRect;
         }
 
-        public void UpdateImposterRound()
+        public void UpdateImposterRecognition()
         {
-            
+            switch (GameManager.Instance.ImposterSet.CharacterRecognition.Value)
+            {
+                case CharacterRecognitionState.InLight:
+                    _imposterRecognitionText.text = _imposterRecognitionFormat + "Light";
+                    break;
+                case CharacterRecognitionState.InDark:
+                    _imposterRecognitionText.text = _imposterRecognitionFormat + "Dark";
+                    break;
+                case CharacterRecognitionState.Innocent:
+                    _imposterRecognitionText.text = "Imposter Was Found";
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
         }
 
-        public void UpdateRolePlaying(PlayerRole playingRole)
+        public void UpdateRolePlaying()
         {
-            _currentTurnText.text = playingRole.ToString() + _currentTurnFormat;
+            _currentTurnText.text = GameManager.Instance.CurrentRolePlaying + _currentTurnFormat;
         }
 
         public void IDK()

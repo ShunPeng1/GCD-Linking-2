@@ -1226,7 +1226,7 @@ GameObject:
   - component: {fileID: 296209929}
   - component: {fileID: 296209928}
   m_Layer: 0
-  m_Name: Current Turn Panel (1)
+  m_Name: Text panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -23601,7 +23601,7 @@ GameObject:
   - component: {fileID: 1188106926}
   - component: {fileID: 1188106927}
   m_Layer: 0
-  m_Name: Last Turn Panel
+  m_Name: Imposter Recognition Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -46991,6 +46991,9 @@ MonoBehaviour:
   _currentTurnPanel: {fileID: 1136604663}
   _currentTurnText: {fileID: 167731587}
   _currentTurnFormat: '''s Turn'
+  _lastRoundPanel: {fileID: 1188106926}
+  _imposterRecognitionText: {fileID: 1148125492}
+  _imposterRecognitionFormat: 'Was In '
 --- !u!1 &1577870563
 GameObject:
   m_ObjectHideFlags: 0

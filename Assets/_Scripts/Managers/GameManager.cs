@@ -97,6 +97,9 @@ namespace _Scripts.Managers
                 characterCard.InitializeCharacter(set);
                 characterPortrait.InitializeCharacter(set);
             }
+            
+            
+            MapManager.Instance.UpdateAllCharacterRecognition();
         }
 
         private void CreateImposter()
@@ -124,11 +127,28 @@ namespace _Scripts.Managers
         public void EndRound()
         {
             MapManager.Instance.UpdateAllCharacterRecognition();
+            CheckImposterRecognition();
+            
+            UiManager.Instance.UpdateImposterRecognition();
             
             StartRound();
             SwapPlayingRole();
         }
 
+        private void CheckImposterRecognition()
+        {
+            var imposterRecognition = ImposterSet.CharacterRecognition.Value;
+            foreach (var (characterInformation, characterSet) in CharacterSets)
+            {
+                if (characterSet == ImposterSet) continue;
+                
+                if (imposterRecognition != characterSet.CharacterRecognition.Value && characterSet.CharacterRecognition.Value != CharacterRecognitionState.Innocent)
+                {
+                    characterSet.CharacterRecognition.Value = CharacterRecognitionState.Innocent;
+                }
+            }
+        }
+        
         private void SwapPlayingRole()
         {
             CurrentRolePlaying = CurrentRolePlaying switch
@@ -138,8 +158,10 @@ namespace _Scripts.Managers
                 _ => throw new ArgumentOutOfRangeException()
             };
             
-            UiManager.Instance.UpdateRolePlaying(CurrentRolePlaying);
+            UiManager.Instance.UpdateRolePlaying();
         }
+        
+        
         
     }
     
