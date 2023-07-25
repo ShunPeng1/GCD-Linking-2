@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Shun_Card_System;
 using Shun_Utility;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace Shun_Card_System
 {
@@ -34,7 +35,7 @@ namespace Shun_Card_System
             CastMouse();
             if(!IsDraggingCard) UpdateHoverObject();
         
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
             {
                 StartDragCard();
             }

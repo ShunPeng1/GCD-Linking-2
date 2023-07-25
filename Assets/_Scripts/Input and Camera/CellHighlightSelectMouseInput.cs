@@ -5,6 +5,7 @@ using Shun_Card_System;
 using Shun_Card_System;
 using Shun_Grid_System;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 
 public class CellHighlightSelectMouseInput : BaseCardMouseInput
@@ -41,12 +42,13 @@ public class CellHighlightSelectMouseInput : BaseCardMouseInput
         CastMouse();
         UpdateHoverObject();
 
-        if (!Input.GetMouseButtonDown(0)) return;
+        if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
+        {
+            if (LastHoverCellSelectHighlighter != null) LastHoverCellSelectHighlighter.EndHover();
         
-        if (LastHoverCellSelectHighlighter != null) LastHoverCellSelectHighlighter.EndHover();
-        
-        var foundCell = FindFirstCellSelectInMouseCast();
-        if (foundCell != null) InvokeFinishedSelection(foundCell);
+            var foundCell = FindFirstCellSelectInMouseCast();
+            if (foundCell != null) InvokeFinishedSelection(foundCell);
+        }
 
     }
 
