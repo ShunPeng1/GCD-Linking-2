@@ -6,6 +6,6 @@ public class ResourceManager : SingletonMonoBehaviour<ResourceManager>
 {
     public CellSelectHighlighter CellSelectHighlighter;
 
-    public Sprite InnocentSprite;
+    
     
 }
