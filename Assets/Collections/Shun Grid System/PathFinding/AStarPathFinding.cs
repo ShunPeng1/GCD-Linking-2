@@ -75,15 +75,16 @@ namespace Shun_Grid_System
                 
                 foreach (TCell adjacentCell in currentCell.AdjacentCells)
                 {
-                    if (visitedSet.Contains(adjacentCell))
-                        continue;
+                    //if (visitedSet.Contains(adjacentCell))
+                    //    continue;
 
                     if (!_adjacentCellSelectionFunction.CheckMovableCell(currentCell, adjacentCell))
                         continue;
 
                     double newGCost = GetGValue(currentCell) + GetDistanceCost(currentCell, adjacentCell);
 
-                    if (newGCost < GetGValue(adjacentCell) || !openSet.Contains(adjacentCell))
+                    if (newGCost < GetGValue(adjacentCell) || 
+                        (!openSet.Contains(adjacentCell) && !visitedSet.Contains(adjacentCell)))
                     {
                         _gValues[adjacentCell] = newGCost;
                         _predecessors[adjacentCell] = currentCell;
@@ -132,8 +133,8 @@ namespace Shun_Grid_System
 
                 foreach (TCell adjacentCell in currentMinFCostCell.AdjacentCells)
                 {
-                    if (visitedSet.Contains(adjacentCell)) 
-                        continue;  // skip for travelled cell
+                    //if (visitedSet.Contains(adjacentCell)) 
+                    //    continue;  // skip for travelled cell
                     
                     if (!_adjacentCellSelectionFunction.CheckMovableCell(currentMinFCostCell, adjacentCell)) 
                         continue;
@@ -141,7 +142,8 @@ namespace Shun_Grid_System
                     
                     double newGCostToNeighbour = GetGValue(currentMinFCostCell) + GetDistanceCost(currentMinFCostCell, adjacentCell);
                     
-                    if (newGCostToNeighbour < GetGValue(adjacentCell) || !openSet.Contains(adjacentCell))
+                    if (newGCostToNeighbour < GetGValue(adjacentCell) || 
+                        (!openSet.Contains(adjacentCell) && !visitedSet.Contains(adjacentCell)))
                     {
                         double hCost = GetDistanceCost(adjacentCell, _endCell);
                         double fCost = newGCostToNeighbour + hCost;
