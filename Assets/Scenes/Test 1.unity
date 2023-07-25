@@ -1226,6 +1226,7 @@ GameObject:
   - component: {fileID: 342322741}
   - component: {fileID: 342322740}
   - component: {fileID: 342322739}
+  - component: {fileID: 342322742}
   m_Layer: 0
   m_Name: Turn Canvas
   m_TagString: Untagged
@@ -1315,6 +1316,18 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!225 &342322742
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 342322737}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!43 &358411530
 Mesh:
   m_ObjectHideFlags: 0
@@ -47289,12 +47302,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69b35059ab344da2be21954c32d9fef6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _imposterSprite: {fileID: 21300000, guid: d43b0133dbc217440b812301bfa7527c, type: 3}
+  _detectiveSprite: {fileID: 21300000, guid: c57ba0c67bc094f4bba833890ad02d6b, type: 3}
+  _crimeBoardCanvasGroup: {fileID: 1742261275}
   _crimeBoardPanel: {fileID: 1303242271}
   _characterPortraitButtonGroup: {fileID: 1970025291}
+  _currentTurnCanvasGroup: {fileID: 342322742}
   _currentTurnPanel: {fileID: 1755437791}
+  _currentTurnImage: {fileID: 1800333832}
   _currentTurnText: {fileID: 167731587}
   _currentTurnFormat: '''s Turn'
-  _lastRoundPanel: {fileID: 1061069149}
+  _currentTurnPopInOffset: {x: 0, y: -500, z: 0}
+  _currentTurnPopInDuration: 0.5
+  _currentTurnPopShowDuration: 2
+  _currentTurnPopEase: 0
+  _imposterRecognitionCanvasGroup: {fileID: 1286445089}
+  _imposterRecognitionPanel: {fileID: 1061069149}
   _imposterRecognitionText: {fileID: 415872938}
   _imposterRecognitionFormat: 'Was In '
 --- !u!1 &1577870563
@@ -47497,6 +47520,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CellSelectHighlighter: {fileID: 6047663085760228396, guid: 777ceec8482da2d4fba51d66b5944836, type: 3}
+--- !u!225 &1742261275 stripped
+CanvasGroup:
+  m_CorrespondingSourceObject: {fileID: 5785107693977940967, guid: 625c5fcb3eb122b4b812c6b3059df891, type: 3}
+  m_PrefabInstance: {fileID: 173634858469467020}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1755437790
 GameObject:
   m_ObjectHideFlags: 0
@@ -47627,7 +47655,7 @@ GameObject:
   - component: {fileID: 1800333833}
   - component: {fileID: 1800333832}
   m_Layer: 0
-  m_Name: Imposter Portrait
+  m_Name: Role Portrait
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -48939,8 +48967,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -300}
-  m_SizeDelta: {x: 600, y: 600}
+  m_AnchoredPosition: {x: 0, y: -472}
+  m_SizeDelta: {x: 400, y: 400}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &2116631159
 MonoBehaviour:
