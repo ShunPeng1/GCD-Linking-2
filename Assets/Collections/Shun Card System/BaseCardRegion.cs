@@ -13,6 +13,7 @@ namespace Shun_Card_System
             AlwaysBack,
             InsertInMiddle,
             Cannot,
+            Swap,
         }
         [SerializeField] protected BaseCardHolder CardHolderPrefab;
         [SerializeField] protected Transform SpawnPlace;
@@ -21,7 +22,7 @@ namespace Shun_Card_System
         
         [SerializeField] protected List<BaseCardHolder> _cardPlaceHolders = new();
         [SerializeField] protected int MaxCardHold;
-        [SerializeField] protected MiddleInsertionStyle CardMiddleInsertionStyle = MiddleInsertionStyle.InsertInMiddle;
+        public MiddleInsertionStyle CardMiddleInsertionStyle = MiddleInsertionStyle.InsertInMiddle;
         protected BaseCardHolder TemporaryBaseCardHolder;
         public int CardHoldingCount { get; private set; } 
         

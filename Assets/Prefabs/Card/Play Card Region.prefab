@@ -110,7 +110,7 @@ MonoBehaviour:
   _cardPlaceHolders:
   - {fileID: 2760118474402984336}
   MaxCardHold: 1
-  CardMiddleInsertionStyle: 2
+  CardMiddleInsertionStyle: 3
   _interactable: 1
 --- !u!1001 &8170925474056880682
 PrefabInstance:

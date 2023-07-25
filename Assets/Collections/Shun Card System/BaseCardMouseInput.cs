@@ -242,8 +242,8 @@ namespace Shun_Card_System
         
             if (dropHolder == null)
             {
-                if (dropRegion != null && dropRegion != LastCardRegion 
-                                       && dropRegion.TryAddCard(DraggingCard, dropHolder)) // Successfully add to the drop region
+                if (dropRegion != null && dropRegion != LastCardRegion &&
+                    dropRegion.TryAddCard(DraggingCard, dropHolder)) // Successfully add to the drop region
                 {
                     if (LastCardHolder != null) // remove the temporary in last region
                     {
@@ -257,13 +257,32 @@ namespace Shun_Card_System
             }
             else
             {
-                if (dropRegion == null) dropRegion = dropHolder.CardRegion;
-            
+                if (dropRegion == null) 
+                    dropRegion = dropHolder.CardRegion;
+                
+                if (dropRegion == null) // No region to drop anyway
+                {
+                    if(LastCardRegion != null) LastCardRegion.ReAddTemporary(DraggingCard);
+                }
+
+                if (dropRegion.CardMiddleInsertionStyle == BaseCardRegion.MiddleInsertionStyle.Swap)
+                {
+                    var targetCard = dropHolder.CardGameObject;
+                    if (targetCard != null && LastCardRegion != null && dropRegion.TakeOutTemporary(targetCard, dropHolder))
+                    {
+                        LastCardRegion.ReAddTemporary(targetCard);
+                        dropRegion.ReAddTemporary(DraggingCard);
+                        
+                        return;
+                    }
+                    
+                }
+                
                 if (!dropRegion.TryAddCard(DraggingCard, dropHolder))
                 {
                     if(LastCardRegion != null) LastCardRegion.ReAddTemporary(DraggingCard);
                 }
-            
+                
                 if (LastCardHolder != null)
                 {
                     LastCardRegion.RemoveTemporary(DraggingCard);

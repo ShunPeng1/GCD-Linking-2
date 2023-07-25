@@ -110,3 +110,6 @@ MonoBehaviour:
   MaxCardHold: 4
   CardMiddleInsertionStyle: 1
   _interactable: 1
+  _moveInteractableOffset: {x: 0, y: 3.5, z: 0}
+  _moveInteractableDuration: 0.25
+  _moveInteractableEase: 9
