@@ -18,9 +18,6 @@ namespace _Scripts.Cards.Card_UI
         {
             var characterCardGameObject = (BaseCharacterCardGameObject) baseCardGameObject;
             
-            
-            characterCardGameObject.Ability1Button.EnableInteractable();
-            characterCardGameObject.Ability2Button.EnableInteractable();
 
         }
     }

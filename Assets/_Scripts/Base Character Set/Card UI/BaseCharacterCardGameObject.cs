@@ -147,7 +147,6 @@ namespace _Scripts.Cards.Card_UI
             foreach (var (cardButton, count) in _originalUseCountBaseOnButtons)
             {
                 _remainingUseCountBaseOnButtons[cardButton] = count;
-                cardButton.EnableInteractable();
             }
         }
         
