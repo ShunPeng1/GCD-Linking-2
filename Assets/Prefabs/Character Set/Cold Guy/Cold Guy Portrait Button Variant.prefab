@@ -9,11 +9,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3409343322292706337, guid: 7bccef2c5b7860142b3a15d25c83c7bb, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -8
+      value: -17
       objectReference: {fileID: 0}
     - target: {fileID: 3409343322292706337, guid: 7bccef2c5b7860142b3a15d25c83c7bb, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -22
+      value: -35
       objectReference: {fileID: 0}
     - target: {fileID: 3409343322292706367, guid: 7bccef2c5b7860142b3a15d25c83c7bb, type: 3}
       propertyPath: m_Sprite
@@ -117,7 +117,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3409343322780988330, guid: 7bccef2c5b7860142b3a15d25c83c7bb, type: 3}
       propertyPath: m_Name
-      value: Portrait Button (2)
+      value: Cold Guy Portrait Button Variant
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7bccef2c5b7860142b3a15d25c83c7bb, type: 3}
