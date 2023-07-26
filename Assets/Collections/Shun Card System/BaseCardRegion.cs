@@ -296,12 +296,15 @@ namespace Shun_Card_System
 
         public virtual void DisableInteractable()
         {
+            
+            if (!Interactable) return;
             Interactable = false;
             if(IsHovering) EndHover();
         }
         
         public virtual void EnableInteractable()
         {
+            if (Interactable) return;
             Interactable = true;
         }
     }

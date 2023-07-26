@@ -76,6 +76,7 @@ public class BaseCharacterMapDynamicGameObject : MapDynamicGameObject
         
         LastMovingCell = NextMovingCell = Grid.GetCell(transform.position);
 
+        LastMovingCell?.Item.AddInCellGameObject(this);
     }
     
     private void InitializeState()
@@ -292,7 +293,6 @@ public class BaseCharacterMapDynamicGameObject : MapDynamicGameObject
             
             var cellHighlighter = cell.Item.CellSelectHighlighter;
             cellHighlighter.EnableInteractable();
-            cellHighlighter.StartHighlight();
         }
     }
 
@@ -301,8 +301,7 @@ public class BaseCharacterMapDynamicGameObject : MapDynamicGameObject
         foreach (var (cell, gCost) in AllMovableCellAndCost)
         {
             var cellHighlighter = cell.Item.CellSelectHighlighter;
-            cellHighlighter.DisableInteractable();;
-            cellHighlighter.EndHighlight();
+            cellHighlighter.DisableInteractable();
         }
     }
     

@@ -17,17 +17,7 @@ public class CellSelectHighlighter : MapStaticGameObject, IMouseInteractable
     [SerializeField] private Animator _animator;
     protected void Awake()
     {
-        DisableInteractable();
-    }
-
-    public void StartHighlight()
-    {
-        _spriteRenderer.color += new Color(0, 0, 0, _validCellHighlightValue);
-    }
-
-    public void EndHighlight()
-    {
-        _spriteRenderer.color -= new Color(0, 0, 0, _validCellHighlightValue);
+        
     }
 
     public void StartHover()
@@ -54,17 +44,23 @@ public class CellSelectHighlighter : MapStaticGameObject, IMouseInteractable
 
     public void DisableInteractable()
     {
+        if (!Interactable) return;
         Interactable = false;
         if (IsHovering) EndHover();
 
         _animator.enabled = false;
+        
+        _spriteRenderer.color -= new Color(0, 0, 0, _validCellHighlightValue);
     }
 
     public void EnableInteractable()
     {
+        if (Interactable) return;
         Interactable = true;
         _animator.enabled = true;
         
         _animator.Rebind();
+        
+        _spriteRenderer.color += new Color(0, 0, 0, _validCellHighlightValue);
     }
 }
