@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Shun_Card_System;
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.Serialization;
 
 namespace _Scripts.Cards.Card_UI
 {
@@ -15,7 +16,7 @@ namespace _Scripts.Cards.Card_UI
         public CharacterCardButton Ability1Button;
         public CharacterCardButton Ability2Button;
         [SerializeField] private Transform _cardVisualTransform;
-        [SerializeField] private SortingGroup _sortingGroup;
+        [FormerlySerializedAs("_sortingGroup")] public SortingGroup SortingGroup;
 
         private CharacterCardButton _selectingButton;
         private readonly Dictionary<CharacterCardButton,Action<Action, Action>> _executeAbilityBaseOnButton = new();
@@ -162,13 +163,13 @@ namespace _Scripts.Cards.Card_UI
         public override void StartHover()
         {
             _cardVisualTransform.localScale *= _hoverEnlargeValue;
-            _sortingGroup.sortingOrder +=100;
+            SortingGroup.sortingOrder +=100;
         }
         
         public override void EndHover()
         {
             _cardVisualTransform.localScale /= _hoverEnlargeValue;
-            _sortingGroup.sortingOrder -=100;
+            SortingGroup.sortingOrder -=100;
         }
     }
 }

@@ -13,11 +13,13 @@ public class DeckCardRegion : BaseCardRegion
         characterCardGameObject.Ability1Button.DisableInteractable();
         characterCardGameObject.Ability2Button.DisableInteractable();
 
+        characterCardGameObject.SortingGroup.sortingOrder = -index;
     }
 
     protected override void OnSuccessfullyRemoveCard(BaseCardGameObject baseCardGameObject, BaseCardHolder baseCardHolder, int index)
     {
-        
+        var characterCardGameObject = (BaseCharacterCardGameObject) baseCardGameObject;
+        characterCardGameObject.SortingGroup.sortingOrder = index;
     }
     
     
