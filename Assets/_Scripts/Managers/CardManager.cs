@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using _Scripts.Base_Character_Set.Card_Region;
 using _Scripts.Cards.Card_UI;
 using _Scripts.Managers;
 using Shun_Card_System;

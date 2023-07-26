@@ -78,11 +78,11 @@ namespace Shun_Card_System
 
             foreach (var interactable in endHoverInteractableGameObjects)
             {
-                interactable.EndHover();
+                if (interactable.IsHovering) interactable.EndHover();
             }
             foreach (var interactable in startHoverInteractableGameObjects)
             {
-                interactable.StartHover();
+                if (!interactable.IsHovering) interactable.StartHover();
             }
 
             LastHoverMouseInteractableGameObjects = hoveringMouseInteractableGameObject;

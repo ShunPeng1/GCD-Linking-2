@@ -30,6 +30,7 @@ namespace Shun_Card_System
         [SerializeField]
         private bool _interactable;
         public bool Interactable { get => _interactable; protected set => _interactable = value;}
+        public bool IsHovering { get; protected set; }
 
         #region INITIALIZE
 
@@ -283,17 +284,20 @@ namespace Shun_Card_System
 
         public void StartHover()
         {
-            throw new NotImplementedException();
+            IsHovering = true;
+            
         }
 
         public void EndHover()
         {
-            throw new NotImplementedException();
+            IsHovering = false;
+            
         }
 
         public virtual void DisableInteractable()
         {
             Interactable = false;
+            if(IsHovering) EndHover();
         }
         
         public virtual void EnableInteractable()

@@ -9,7 +9,8 @@ public class CellSelectHighlighter : MapStaticGameObject, IMouseInteractable
     [SerializeField]
     private bool _interactable = false;
     public bool Interactable { get => _interactable; protected set => _interactable = value; }
-    
+    public bool IsHovering { get; protected set; }
+
     [SerializeField] private SpriteRenderer _spriteRenderer;
 
     [SerializeField] private float _validCellHighlightValue = 0.25f, _hoverHighlightValue = 0.25f;
@@ -31,11 +32,13 @@ public class CellSelectHighlighter : MapStaticGameObject, IMouseInteractable
 
     public void StartHover()
     {
+        IsHovering = true;
         _spriteRenderer.color += new Color(0, 0, 0, _hoverHighlightValue);
     }
 
     public void EndHover()
     {
+        IsHovering = false;
         _spriteRenderer.color -= new Color(0, 0, 0, _hoverHighlightValue);
     }
 
@@ -52,6 +55,8 @@ public class CellSelectHighlighter : MapStaticGameObject, IMouseInteractable
     public void DisableInteractable()
     {
         Interactable = false;
+        if (IsHovering) EndHover();
+
         _animator.enabled = false;
     }
 

@@ -11,6 +11,7 @@ namespace Shun_Card_System
         [SerializeField]
         private bool _interactable;
         public bool Interactable { get => _interactable; protected set => _interactable = value; }
+        public bool IsHovering { get; protected set; }
         
         [SerializeField] protected bool ActivateOnValidate = false;
         
@@ -52,17 +53,18 @@ namespace Shun_Card_System
 
         public virtual void StartHover()
         {
-            
+            IsHovering = true;
         }
 
         public virtual void EndHover()
         {
-            
+            IsHovering = false;
         }
         
         public virtual void DisableInteractable()
         {
             Interactable = false;
+            if (IsHovering) EndHover();
         }
         
         public virtual void EnableInteractable()

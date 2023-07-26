@@ -162,12 +162,14 @@ namespace _Scripts.Cards.Card_UI
 
         public override void StartHover()
         {
+            base.StartHover();
             _cardVisualTransform.localScale *= _hoverEnlargeValue;
             SortingGroup.sortingOrder +=100;
         }
         
         public override void EndHover()
         {
+            base.EndHover();
             _cardVisualTransform.localScale /= _hoverEnlargeValue;
             SortingGroup.sortingOrder -=100;
         }

@@ -1,9 +1,9 @@
-﻿using System;
+﻿using _Scripts.Cards.Card_UI;
 using DG.Tweening;
 using Shun_Card_System;
 using UnityEngine;
 
-namespace _Scripts.Cards.Card_UI
+namespace _Scripts.Base_Character_Set.Card_Region
 {
     public class HandCardRegion : BaseCardRegion
     {

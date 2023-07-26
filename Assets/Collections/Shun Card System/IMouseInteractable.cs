@@ -3,7 +3,7 @@
     public interface IMouseInteractable
     {
         public bool Interactable { get; }
-
+        public bool IsHovering { get; }
         public void Select();
 
         public void Deselect();

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace _Scripts.Base_Character_Set.Card_Region
 {
-    public class PlayCardHolder : BaseCardHolder
+    public class HandCardHolder : BaseCardHolder
     {
         [Header("Tween")] 
         [SerializeField] private float _addDuration = 0.25f;

@@ -72,7 +72,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 004a8690145b4d6c88859709fa67cdec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CardHolderPrefab: {fileID: 6280582275261379514, guid: 4a3e3d488cc1a384cadec690e0cde667, type: 3}
+  CardHolderPrefab: {fileID: -5539691224234996992, guid: 8ae4f37e58335564a977bdd3f0ff7085, type: 3}
   SpawnPlace: {fileID: 6704602801526338273}
   CardOffset: {x: 0.5, y: 0, z: 0}
   _cardPlaceHolders: []
