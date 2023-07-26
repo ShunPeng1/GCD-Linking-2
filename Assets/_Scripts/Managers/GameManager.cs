@@ -68,10 +68,15 @@ namespace _Scripts.Managers
             UiManager.Instance.ShowImposterSelection();
             
             StartGameAction += StartRound;
-            StartGameAction += UiManager.Instance.HideImposterSelection;
-
+            
         }
 
+        public void StartGame(CharacterSet imposterSet)
+        {
+            ImposterSet = imposterSet;
+            StartGameAction.Invoke();
+        }
+        
         private void StartTurn()
         {
             SwapPlayingRole();

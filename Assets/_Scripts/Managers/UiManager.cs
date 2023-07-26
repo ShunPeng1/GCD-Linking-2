@@ -6,6 +6,7 @@ using _Scripts.Lights;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 using UnityUtilities;
@@ -28,7 +29,10 @@ namespace _Scripts.Managers
         [SerializeField] private CanvasGroup _crimeBoardCanvasGroup;
         [SerializeField] private RectTransform _crimeBoardPanel;
         [SerializeField] private GridLayoutGroup _characterPortraitButtonGroup;
-
+        [SerializeField] private Button _portraitSelectionButton;
+        private PortraitButtonRect _choosingPortraitButton;
+        private UnityAction _portraitClickListener;
+        
         [Header("Current Turn")] 
         [SerializeField] private CanvasGroup _currentTurnCanvasGroup;
         [SerializeField] private RectTransform _currentTurnPanel;
@@ -70,6 +74,7 @@ namespace _Scripts.Managers
         private void Start()
         {
             InitializeCurrentTurnGroup();
+            InitializeCrimeBoard();
         }
 
         void InitializeCurrentTurnGroup()
@@ -79,12 +84,35 @@ namespace _Scripts.Managers
             _currentTurnButton.onClick.AddListener(() => _currentTurnPopInSequence.Complete());
         }
 
+        void InitializeCrimeBoard()
+        {
+            _portraitSelectionButton.onClick.AddListener( ()=>
+            {
+                if (_choosingPortraitButton == null) return;
+                
+                GameManager.Instance.StartGame(_choosingPortraitButton.CharacterSet);
+                foreach (var portraitButtonRect in _portraitButtonRects)
+                {
+                    portraitButtonRect.Button.onClick.RemoveListener(_portraitClickListener);
+                }
+            });
+        }
+
         
         public PortraitButtonRect CreatePortraitButton(PortraitButtonRect portraitButtonRectPrefab)
         {
             var portraitButtonRect = Instantiate(portraitButtonRectPrefab, _characterPortraitButtonGroup.transform);
             _portraitButtonRects.Add(portraitButtonRect);
+
+            _portraitClickListener = () => ChoosePortrait(portraitButtonRect);
+            portraitButtonRect.Button.onClick.AddListener(_portraitClickListener);
+            
             return portraitButtonRect;
+        }
+
+        private void ChoosePortrait(PortraitButtonRect portraitButtonRect)
+        {
+            _choosingPortraitButton = portraitButtonRect;
         }
 
         public void ShowImposterSelection()
@@ -121,29 +149,26 @@ namespace _Scripts.Managers
             
             
             showImposterSelectionSequence.AppendInterval(_imposterRecognitionPopShowDuration);
-            
-            /*
-            
-            imposterRecognitionPopInSequence.AppendInterval(_imposterRecognitionPopShowDuration);
-            
-            
-            _imposterRecognitionPopInSequence.Append(_imposterRecognitionPanel.DOMove(-_imposterRecognitionPopInOffset, _imposterRecognitionPopInDuration).SetRelative().SetEase(_currentTurnPopEase));
-            _imposterRecognitionPopInSequence.Join(_crimeBoardPanel.DOMove(-_crimeBoardPopInPopInOffset, _imposterRecognitionPopInDuration).SetRelative().SetEase(_currentTurnPopEase));
-            _imposterRecognitionPopInSequence.Join(_imposterRecognitionPanel.DOScale(imposterRecognitionPanelOriginalScale, _imposterRecognitionPopInDuration).SetEase(_currentTurnPopEase));
-            _imposterRecognitionPopInSequence.Join(_crimeBoardPanel.DOScale(crimeBoardPanelOriginalScale, _imposterRecognitionPopInDuration).SetEase(_currentTurnPopEase));
-            _imposterRecognitionPopInSequence.AppendCallback(() =>
+
+
+
+            GameManager.Instance.StartGameAction += () =>
             {
-                CardManager.Instance.UnlockPlayCard();
-            });
-            
-            */
+                Sequence hideImposterSelectionSequence = DOTween.Sequence();
+                hideImposterSelectionSequence.Pause();
+                hideImposterSelectionSequence.Append(_imposterRecognitionPanel.DOMove(-_imposterRecognitionPopInOffset, _imposterRecognitionPopInDuration).SetRelative().SetEase(_currentTurnPopEase));
+                hideImposterSelectionSequence.Join(_crimeBoardPanel.DOMove(-_crimeBoardPopInPopInOffset, _imposterRecognitionPopInDuration).SetRelative().SetEase(_currentTurnPopEase));
+                hideImposterSelectionSequence.Join(_imposterRecognitionPanel.DOScale(imposterRecognitionPanelOriginalScale, _imposterRecognitionPopInDuration).SetEase(_currentTurnPopEase));
+                hideImposterSelectionSequence.Join(_crimeBoardPanel.DOScale(crimeBoardPanelOriginalScale, _imposterRecognitionPopInDuration).SetEase(_currentTurnPopEase));
+                hideImposterSelectionSequence.AppendCallback(() =>
+                {
+                    CardManager.Instance.UnlockPlayCard();
+                });
+
+                hideImposterSelectionSequence.Play();
+            };
         }
 
-        public void HideImposterSelection()
-        {
-            
-
-        }
         
         private void Update()
         {

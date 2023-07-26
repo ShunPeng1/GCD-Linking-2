@@ -2,20 +2,21 @@
 using _Scripts.Input_and_Camera;
 using _Scripts.Lights;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class PortraitButtonRect : MonoBehaviour
 {
     public CharacterSet CharacterSet { get; protected set; }
 
-    [SerializeField] private Button _button;
+    [FormerlySerializedAs("_button")] public Button Button;
     [SerializeField] private Animator _animator;
     private static readonly int IsInDark = Animator.StringToHash("IsInDark");
     private static readonly int IsInnocent = Animator.StringToHash("IsInnocent");
 
     private void Start()
     {
-        _button.onClick.AddListener( ZoomToCharacter );
+        Button.onClick.AddListener( ZoomToCharacter );
         CharacterSet.CharacterRecognition.OnChangeValue += VisualizeCharacterRecognition;
     }
 
@@ -25,6 +26,8 @@ public class PortraitButtonRect : MonoBehaviour
         
     }
 
+    
+    
     private void VisualizeCharacterRecognition(CharacterRecognitionState oldRecognitionState, CharacterRecognitionState currentRecognitionState)
     {
         if (oldRecognitionState == currentRecognitionState) return;
