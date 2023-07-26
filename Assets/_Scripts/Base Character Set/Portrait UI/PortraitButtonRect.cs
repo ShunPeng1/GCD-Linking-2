@@ -13,6 +13,7 @@ public class PortraitButtonRect : MonoBehaviour
     [SerializeField] private Animator _animator;
     private static readonly int IsInDark = Animator.StringToHash("IsInDark");
     private static readonly int IsInnocent = Animator.StringToHash("IsInnocent");
+    private static readonly int IsImposterSelect = Animator.StringToHash("IsImposterSelect");
 
     private void Start()
     {
@@ -26,7 +27,10 @@ public class PortraitButtonRect : MonoBehaviour
         
     }
 
-    
+    public void SetImposterSelect(bool isSelect)
+    {
+        _animator.SetBool(IsImposterSelect, isSelect);
+    }    
     
     private void VisualizeCharacterRecognition(CharacterRecognitionState oldRecognitionState, CharacterRecognitionState currentRecognitionState)
     {

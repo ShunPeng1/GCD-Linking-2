@@ -30,6 +30,7 @@ namespace _Scripts.Managers
         [SerializeField] private RectTransform _crimeBoardPanel;
         [SerializeField] private GridLayoutGroup _characterPortraitButtonGroup;
         [SerializeField] private Button _portraitSelectionButton;
+        [SerializeField] private Vector3 _portraitSelectionOffsetPosition = new Vector3(0, -100, 0);
         private PortraitButtonRect _choosingPortraitButton;
         private UnityAction _portraitClickListener;
         
@@ -90,6 +91,9 @@ namespace _Scripts.Managers
             {
                 if (_choosingPortraitButton == null) return;
                 
+                _choosingPortraitButton.SetImposterSelect(false);
+                
+                
                 GameManager.Instance.StartGame(_choosingPortraitButton.CharacterSet);
                 foreach (var portraitButtonRect in _portraitButtonRects)
                 {
@@ -112,7 +116,9 @@ namespace _Scripts.Managers
 
         private void ChoosePortrait(PortraitButtonRect portraitButtonRect)
         {
+            if (_choosingPortraitButton != null) _choosingPortraitButton.SetImposterSelect(false);
             _choosingPortraitButton = portraitButtonRect;
+            _choosingPortraitButton.SetImposterSelect(true);
         }
 
         public void ShowImposterSelection()
@@ -133,7 +139,7 @@ namespace _Scripts.Managers
             showImposterSelectionSequence.AppendInterval(_currentTurnPopShowDuration);
             showImposterSelectionSequence.Append(_currentTurnPanel.DOMove(originalDestination, _currentTurnPopInDuration).SetEase(_currentTurnPopEase));
             showImposterSelectionSequence.AppendInterval(_currentTurnPopShowDuration);
-
+            
             Vector3 imposterRecognitionPanelOriginalScale = _imposterRecognitionPanel.transform.lossyScale;
             Vector3 crimeBoardPanelOriginalScale = _crimeBoardPanel.transform.lossyScale;
             
@@ -141,6 +147,9 @@ namespace _Scripts.Managers
             showImposterSelectionSequence.Join(_crimeBoardPanel.DOMove(_crimeBoardPopInPopInOffset, _imposterRecognitionPopInDuration).SetRelative().SetEase(_currentTurnPopEase));
             showImposterSelectionSequence.Join(_imposterRecognitionPanel.DOScale(_imposterRecognitionPopInScale, _imposterRecognitionPopInDuration).SetEase(_currentTurnPopEase));
             showImposterSelectionSequence.Join(_crimeBoardPanel.DOScale(_crimeBoardPopInScale, _imposterRecognitionPopInDuration).SetEase(_currentTurnPopEase));
+            showImposterSelectionSequence.Join(_portraitSelectionButton.transform.DOLocalMove(_portraitSelectionOffsetPosition, _imposterRecognitionPopInDuration).SetRelative().SetEase(_currentTurnPopEase));
+
+            
 
             showImposterSelectionSequence.AppendCallback(() =>
             {
@@ -160,6 +169,8 @@ namespace _Scripts.Managers
                 hideImposterSelectionSequence.Join(_crimeBoardPanel.DOMove(-_crimeBoardPopInPopInOffset, _imposterRecognitionPopInDuration).SetRelative().SetEase(_currentTurnPopEase));
                 hideImposterSelectionSequence.Join(_imposterRecognitionPanel.DOScale(imposterRecognitionPanelOriginalScale, _imposterRecognitionPopInDuration).SetEase(_currentTurnPopEase));
                 hideImposterSelectionSequence.Join(_crimeBoardPanel.DOScale(crimeBoardPanelOriginalScale, _imposterRecognitionPopInDuration).SetEase(_currentTurnPopEase));
+                hideImposterSelectionSequence.Join(_portraitSelectionButton.transform.DOLocalMove(-_portraitSelectionOffsetPosition, _imposterRecognitionPopInDuration).SetRelative().SetEase(_currentTurnPopEase));
+
                 hideImposterSelectionSequence.AppendCallback(() =>
                 {
                     CardManager.Instance.UnlockPlayCard();

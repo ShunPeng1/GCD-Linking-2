@@ -47334,6 +47334,7 @@ MonoBehaviour:
   _crimeBoardPanel: {fileID: 1303242271}
   _characterPortraitButtonGroup: {fileID: 1970025291}
   _portraitSelectionButton: {fileID: 1246884441}
+  _portraitSelectionOffsetPosition: {x: 0, y: -150, z: 0}
   _currentTurnCanvasGroup: {fileID: 342322742}
   _currentTurnPanel: {fileID: 1755437791}
   _currentTurnImage: {fileID: 1800333832}
@@ -49476,6 +49477,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1786900114}
     m_Modifications:
+    - target: {fileID: 15081825908771847, guid: 625c5fcb3eb122b4b812c6b3059df891, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -279
+      objectReference: {fileID: 0}
     - target: {fileID: 173634857368692032, guid: 625c5fcb3eb122b4b812c6b3059df891, type: 3}
       propertyPath: m_Name
       value: Crime board Canvas
