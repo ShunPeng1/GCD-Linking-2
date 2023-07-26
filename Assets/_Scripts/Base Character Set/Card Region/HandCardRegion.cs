@@ -7,15 +7,25 @@ namespace _Scripts.Cards.Card_UI
 {
     public class HandCardRegion : BaseCardRegion
     {
+        private Vector3 _startPosition;
+        private Vector3 _moveInteractableDestinationPosition;
+        private Vector3 _middlePivotDestinationPosition;
+        private Sequence _moveSequence;
+        
+        [Header("Enable/Disable Interactable Movement")]
         [SerializeField] private Vector3 _moveInteractableOffset = new Vector3(0,-2, 0);
         [SerializeField] private float _moveInteractableDuration = 0.25f;
         [SerializeField] private Ease _moveInteractableEase = Ease.OutCubic;
-        private Vector3 _destinationPosition;
+        
+        [Header("Middle Align Movement")]
+        [SerializeField] private float _middleAlignDuration = 0.125f;
+        [SerializeField] private Ease _middleAlignEase = Ease.OutCubic;
 
-
+        
         private void Start()
         {
-            _destinationPosition = transform.localPosition;
+            _startPosition = transform.localPosition;
+            
         }
 
         protected override void OnSuccessfullyAddCard(BaseCardGameObject baseCardGameObject, BaseCardHolder baseCardHolder, int index)
@@ -25,29 +35,53 @@ namespace _Scripts.Cards.Card_UI
             
             characterCardGameObject.Ability1Button.DisableInteractable();
             characterCardGameObject.Ability2Button.DisableInteractable();
-            
+            MiddleAlign();
         }
 
         protected override void OnSuccessfullyRemoveCard(BaseCardGameObject baseCardGameObject, BaseCardHolder baseCardHolder, int index)
         {
             //var characterCardGameObject = (BaseCharacterCardGameObject) baseCardGameObject;
             
-
+            MiddleAlign();
         }
 
+        private void MiddleAlign()
+        {
+            var maxOffset =  ( CardOffset * (MaxCardHold -1 ))/2;
+            var currentOffset = (CardOffset * (CardHoldingCount - 1)) / 2;
+            _moveInteractableDestinationPosition = maxOffset - currentOffset ;
+            
+            
+            LocalMoveToDestination(_middleAlignDuration, _middleAlignEase);
+        }
+        
         public override void EnableInteractable()
         {
             base.EnableInteractable();
-            _destinationPosition += _moveInteractableOffset; 
-            transform.DOLocalMove(_destinationPosition, _moveInteractableDuration).SetEase(_moveInteractableEase);
+            _moveInteractableDestinationPosition += _moveInteractableOffset;
+            
+            LocalMoveToDestination(_moveInteractableDuration, _moveInteractableEase);
 
         }
 
         public override void DisableInteractable()
         {
             base.DisableInteractable();
-            _destinationPosition -= _moveInteractableOffset; 
-            transform.DOLocalMove(_destinationPosition, _moveInteractableDuration).SetEase(_moveInteractableEase);
+            _moveInteractableDestinationPosition -= _moveInteractableOffset;
+
+            LocalMoveToDestination(_moveInteractableDuration, _moveInteractableEase);
+        }
+
+        private void LocalMoveToDestination(float duration, Ease ease)
+        {
+            _moveSequence.Kill();
+            _moveSequence = DOTween.Sequence();
+            _moveSequence.Append(transform.DOLocalMove(GetMovePosition(), duration).SetEase(ease));
+        }
+
+        private Vector3 GetMovePosition()
+        {
+            return _startPosition + _moveInteractableDestinationPosition + _middlePivotDestinationPosition;
         }
     }
 }
