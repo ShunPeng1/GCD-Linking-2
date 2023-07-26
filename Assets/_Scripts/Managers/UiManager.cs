@@ -56,21 +56,25 @@ namespace _Scripts.Managers
         [SerializeField] private TMP_Text _imposterRecognitionText;
         [SerializeField] private string _imposterRecognitionFormat = "I Was In ";
         [SerializeField] private Animator _imposterRecognitionPortraitAnimator;
-
+        
+            
         [Header("End Round Animation")]
         [SerializeField] private Vector3 _imposterRecognitionPopInOffset = new Vector3(-500,-500,0);
         [SerializeField] private Vector3 _imposterRecognitionPopInScale = new Vector3(1.5f,1.5f,0);
         [SerializeField] private float _imposterRecognitionPopInDuration = 0.5f;
         [SerializeField] private float _imposterRecognitionPopShowDuration = 1.5f;
         [SerializeField] private Ease _imposterRecognitionPopInEase;
+        
         private Sequence _imposterRecognitionPopInSequence;
         private static readonly int IsInDark = Animator.StringToHash("IsInDark");
 
         [Header("Imposter Selection Animation")] [SerializeField]
         private string _selectionDialog = "Choose your disguise wisely";
-        
+
         [Header("Ultility")] 
+        [SerializeField] private AudioClip _dragSfx;
         [SerializeField] private float _dialogSpeed = 15f;
+        
         
         private void Start()
         {
@@ -149,8 +153,8 @@ namespace _Scripts.Managers
             showImposterSelectionSequence.Join(_crimeBoardPanel.DOScale(_crimeBoardPopInScale, _imposterRecognitionPopInDuration).SetEase(_currentTurnPopEase));
             showImposterSelectionSequence.Join(_portraitSelectionButton.transform.DOLocalMove(_portraitSelectionOffsetPosition, _imposterRecognitionPopInDuration).SetRelative().SetEase(_currentTurnPopEase));
 
-            
-
+            AudioManager.Instance.PlaySFX(_dragSfx);
+                
             showImposterSelectionSequence.AppendCallback(() =>
             {
                 StartCoroutine(PopInTextWordByWord(_imposterRecognitionText, _selectionDialog, _dialogSpeed));
@@ -177,6 +181,9 @@ namespace _Scripts.Managers
                 });
 
                 hideImposterSelectionSequence.Play();
+                
+                
+                AudioManager.Instance.PlaySFX(_dragSfx);
             };
         }
 
@@ -193,6 +200,7 @@ namespace _Scripts.Managers
             var imposterLastRoundRecognition = GameManager.Instance.ImposterLastRoundRecognition;
             
             CardManager.Instance.LockPlayCard();
+            AudioManager.Instance.PlaySFX(_dragSfx);
             
             _imposterRecognitionPopInSequence.Complete();
             _imposterRecognitionPopInSequence = DOTween.Sequence();
@@ -225,6 +233,8 @@ namespace _Scripts.Managers
                 }
 
                 StartCoroutine(PopInTextWordByWord(_imposterRecognitionText, textToDisplay, _dialogSpeed));
+                
+                AudioManager.Instance.PlaySFX(_dragSfx);
             });
             
             
@@ -238,6 +248,7 @@ namespace _Scripts.Managers
             _imposterRecognitionPopInSequence.AppendCallback(() =>
             {
                 CardManager.Instance.UnlockPlayCard();
+                
             });
 
         }
@@ -263,6 +274,7 @@ namespace _Scripts.Managers
             _currentTurnPopInSequence.AppendInterval(_currentTurnPopShowDuration);
             _currentTurnPopInSequence.Append(_currentTurnPanel.DOMove(originalDestination, _currentTurnPopInDuration).SetEase(_currentTurnPopEase));
             
+            AudioManager.Instance.PlaySFX(_dragSfx);
         }
         
         public IEnumerator PopInTextWordByWord(TMP_Text tmpText, string textToDisplay, float charPerSecond = 1f)

@@ -23,6 +23,7 @@ namespace _Scripts.Base_Character_Set.Card_Region
 
         [Header("Audio")] 
         [SerializeField] private AudioClip _addCardSfx;
+        [SerializeField] private AudioClip _dragCardSfx;
 
         protected override void Awake()
         {
@@ -65,6 +66,7 @@ namespace _Scripts.Base_Character_Set.Card_Region
             
             LocalMoveToDestination(_moveInteractableDuration, _moveInteractableEase);
 
+            AudioManager.Instance.PlaySFX(_dragCardSfx);
         }
 
         public override void DisableInteractable()
@@ -73,6 +75,8 @@ namespace _Scripts.Base_Character_Set.Card_Region
             _moveInteractableDestinationPosition -= _moveInteractableOffset;
 
             LocalMoveToDestination(_moveInteractableDuration, _moveInteractableEase);
+            
+            AudioManager.Instance.PlaySFX(_dragCardSfx);
         }
 
         private void LocalMoveToDestination(float duration, Ease ease)

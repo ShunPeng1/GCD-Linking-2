@@ -47355,7 +47355,8 @@ MonoBehaviour:
   _imposterRecognitionPopInDuration: 0.5
   _imposterRecognitionPopShowDuration: 1.5
   _imposterRecognitionPopInEase: 0
-  _selectionDialog: Choose your disguise wisely
+  _selectionDialog: Choose your disguise wisely!
+  _dragSfx: {fileID: 8300000, guid: 5cc92c39e2778f14294713bd609234d7, type: 3}
   _dialogSpeed: 15
 --- !u!1 &1577870563
 GameObject:
@@ -49336,7 +49337,8 @@ MonoBehaviour:
   _scaleWithCameraZoomObjects:
   - {fileID: 930233319}
   _focusTweenDuration: 0.5
-  _focusEase: 0
+  _focusEase: 9
+  _whoseSfx: {fileID: 8300000, guid: d10c2738c25213a428492aefed9d6c7c, type: 3}
 --- !u!114 &2075905890 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1866470132546971774, guid: 3a06df93f8944f24e9efcc36d3a16ce5, type: 3}
@@ -49918,6 +49920,10 @@ PrefabInstance:
       propertyPath: _addCardSfx
       value: 
       objectReference: {fileID: 8300000, guid: 6ee95e6b166242e45853b90da99848bb, type: 3}
+    - target: {fileID: 8299054843014282570, guid: 6fe38d2d8a812cc4e883766c6a8febce, type: 3}
+      propertyPath: _dragCardSfx
+      value: 
+      objectReference: {fileID: 8300000, guid: db6137f24c8f7fb469b4389253b12735, type: 3}
     - target: {fileID: 8299054843014282570, guid: 6fe38d2d8a812cc4e883766c6a8febce, type: 3}
       propertyPath: _interactable
       value: 0
