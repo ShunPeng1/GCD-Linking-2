@@ -5,7 +5,7 @@ using Shun_Card_System;
 public class DeckCardRegion : BaseCardRegion
 {
     
-    protected override void OnSuccessfullyAddCard(BaseCardGameObject baseCardGameObject, BaseCardHolder baseCardHolder)
+    protected override void OnSuccessfullyAddCard(BaseCardGameObject baseCardGameObject, BaseCardHolder baseCardHolder, int index)
     {
         var characterCardGameObject = (BaseCharacterCardGameObject) baseCardGameObject;
             
@@ -15,7 +15,7 @@ public class DeckCardRegion : BaseCardRegion
 
     }
 
-    protected override void OnSuccessfullyRemoveCard(BaseCardGameObject baseCardGameObject, BaseCardHolder baseCardHolder)
+    protected override void OnSuccessfullyRemoveCard(BaseCardGameObject baseCardGameObject, BaseCardHolder baseCardHolder, int index)
     {
         
     }

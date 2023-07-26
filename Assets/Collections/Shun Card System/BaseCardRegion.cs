@@ -127,13 +127,14 @@ namespace Shun_Card_System
             {
                 return false;
             }
-            
-            var cardPlaceHolder = _cardPlaceHolders[CardHoldingCount];
+
+            var index = CardHoldingCount;
+            var cardPlaceHolder = _cardPlaceHolders[index];
             cardPlaceHolder.AttachCardGameObject(cardGameObject);
             
             CardHoldingCount ++;
             
-            OnSuccessfullyAddCard(cardGameObject, cardPlaceHolder);
+            OnSuccessfullyAddCard(cardGameObject, cardPlaceHolder, index);
                 
             return true;
         }
@@ -152,7 +153,7 @@ namespace Shun_Card_System
             
             CardHoldingCount++;
             
-            OnSuccessfullyAddCard(cardGameObject, cardPlaceHolder);
+            OnSuccessfullyAddCard(cardGameObject, cardPlaceHolder, index);
             
             return true;
         }
@@ -200,7 +201,7 @@ namespace Shun_Card_System
                 ShiftLeft(i);
                 CardHoldingCount--;
                 
-                OnSuccessfullyRemoveCard(cardGameObject, _cardPlaceHolders[i]);
+                OnSuccessfullyRemoveCard(cardGameObject, _cardPlaceHolders[i], i);
                 return true;
             }
             return false;
@@ -211,11 +212,12 @@ namespace Shun_Card_System
             if (cardHolder.CardGameObject != cardGameObject) return false;
 
             cardHolder.DetachCardGameObject();
-            
-            ShiftLeft(_cardPlaceHolders.IndexOf(cardHolder));
+
+            var index = _cardPlaceHolders.IndexOf(cardHolder);
+            ShiftLeft(index);
             CardHoldingCount--;
 
-            OnSuccessfullyRemoveCard(cardGameObject, cardHolder);
+            OnSuccessfullyRemoveCard(cardGameObject, cardHolder, index);
             return true;
         }
         
@@ -260,11 +262,11 @@ namespace Shun_Card_System
             movingObject.position = toPosition;
         }
 
-        protected virtual void OnSuccessfullyAddCard(BaseCardGameObject baseCardGameObject, BaseCardHolder baseCardHolder)
+        protected virtual void OnSuccessfullyAddCard(BaseCardGameObject baseCardGameObject, BaseCardHolder baseCardHolder, int index)
         {
             
         }
-        protected virtual void OnSuccessfullyRemoveCard(BaseCardGameObject baseCardGameObject, BaseCardHolder baseCardHolder)
+        protected virtual void OnSuccessfullyRemoveCard(BaseCardGameObject baseCardGameObject, BaseCardHolder baseCardHolder, int index)
         {
             
         }

@@ -18,7 +18,7 @@ namespace _Scripts.Cards.Card_UI
             _destinationPosition = transform.localPosition;
         }
 
-        protected override void OnSuccessfullyAddCard(BaseCardGameObject baseCardGameObject, BaseCardHolder baseCardHolder)
+        protected override void OnSuccessfullyAddCard(BaseCardGameObject baseCardGameObject, BaseCardHolder baseCardHolder, int index)
         {
             var characterCardGameObject = (BaseCharacterCardGameObject) baseCardGameObject;
             
@@ -28,7 +28,7 @@ namespace _Scripts.Cards.Card_UI
             
         }
 
-        protected override void OnSuccessfullyRemoveCard(BaseCardGameObject baseCardGameObject, BaseCardHolder baseCardHolder)
+        protected override void OnSuccessfullyRemoveCard(BaseCardGameObject baseCardGameObject, BaseCardHolder baseCardHolder, int index)
         {
             //var characterCardGameObject = (BaseCharacterCardGameObject) baseCardGameObject;
             
