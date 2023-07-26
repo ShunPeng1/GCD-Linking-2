@@ -106,7 +106,10 @@ public class BaseCharacterMapDynamicGameObject : MapDynamicGameObject
         CurrentMovementTask = enterParameters[0] as CharacterMovementTask;
         if (CurrentMovementTask == null) return;
         
+        Grid.GetCell(transform.position).Item.RemoveInCellGameObject(this);
+        
         CreateInitialPath(transform.position, CurrentMovementTask.GoalCellPosition);
+
 
         CheckArriveCell();
         ExtractNextCellInPath();
@@ -216,7 +219,7 @@ public class BaseCharacterMapDynamicGameObject : MapDynamicGameObject
             case CellSelectionResult.ValidSelection:
                 _canForceEnd = false;
             
-                var newTask = new CharacterMovementTask(
+                var validCellTask = new CharacterMovementTask(
                     CharacterMovementTask.StartPosition.NextCell,
                     Grid.GetWorldPositionOfNearestCell(selectedCell), 
                     () =>
@@ -225,14 +228,34 @@ public class BaseCharacterMapDynamicGameObject : MapDynamicGameObject
                         
                         MapManager.Instance.UpdateAllCharacterRecognition();
                         
+                        Grid.GetCell(transform.position)?.Item.AddInCellGameObject(this);
+                        
                         _canForceEnd = true;
                     });
             
-                StateMachine.SetToState(CharacterMovementState.Moving, null, new object[]{newTask});
+                StateMachine.SetToState(CharacterMovementState.Moving, null, new object[]{validCellTask});
 
                 return true;
             case CellSelectionResult.EndGameSelection:
-                Debug.Log("END GAME!");
+                var endGameCellTask = new CharacterMovementTask(
+                    CharacterMovementTask.StartPosition.NextCell,
+                    Grid.GetWorldPositionOfNearestCell(selectedCell), 
+                    () =>
+                    {
+                        StateMachine.SetToState(CharacterMovementState.Idling);
+                        
+                        MapManager.Instance.UpdateAllCharacterRecognition();
+                        
+                        //Grid.GetCell(transform.position)?.Item.AddInCellGameObject(this);
+                        
+                        _canForceEnd = true;
+                        
+                        Debug.Log("END GAME!");
+                    });
+            
+                StateMachine.SetToState(CharacterMovementState.Moving, null, new object[]{endGameCellTask});
+
+                
                 return true;
             default:
                 throw new ArgumentOutOfRangeException();
@@ -243,8 +266,9 @@ public class BaseCharacterMapDynamicGameObject : MapDynamicGameObject
 
     private CellSelectionResult CheckSelectedCellValid(GridXYCell<MapCellItem> selectedCell)
     {
-        var rolePlaying = GameManager.Instance.CurrentRolePlaying;
+        if (selectedCell == Grid.GetCell(transform.position)) return CellSelectionResult.ValidSelection;
 
+        var rolePlaying = GameManager.Instance.CurrentRolePlaying;
         if (selectedCell.Item.GetFirstInCellGameObject<ExitMapGameObject>() != null)
             return rolePlaying == PlayerRole.Imposter
                 ? CellSelectionResult.EndGameSelection
@@ -253,6 +277,7 @@ public class BaseCharacterMapDynamicGameObject : MapDynamicGameObject
             return rolePlaying == PlayerRole.Detective 
                 ? CellSelectionResult.EndGameSelection
                 : CellSelectionResult.InvalidSelection;
+        
         return CellSelectionResult.ValidSelection;
     }
     

@@ -29,7 +29,7 @@ public class PortraitButtonRect : MonoBehaviour
     {
         if (oldRecognitionState == currentRecognitionState) return;
         
-        Debug.Log("Update recognition of " + CharacterSet.CharacterMapGameObject.name + " to " + currentRecognitionState.ToString());
+        //Debug.Log("Update recognition of " + CharacterSet.CharacterMapGameObject.name + " to " + currentRecognitionState.ToString());
         
         switch (currentRecognitionState)
         {
