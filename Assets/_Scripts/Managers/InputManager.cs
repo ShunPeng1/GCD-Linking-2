@@ -25,6 +25,17 @@ namespace _Scripts.Input_and_Camera
             
         }
 
+        public void DisableInput()
+        {
+            _isInputInteractable = false;
+        }
+        
+        
+        public void EnableInput()
+        {
+            _isInputInteractable = true;
+        }
+        
         public void ChangeMouseInput(CellSelectMouseInput mouseInput)
         {
             _currentMouseInput = mouseInput;

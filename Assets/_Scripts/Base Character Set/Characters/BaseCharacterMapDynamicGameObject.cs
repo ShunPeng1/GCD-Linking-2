@@ -203,14 +203,13 @@ public class BaseCharacterMapDynamicGameObject : MapDynamicGameObject
             selectedCell =>
             {
                 HideMovablePath();
-                if (FinishedSelectionCell(selectedCell))
-                    externalSuccessSelectionAction?.Invoke();
-                else externalFailSelectionAction?.Invoke();
+                if (!FinishedSelectionCell(selectedCell, externalSuccessSelectionAction))
+                    externalFailSelectionAction?.Invoke();
             });
         InputManager.Instance.ChangeMouseInput(mouseInput);
     }
 
-    protected virtual bool FinishedSelectionCell(GridXYCell<MapCellItem> selectedCell)
+    protected virtual bool FinishedSelectionCell(GridXYCell<MapCellItem> selectedCell, Action externalSuccessSelectionAction = null)
     {
         
         switch (CheckSelectedCellValid(selectedCell))
@@ -228,6 +227,7 @@ public class BaseCharacterMapDynamicGameObject : MapDynamicGameObject
                         StateMachine.SetToState(CharacterMovementState.Idling);
                         
                         MapManager.Instance.UpdateAllCharacterRecognition();
+                        externalSuccessSelectionAction?.Invoke();
                         
                         Grid.GetCell(transform.position)?.Item.AddInCellGameObject(this);
                         
@@ -247,6 +247,7 @@ public class BaseCharacterMapDynamicGameObject : MapDynamicGameObject
                         
                         MapManager.Instance.UpdateAllCharacterRecognition();
                         
+                        externalSuccessSelectionAction?.Invoke();
                         //Grid.GetCell(transform.position)?.Item.AddInCellGameObject(this);
                         
                         _canForceEnd = true;

@@ -5,6 +5,7 @@ using _Scripts.Lights;
 using Shun_State_Machine;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
+using UnityEngine.Serialization;
 using UnityUtilities;
 using Random = UnityEngine.Random;
 
@@ -44,6 +45,8 @@ namespace _Scripts.Managers
         public readonly Dictionary<CharacterInformation, CharacterSet> CharacterSets = new();
 
         public PlayerRole CurrentRolePlaying;
+        [FormerlySerializedAs("ImposterLastTurnRecognition")] public CharacterRecognitionState ImposterLastRoundRecognition;
+        
         protected void Awake()
         {
             InitializeState();
@@ -110,43 +113,44 @@ namespace _Scripts.Managers
 
         private void StartTurn()
         {
-            
+            SwapPlayingRole();
         }
 
         public void EndTurn()
         {
-            SwapPlayingRole();
+            StartTurn();
         }
 
         private void StartRound()
         {
             CardManager.Instance.ShuffleBackToDeck();
             CardManager.Instance.AddFromDeckToHand();
+            
         }
 
         public void EndRound()
         {
             MapManager.Instance.UpdateAllCharacterRecognition();
-            CheckImposterRecognition();
+            UpdateImposterRecognitionWithOther();
             
-            UiManager.Instance.UpdateImposterRecognition();
+            UiManager.Instance.UpdateImposterRecognition(ImposterLastRoundRecognition);
             
             StartRound();
-            SwapPlayingRole();
         }
 
-        private void CheckImposterRecognition()
+        private void UpdateImposterRecognitionWithOther()
         {
-            var imposterRecognition = ImposterSet.CharacterRecognition.Value;
+            ImposterLastRoundRecognition = ImposterSet.CharacterRecognition.Value;
             foreach (var (characterInformation, characterSet) in CharacterSets)
             {
                 if (characterSet == ImposterSet) continue;
                 
-                if (imposterRecognition != characterSet.CharacterRecognition.Value && characterSet.CharacterRecognition.Value != CharacterRecognitionState.Innocent)
+                if (ImposterLastRoundRecognition != characterSet.CharacterRecognition.Value && characterSet.CharacterRecognition.Value != CharacterRecognitionState.Innocent)
                 {
                     characterSet.CharacterRecognition.Value = CharacterRecognitionState.Innocent;
                 }
             }
+            
         }
         
         private void SwapPlayingRole()
@@ -160,8 +164,31 @@ namespace _Scripts.Managers
             
             UiManager.Instance.UpdateRolePlaying();
         }
-        
-        
+
+        public void RequestEndGame(BaseCharacterMapDynamicGameObject characterMapDynamicGameObject)
+        {
+            switch (CurrentRolePlaying)
+            {
+                case PlayerRole.Detective:
+
+                    var collideCharacter = characterMapDynamicGameObject.GetCell().Item
+                        .GetFirstInCellGameObject<BaseCharacterMapDynamicGameObject>();
+                    if (collideCharacter == ImposterSet.CharacterMapGameObject)
+                    {
+                        
+                    }
+                    else
+                    {
+                        
+                    }
+                    break;
+                case PlayerRole.Imposter:
+                    
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
         
     }
     

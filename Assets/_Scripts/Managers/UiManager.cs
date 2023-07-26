@@ -63,9 +63,9 @@ namespace _Scripts.Managers
             return portraitButtonRect;
         }
 
-        public void UpdateImposterRecognition()
+        public void UpdateImposterRecognition(CharacterRecognitionState imposterLastRoundRecognition)
         {
-            switch (GameManager.Instance.ImposterSet.CharacterRecognition.Value)
+            switch (imposterLastRoundRecognition)
             {
                 case CharacterRecognitionState.InLight:
                     _imposterRecognitionText.text = _imposterRecognitionFormat + "Light";
@@ -103,11 +103,7 @@ namespace _Scripts.Managers
             _currentTurnPopInSequence.Append(_currentTurnPanel.DOMove(originalDestination, _currentTurnPopInDuration).SetEase(_currentTurnPopEase));
             
         }
-
-        public void IDK()
-        {
-            
-        }
+        
         
     }
 }
