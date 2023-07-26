@@ -67,7 +67,7 @@ Material:
     - _OutlineSoftness: 0
     - _OutlineUVSpeedX: 0
     - _OutlineUVSpeedY: 0
-    - _OutlineWidth: 0
+    - _OutlineWidth: 0.317
     - _PerspectiveFilter: 0.875
     - _Reflectivity: 10
     - _ScaleRatioA: 0.8333333
@@ -117,9 +117,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71c1514a6bd24e1e882cebbe1904ce04, type: 3}
   m_Name: Menu
   m_EditorClassIdentifier: 
-  hashCode: 514899119
+  hashCode: 2660307
   material: {fileID: -50908094913255058}
-  materialHashCode: 1380875311
+  materialHashCode: -1586708717
   m_Version: 1.1.0
   m_SourceFontFileGUID: ec1ce2f53d2ad8b49acae840a0bf4d57
   m_SourceFontFile_EditorRef: {fileID: 12800000, guid: ec1ce2f53d2ad8b49acae840a0bf4d57, type: 3}

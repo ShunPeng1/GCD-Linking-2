@@ -16,8 +16,8 @@ namespace _Scripts.Base_Character_Set.Card_Region
         {
             var characterCardGameObject = (BaseCharacterCardGameObject) baseCardGameObject;
             
-            characterCardGameObject.Ability1Button.EnableInteractable();
-            characterCardGameObject.Ability2Button.EnableInteractable();
+            characterCardGameObject.AbilityButton.EnableInteractable();
+            
             
             AudioManager.Instance.PlaySFX(_addCardSfx);
             
@@ -30,8 +30,8 @@ namespace _Scripts.Base_Character_Set.Card_Region
             var characterCardGameObject = (BaseCharacterCardGameObject) baseCardGameObject;
             
             
-            characterCardGameObject.Ability1Button.DisableInteractable();
-            characterCardGameObject.Ability2Button.DisableInteractable();
+            characterCardGameObject.AbilityButton.DisableInteractable();
+            
 
         }
         

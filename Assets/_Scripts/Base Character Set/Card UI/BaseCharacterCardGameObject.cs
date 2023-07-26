@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Shun_Card_System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Serialization;
@@ -13,8 +14,10 @@ namespace _Scripts.Cards.Card_UI
 
 
         [Header("Child Components")]
-        public CharacterCardButton Ability1Button;
-        public CharacterCardButton Ability2Button;
+        public CharacterCardButton AbilityButton;
+
+        [SerializeField] private TMP_Text  _nameText;
+        [SerializeField] private TMP_Text  _abilityDescription;
         [SerializeField] private Transform _cardVisualTransform;
         [FormerlySerializedAs("_sortingGroup")] public SortingGroup SortingGroup;
 
@@ -25,9 +28,10 @@ namespace _Scripts.Cards.Card_UI
         private readonly Dictionary<CharacterCardButton, int> _originalUseCountBaseOnButtons = new();
         
 
-        [Header("Hover")] 
-        
+        [Header("Hover")]
         [SerializeField] private float _hoverEnlargeValue = 1.5f;
+
+        [SerializeField] private AudioClip _hoverSfx;
         
         private void Start()
         {
@@ -36,8 +40,8 @@ namespace _Scripts.Cards.Card_UI
 
         private void InitializeComponents()
         {
-            Ability1Button.Initialize(this);
-            Ability2Button.Initialize(this);
+            AbilityButton.Initialize(this);
+            
         }
         
         public void InitializeCharacter(CharacterSet characterSet)
@@ -50,15 +54,17 @@ namespace _Scripts.Cards.Card_UI
                 return;
             }
             
-            _executeAbilityBaseOnButton.Add(Ability1Button, CharacterSet.CharacterMapGameObject.MoveAbility);
-            _executeAbilityBaseOnButton.Add(Ability2Button, CharacterSet.CharacterMapGameObject.SecondAbility);
+            _executeAbilityBaseOnButton.Add(AbilityButton, CharacterSet.CharacterMapGameObject.MoveAbility);
             
-            _forceEndAbilityBaseOnButton.Add(Ability1Button, CharacterSet.CharacterMapGameObject.ForceEndMoveAbility);
-            _forceEndAbilityBaseOnButton.Add(Ability2Button, CharacterSet.CharacterMapGameObject.ForceEndSecondAbility);
             
-            _originalUseCountBaseOnButtons.Add(Ability1Button, CharacterSet.CharacterInformation.Ability1UseCount);
-            _originalUseCountBaseOnButtons.Add(Ability2Button, CharacterSet.CharacterInformation.Ability2UseCount);
+            _forceEndAbilityBaseOnButton.Add(AbilityButton, CharacterSet.CharacterMapGameObject.ForceEndMoveAbility);
+            
+            
+            _originalUseCountBaseOnButtons.Add(AbilityButton, CharacterSet.CharacterInformation.Ability1UseCount);
 
+            _abilityDescription.text = CharacterSet.CharacterInformation.Ability1Description;
+            _nameText.text = CharacterSet.CharacterInformation.CharacterName;
+            
             ResetAbilityUse();
         }
 
@@ -165,6 +171,8 @@ namespace _Scripts.Cards.Card_UI
             base.StartHover();
             _cardVisualTransform.localScale *= _hoverEnlargeValue;
             SortingGroup.sortingOrder +=100;
+            
+            AudioManager.Instance.PlaySFX(_hoverSfx);
         }
         
         public override void EndHover()
@@ -172,6 +180,8 @@ namespace _Scripts.Cards.Card_UI
             base.EndHover();
             _cardVisualTransform.localScale /= _hoverEnlargeValue;
             SortingGroup.sortingOrder -=100;
+            
+            
         }
     }
 }

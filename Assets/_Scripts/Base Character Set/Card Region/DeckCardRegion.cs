@@ -15,8 +15,8 @@ namespace _Scripts.Base_Character_Set.Card_Region
             var characterCardGameObject = (BaseCharacterCardGameObject) baseCardGameObject;
             
             characterCardGameObject.DisableInteractable();
-            characterCardGameObject.Ability1Button.DisableInteractable();
-            characterCardGameObject.Ability2Button.DisableInteractable();
+            characterCardGameObject.AbilityButton.DisableInteractable();
+            
 
             characterCardGameObject.SortingGroup.sortingOrder = -index;
             
