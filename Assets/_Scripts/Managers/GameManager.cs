@@ -165,29 +165,41 @@ namespace _Scripts.Managers
             UiManager.Instance.UpdateRolePlaying();
         }
 
-        public void RequestEndGame(BaseCharacterMapDynamicGameObject characterMapDynamicGameObject)
+        public void RequestEndGame(BaseCharacterMapDynamicGameObject requestingCharacter)
         {
             switch (CurrentRolePlaying)
             {
                 case PlayerRole.Detective:
 
-                    var collideCharacter = characterMapDynamicGameObject.GetCell().Item
+                    var collideCharacter = requestingCharacter.GetCell().Item
                         .GetFirstInCellGameObject<BaseCharacterMapDynamicGameObject>();
                     if (collideCharacter == ImposterSet.CharacterMapGameObject)
                     {
-                        
+                        Debug.Log("DETECTIVE WIN ");
                     }
                     else
                     {
-                        
+                        Debug.Log("IMPOSTER WIN");
                     }
                     break;
                 case PlayerRole.Imposter:
+                    var exit = requestingCharacter.GetCell().Item
+                        .GetFirstInCellGameObject<ExitMapGameObject>();
+                    if (exit!= null && exit.IsOpen)
+                    {
+                        Debug.Log("IMPOSTER WIN");
+                    }
                     
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+        }
+
+        public bool CheckImposterCanExit(BaseCharacterMapDynamicGameObject checkingCharacter)
+        {
+            return (checkingCharacter != ImposterSet.CharacterMapGameObject
+                    && ImposterLastRoundRecognition == CharacterRecognitionState.InDark);
         }
         
     }

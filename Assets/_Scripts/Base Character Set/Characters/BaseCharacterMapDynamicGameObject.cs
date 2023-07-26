@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using _Scripts.Cards.Card_UI;
 using _Scripts.Input_and_Camera;
+using _Scripts.Lights;
 using _Scripts.Managers;
 using Shun_Card_System;
 using Shun_Grid_System;
@@ -246,13 +247,12 @@ public class BaseCharacterMapDynamicGameObject : MapDynamicGameObject
                         StateMachine.SetToState(CharacterMovementState.Idling);
                         
                         MapManager.Instance.UpdateAllCharacterRecognition();
+                        GameManager.Instance.RequestEndGame(this);
                         
                         externalSuccessSelectionAction?.Invoke();
-                        //Grid.GetCell(transform.position)?.Item.AddInCellGameObject(this);
-                        
+
                         _canForceEnd = true;
                         
-                        Debug.Log("END GAME!");
                     });
             
                 StateMachine.SetToState(CharacterMovementState.Moving, null, new object[]{endGameCellTask});
@@ -272,11 +272,14 @@ public class BaseCharacterMapDynamicGameObject : MapDynamicGameObject
 
         var rolePlaying = GameManager.Instance.CurrentRolePlaying;
         if (selectedCell.Item.GetFirstInCellGameObject<ExitMapGameObject>() != null)
-            return rolePlaying == PlayerRole.Imposter
+            return rolePlaying == PlayerRole.Imposter && GameManager.Instance.CheckImposterCanExit(this)
                 ? CellSelectionResult.EndGameSelection
                 : CellSelectionResult.InvalidSelection;
-        if (selectedCell.Item.GetFirstInCellGameObject<BaseCharacterMapDynamicGameObject>() != null)
-            return rolePlaying == PlayerRole.Detective 
+        
+        var character = selectedCell.Item.GetFirstInCellGameObject<BaseCharacterMapDynamicGameObject>();
+        if (character != null)
+            return rolePlaying == PlayerRole.Detective
+                   && character.CharacterSet.CharacterRecognition.Value != CharacterRecognitionState.Innocent
                 ? CellSelectionResult.EndGameSelection
                 : CellSelectionResult.InvalidSelection;
         
