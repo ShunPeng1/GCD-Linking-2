@@ -11,17 +11,6 @@ using Random = UnityEngine.Random;
 
 namespace _Scripts.Managers
 {
-    public enum GameState
-    {
-        StartRound,
-        Over,
-        Pause,
-        InteractMap,
-        ChooseCard,
-        ChangeSide,
-
-    }
-
     public enum PlayerRole
     {
         Detective,
@@ -30,30 +19,21 @@ namespace _Scripts.Managers
 
     public class GameManager : SingletonMonoBehaviour<GameManager>
     {
-        public readonly BaseStateMachine<GameState> BaseStateMachine = new BaseStateMachine<GameState>();
-        
         [SerializeField] private CharacterInformation[] _charactersInformation;
         public CharacterSet ImposterSet;
         public readonly Dictionary<CharacterInformation, CharacterSet> CharacterSets = new();
 
         public PlayerRole CurrentRolePlaying;
         public CharacterRecognitionState ImposterLastRoundRecognition;
-        
-        
 
+        public Action StartGameAction;
+        
         protected void Start()
         {
             InitializeCharacters();
             CardManager.Instance.InitializeBag();
 
             CreateImposter();
-            StartRound();
-        }
-
-       
-        private void Update()
-        {
-            BaseStateMachine.CurrentBaseState.ExecuteState();
         }
         
         private void InitializeCharacters()
@@ -84,8 +64,12 @@ namespace _Scripts.Managers
 
         private void CreateImposter()
         {
-            var imposterCharacterInformation = _charactersInformation[ Random.Range(0, _charactersInformation.Length) ];
-            ImposterSet = CharacterSets[imposterCharacterInformation];
+            
+            UiManager.Instance.ShowImposterSelection();
+            
+            StartGameAction += StartRound;
+            StartGameAction += UiManager.Instance.HideImposterSelection;
+
         }
 
         private void StartTurn()
@@ -129,6 +113,7 @@ namespace _Scripts.Managers
             }
             
         }
+        
         
         private void SwapPlayingRole()
         {

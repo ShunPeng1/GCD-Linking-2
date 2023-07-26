@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using _Scripts.Input_and_Camera;
 using _Scripts.Lights;
 using DG.Tweening;
 using TMPro;
@@ -19,6 +20,9 @@ namespace _Scripts.Managers
         [Header("Sprites")] 
         [SerializeField] private Sprite _imposterSprite;
         [SerializeField] private Sprite _detectiveSprite;
+        [SerializeField] private Vector3 _crimeBoardPopInPopInOffset = new Vector3(300, -200, 0);
+        [SerializeField] private Vector3 _crimeBoardPopInScale = new Vector3(1.2f, 1.2f, 0);
+
         
         [Header("Crime Board")] 
         [SerializeField] private CanvasGroup _crimeBoardCanvasGroup;
@@ -51,13 +55,14 @@ namespace _Scripts.Managers
         [Header("End Round Animation")]
         [SerializeField] private Vector3 _imposterRecognitionPopInOffset = new Vector3(-500,-500,0);
         [SerializeField] private Vector3 _imposterRecognitionPopInScale = new Vector3(1.5f,1.5f,0);
-        [SerializeField] private Vector3 _crimeBoardPopInPopInOffset = new Vector3(300, -200, 0);
-        [SerializeField] private Vector3 _crimeBoardPopInScale = new Vector3(1.2f, 1.2f, 0);
         [SerializeField] private float _imposterRecognitionPopInDuration = 0.5f;
         [SerializeField] private float _imposterRecognitionPopShowDuration = 1.5f;
         [SerializeField] private Ease _imposterRecognitionPopInEase;
         private Sequence _imposterRecognitionPopInSequence;
         private static readonly int IsInDark = Animator.StringToHash("IsInDark");
+
+        [Header("Imposter Selection Animation")] [SerializeField]
+        private string _selectionDialog = "Choose your disguise wisely";
         
         [Header("Ultility")] 
         [SerializeField] private float _dialogSpeed = 15f;
@@ -82,11 +87,77 @@ namespace _Scripts.Managers
             return portraitButtonRect;
         }
 
-        
+        public void ShowImposterSelection()
+        {
+            CardManager.Instance.LockPlayCard();
+            
+            _currentTurnImage.sprite = _imposterSprite;
 
+            _currentTurnText.text = PlayerRole.Imposter.ToString() + _currentTurnFormat;
+
+            Sequence showImposterSelectionSequence = DOTween.Sequence();
+
+            
+            Vector3 originalDestination = _currentTurnPopDestination;
+            Vector3 popInDestination = _currentTurnPopDestination + _currentTurnPopInOffset;
+            
+            showImposterSelectionSequence.Append(_currentTurnPanel.DOMove(popInDestination, _currentTurnPopInDuration).SetEase(_currentTurnPopEase));
+            showImposterSelectionSequence.AppendInterval(_currentTurnPopShowDuration);
+            showImposterSelectionSequence.Append(_currentTurnPanel.DOMove(originalDestination, _currentTurnPopInDuration).SetEase(_currentTurnPopEase));
+            showImposterSelectionSequence.AppendInterval(_currentTurnPopShowDuration);
+
+            Vector3 imposterRecognitionPanelOriginalScale = _imposterRecognitionPanel.transform.lossyScale;
+            Vector3 crimeBoardPanelOriginalScale = _crimeBoardPanel.transform.lossyScale;
+            
+            showImposterSelectionSequence.Append(_imposterRecognitionPanel.DOMove(_imposterRecognitionPopInOffset, _imposterRecognitionPopInDuration).SetRelative().SetEase(_currentTurnPopEase));
+            showImposterSelectionSequence.Join(_crimeBoardPanel.DOMove(_crimeBoardPopInPopInOffset, _imposterRecognitionPopInDuration).SetRelative().SetEase(_currentTurnPopEase));
+            showImposterSelectionSequence.Join(_imposterRecognitionPanel.DOScale(_imposterRecognitionPopInScale, _imposterRecognitionPopInDuration).SetEase(_currentTurnPopEase));
+            showImposterSelectionSequence.Join(_crimeBoardPanel.DOScale(_crimeBoardPopInScale, _imposterRecognitionPopInDuration).SetEase(_currentTurnPopEase));
+
+            showImposterSelectionSequence.AppendCallback(() =>
+            {
+                StartCoroutine(PopInTextWordByWord(_imposterRecognitionText, _selectionDialog, _dialogSpeed));
+            });
+            
+            
+            showImposterSelectionSequence.AppendInterval(_imposterRecognitionPopShowDuration);
+            
+            /*
+            
+            imposterRecognitionPopInSequence.AppendInterval(_imposterRecognitionPopShowDuration);
+            
+            
+            _imposterRecognitionPopInSequence.Append(_imposterRecognitionPanel.DOMove(-_imposterRecognitionPopInOffset, _imposterRecognitionPopInDuration).SetRelative().SetEase(_currentTurnPopEase));
+            _imposterRecognitionPopInSequence.Join(_crimeBoardPanel.DOMove(-_crimeBoardPopInPopInOffset, _imposterRecognitionPopInDuration).SetRelative().SetEase(_currentTurnPopEase));
+            _imposterRecognitionPopInSequence.Join(_imposterRecognitionPanel.DOScale(imposterRecognitionPanelOriginalScale, _imposterRecognitionPopInDuration).SetEase(_currentTurnPopEase));
+            _imposterRecognitionPopInSequence.Join(_crimeBoardPanel.DOScale(crimeBoardPanelOriginalScale, _imposterRecognitionPopInDuration).SetEase(_currentTurnPopEase));
+            _imposterRecognitionPopInSequence.AppendCallback(() =>
+            {
+                CardManager.Instance.UnlockPlayCard();
+            });
+            
+            */
+        }
+
+        public void HideImposterSelection()
+        {
+            
+
+        }
+        
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.K)) UpdateImposterRecognition();
+        }
+
+        
+        
         public void UpdateImposterRecognition()
         {
             var imposterLastRoundRecognition = GameManager.Instance.ImposterLastRoundRecognition;
+            
+            CardManager.Instance.LockPlayCard();
+            
             _imposterRecognitionPopInSequence.Complete();
             _imposterRecognitionPopInSequence = DOTween.Sequence();
 
@@ -128,8 +199,11 @@ namespace _Scripts.Managers
             _imposterRecognitionPopInSequence.Join(_crimeBoardPanel.DOMove(-_crimeBoardPopInPopInOffset, _imposterRecognitionPopInDuration).SetRelative().SetEase(_currentTurnPopEase));
             _imposterRecognitionPopInSequence.Join(_imposterRecognitionPanel.DOScale(imposterRecognitionPanelOriginalScale, _imposterRecognitionPopInDuration).SetEase(_currentTurnPopEase));
             _imposterRecognitionPopInSequence.Join(_crimeBoardPanel.DOScale(crimeBoardPanelOriginalScale, _imposterRecognitionPopInDuration).SetEase(_currentTurnPopEase));
+            _imposterRecognitionPopInSequence.AppendCallback(() =>
+            {
+                CardManager.Instance.UnlockPlayCard();
+            });
 
-            
         }
 
         public void UpdateRolePlaying()
