@@ -11,25 +11,33 @@ public class CellSelectHighlighter : MapStaticGameObject, IMouseInteractable
     public bool Interactable { get => _interactable; protected set => _interactable = value; }
     public bool IsHovering { get; protected set; }
 
-    [SerializeField] private SpriteRenderer _spriteRenderer;
-
+    [Header("Highlight")]
     [SerializeField] private float _validCellHighlightValue = 0.25f, _hoverHighlightValue = 0.25f;
+    [SerializeField] private Color _chooseObjectColor = new Color(1,1,1,0);
+    
+    [Header("Components")]    
+    [SerializeField] private SpriteRenderer _spriteRenderer;
     [SerializeField] private Animator _animator;
-    protected void Awake()
+
+
+    private void OnValidate()
     {
-        
+        _chooseObjectColor.a = 0;
     }
 
     public void StartHover()
     {
         IsHovering = true;
-        _spriteRenderer.color += new Color(0, 0, 0, _hoverHighlightValue);
+       
+        IncreaseTransparency(_hoverHighlightValue);
+
     }
 
     public void EndHover()
     {
         IsHovering = false;
-        _spriteRenderer.color -= new Color(0, 0, 0, _hoverHighlightValue);
+        
+        IncreaseTransparency(-_hoverHighlightValue);
     }
 
     public void Select()
@@ -50,7 +58,7 @@ public class CellSelectHighlighter : MapStaticGameObject, IMouseInteractable
 
         _animator.enabled = false;
         
-        _spriteRenderer.color -= new Color(0, 0, 0, _validCellHighlightValue);
+        IncreaseTransparency(-_validCellHighlightValue);
     }
 
     public void EnableInteractable()
@@ -60,7 +68,28 @@ public class CellSelectHighlighter : MapStaticGameObject, IMouseInteractable
         _animator.enabled = true;
         
         _animator.Rebind();
+
+        IncreaseTransparency(_validCellHighlightValue);
         
-        _spriteRenderer.color += new Color(0, 0, 0, _validCellHighlightValue);
+    }
+
+    private void IncreaseTransparency(float value)
+    {
+        _spriteRenderer.color = HighlightColorTransparent() + new Color(0, 0, 0,  _spriteRenderer.color.a + value);
+
+    }
+    
+    private Color HighlightColorTransparent()
+    {
+        MapCellItem item = Cell.Item;
+
+        if (item.GetFirstInCellGameObject<MapDynamicGameObject>() != null || item.GetFirstInCellGameObject<ExitMapGameObject>() != null)
+        {
+            return _chooseObjectColor;
+        }
+        else
+        {
+            return new Color(1, 1, 1, 0);
+        }
     }
 }

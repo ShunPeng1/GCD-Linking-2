@@ -100,9 +100,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _interactable: 0
-  _spriteRenderer: {fileID: 5153590514547019757}
   _validCellHighlightValue: 0.5
   _hoverHighlightValue: 0.5
+  _chooseObjectColor: {r: 1, g: 0.2676293, b: 0.23113209, a: 0}
+  _spriteRenderer: {fileID: 5153590514547019757}
   _animator: {fileID: -1557342770918682652}
 --- !u!61 &-2159847120361783999
 BoxCollider2D:
