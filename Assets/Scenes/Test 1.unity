@@ -1264,7 +1264,7 @@ AudioSource:
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
-  Priority: 128
+  Priority: 98
   DopplerLevel: 1
   MinDistance: 1
   MaxDistance: 500
@@ -47465,9 +47465,9 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 4d167033088a145448487c856209022e, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 1ca7b6ccc8b06684eacd05128cd8ddd0, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.8
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -49626,6 +49626,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Exhaust Card Region
       objectReference: {fileID: 0}
+    - target: {fileID: 3221032574887615021, guid: a005a02e208518c48ae981a27eeb1959, type: 3}
+      propertyPath: _addCardSfx
+      value: 
+      objectReference: {fileID: 8300000, guid: 6ee95e6b166242e45853b90da99848bb, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a005a02e208518c48ae981a27eeb1959, type: 3}
 --- !u!4 &4417979384645452185 stripped
@@ -49713,6 +49717,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 930233320}
     m_Modifications:
+    - target: {fileID: 6704602801116126737, guid: 43d4adb8c7f9c164bacd69ed3053ca44, type: 3}
+      propertyPath: _addCardSfx
+      value: 
+      objectReference: {fileID: 8300000, guid: 6ee95e6b166242e45853b90da99848bb, type: 3}
     - target: {fileID: 6704602801116126738, guid: 43d4adb8c7f9c164bacd69ed3053ca44, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -49786,6 +49794,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 930233320}
     m_Modifications:
+    - target: {fileID: 531655448337079175, guid: 02215e9fb82e8b544b91b426de1298bf, type: 3}
+      propertyPath: _addCardSfx
+      value: 
+      objectReference: {fileID: 8300000, guid: 21d59935191b34543878fbd29050780f, type: 3}
     - target: {fileID: 3162348009324545202, guid: 02215e9fb82e8b544b91b426de1298bf, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -49902,6 +49914,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8299054843014282570, guid: 6fe38d2d8a812cc4e883766c6a8febce, type: 3}
+      propertyPath: _addCardSfx
+      value: 
+      objectReference: {fileID: 8300000, guid: 6ee95e6b166242e45853b90da99848bb, type: 3}
     - target: {fileID: 8299054843014282570, guid: 6fe38d2d8a812cc4e883766c6a8febce, type: 3}
       propertyPath: _interactable
       value: 0

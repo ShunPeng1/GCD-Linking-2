@@ -261,6 +261,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Button: {fileID: 3409343322780988325}
   _animator: {fileID: 7043522985156979615}
+  _innocentStampSfx: {fileID: 8300000, guid: 5e2ba24d34d514b4893822a5b02e1311, type: 3}
+  _lightFlickSfx: {fileID: 8300000, guid: bcb9353f0ef2211469c57f0710563d6c, type: 3}
 --- !u!114 &3409343322780988325
 MonoBehaviour:
   m_ObjectHideFlags: 0

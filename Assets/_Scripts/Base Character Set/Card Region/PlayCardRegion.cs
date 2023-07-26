@@ -1,12 +1,16 @@
 ﻿using _Scripts.Cards.Card_UI;
 using _Scripts.Input_and_Camera;
 using Shun_Card_System;
+using UnityEngine;
 
 namespace _Scripts.Base_Character_Set.Card_Region
 {
     public class PlayCardRegion : BaseCardRegion
     {
         
+
+        [Header("Audio")] 
+        [SerializeField] private AudioClip _addCardSfx;
         
         protected override void OnSuccessfullyAddCard(BaseCardGameObject baseCardGameObject, BaseCardHolder baseCardHolder, int index)
         {
@@ -14,6 +18,8 @@ namespace _Scripts.Base_Character_Set.Card_Region
             
             characterCardGameObject.Ability1Button.EnableInteractable();
             characterCardGameObject.Ability2Button.EnableInteractable();
+            
+            AudioManager.Instance.PlaySFX(_addCardSfx);
             
             InputManager.Instance.CameraMovement.FocusOnGameObject(characterCardGameObject.CharacterSet.CharacterMapGameObject.gameObject);
             

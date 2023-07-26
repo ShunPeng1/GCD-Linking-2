@@ -21,6 +21,8 @@ namespace _Scripts.Base_Character_Set.Card_Region
         [SerializeField] private float _middleAlignDuration = 0.125f;
         [SerializeField] private Ease _middleAlignEase = Ease.OutCubic;
 
+        [Header("Audio")] 
+        [SerializeField] private AudioClip _addCardSfx;
 
         protected override void Awake()
         {
@@ -33,7 +35,7 @@ namespace _Scripts.Base_Character_Set.Card_Region
         {
             var characterCardGameObject = (BaseCharacterCardGameObject) baseCardGameObject;
             
-            
+            AudioManager.Instance.PlaySFX(_addCardSfx);
             characterCardGameObject.Ability1Button.DisableInteractable();
             characterCardGameObject.Ability2Button.DisableInteractable();
             MiddleAlign();

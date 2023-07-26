@@ -10,7 +10,7 @@ public class AudioManager : SingletonMonoBehaviour<AudioManager>
     [SerializeField] private AudioSource _sfxAudioSource;
     
     
-    public void PlaySound(AudioClip clip)
+    public void PlaySFX(AudioClip clip)
     {
         _sfxAudioSource.PlayOneShot(clip);
     }

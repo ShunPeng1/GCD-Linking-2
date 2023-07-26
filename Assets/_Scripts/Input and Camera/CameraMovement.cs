@@ -29,6 +29,7 @@ public class CameraMovement : MonoBehaviour
     [Header("Focus")] 
     [SerializeField] private float _focusTweenDuration = 0.5f;
     [SerializeField] private Ease _focusEase;
+    [SerializeField] private AudioClip _whoseSfx;
     
     private void Awake()
     {
@@ -121,5 +122,7 @@ public class CameraMovement : MonoBehaviour
 
         // Animate camera zoom to the new zoom distance
         _camera.DOOrthoSize(newZoomDistance, _focusTweenDuration).SetEase(_focusEase);
+        
+        AudioManager.Instance.PlaySFX(_whoseSfx);
     }
 }

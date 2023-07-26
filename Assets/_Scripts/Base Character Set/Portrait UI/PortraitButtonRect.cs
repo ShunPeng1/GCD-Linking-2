@@ -15,6 +15,12 @@ public class PortraitButtonRect : MonoBehaviour
     private static readonly int IsInnocent = Animator.StringToHash("IsInnocent");
     private static readonly int IsImposterSelect = Animator.StringToHash("IsImposterSelect");
 
+    
+
+    [Header("Audio")] 
+    [SerializeField] private AudioClip _innocentStampSfx;
+
+    [SerializeField] private AudioClip _lightFlickSfx;
     private void Start()
     {
         Button.onClick.AddListener( ZoomToCharacter );
@@ -42,12 +48,15 @@ public class PortraitButtonRect : MonoBehaviour
         {
             case CharacterRecognitionState.InLight:
                 _animator.SetBool(IsInDark, false);
+                AudioManager.Instance.PlaySFX(_lightFlickSfx);
                 break;
             case CharacterRecognitionState.InDark:
                 _animator.SetBool(IsInDark, true);
+                AudioManager.Instance.PlaySFX(_lightFlickSfx);
                 break;
             case CharacterRecognitionState.Innocent:
                 _animator.SetTrigger(IsInnocent);
+                AudioManager.Instance.PlaySFX(_innocentStampSfx);
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(currentRecognitionState), currentRecognitionState, null);

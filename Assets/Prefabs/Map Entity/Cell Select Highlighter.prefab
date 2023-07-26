@@ -103,6 +103,7 @@ MonoBehaviour:
   _validCellHighlightValue: 0.5
   _hoverHighlightValue: 0.5
   _chooseObjectColor: {r: 1, g: 0.2676293, b: 0.23113209, a: 0}
+  _hoverSfx: {fileID: 8300000, guid: 2da398e6fcae913428ee23ded17dd79e, type: 3}
   _spriteRenderer: {fileID: 5153590514547019757}
   _animator: {fileID: -1557342770918682652}
 --- !u!61 &-2159847120361783999

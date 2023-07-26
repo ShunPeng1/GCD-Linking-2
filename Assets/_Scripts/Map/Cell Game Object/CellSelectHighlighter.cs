@@ -14,6 +14,11 @@ public class CellSelectHighlighter : MapStaticGameObject, IMouseInteractable
     [Header("Highlight")]
     [SerializeField] private float _validCellHighlightValue = 0.25f, _hoverHighlightValue = 0.25f;
     [SerializeField] private Color _chooseObjectColor = new Color(1,1,1,0);
+
+    
+
+    [Header("Audio")] 
+    [SerializeField] private AudioClip _hoverSfx;
     
     [Header("Components")]    
     [SerializeField] private SpriteRenderer _spriteRenderer;
@@ -30,7 +35,8 @@ public class CellSelectHighlighter : MapStaticGameObject, IMouseInteractable
         IsHovering = true;
        
         IncreaseTransparency(_hoverHighlightValue);
-
+        
+        AudioManager.Instance.PlaySFX(_hoverSfx);
     }
 
     public void EndHover()
