@@ -97,7 +97,7 @@ public class CharacterLight : MonoBehaviour
         // Re-enable collisions between this character and other objects after the raycast is done.
         if (_collider2D != null) _collider2D.enabled = true;
         
-        Debug.Log("Cast from "+gameObject.name + " to "+ checkingCharacter.gameObject + " doesn't found "+ direction + " direction and "+ _lightRange +" range, " + " it hit " + hit2D.collider );
+        //Debug.Log("Cast from "+gameObject.name + " to "+ checkingCharacter.gameObject + " doesn't found "+ direction + " direction and "+ _lightRange +" range, " + " it hit " + hit2D.collider );
         return (hit2D.collider != null) && 
                (hit2D.collider.transform.gameObject.GetComponent<BaseCharacterMapDynamicGameObject>() == checkingCharacter);
 

@@ -12,7 +12,7 @@ namespace _Scripts.Input_and_Camera
         [SerializeField] private float _changeInputCooldown = 0.2f;
         
         private readonly BaseCardMouseInput _defaultMouseInput = new BaseCardMouseInput();
-        private CellHighlightSelectMouseInput _currentMouseInput = null;
+        private CellSelectMouseInput _currentMouseInput = null;
         private bool _isInputInteractable = true;
         void Update()
         {
@@ -25,7 +25,7 @@ namespace _Scripts.Input_and_Camera
             
         }
 
-        public void ChangeMouseInput(CellHighlightSelectMouseInput mouseInput)
+        public void ChangeMouseInput(CellSelectMouseInput mouseInput)
         {
             _currentMouseInput = mouseInput;
             _currentMouseInput.AddFinishedSelection(RemoveCurrentMouseInput);
@@ -33,7 +33,7 @@ namespace _Scripts.Input_and_Camera
             StartCoroutine(ChangMouseInputCooldown(mouseInput));
         }
 
-        IEnumerator ChangMouseInputCooldown(CellHighlightSelectMouseInput mouseInput)
+        IEnumerator ChangMouseInputCooldown(CellSelectMouseInput mouseInput)
         {
             yield return new WaitForSeconds(_changeInputCooldown);
             _isInputInteractable = true;

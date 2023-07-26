@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using _Scripts.Cards.Card_UI;
 using _Scripts.Input_and_Camera;
+using _Scripts.Managers;
 using Shun_Card_System;
 using Shun_Grid_System;
 using Shun_State_Machine;
@@ -179,26 +180,49 @@ public class BaseCharacterMapDynamicGameObject : MapDynamicGameObject
 
     #region MOVE_ABILITY
 
+    private enum CellSelectionResult
+    {
+        InvalidSelection,
+        ValidSelection,
+        EndGameSelection
+    }
+    
     public virtual void MoveAbility(Action externalSuccessSelectionAction = null, Action externalFailSelectionAction = null)
     {
         ShowMovablePath();
-        CellHighlightSelectMouseInput mouseInput = new CellHighlightSelectMouseInput(Grid, 
-            (CellSelectHighlighter cellSelectHighlighter) =>
-        {
-            if (CheckSelectedCellValid(cellSelectHighlighter))
+        CellSelectMouseInput mouseInput = new CellSelectMouseInput(
+            Grid,
+            selectedCell =>
+            {
+                return CheckSelectedCellValid(selectedCell) != CellSelectionResult.InvalidSelection;
+            },
+            selectedCell =>
             {
                 HideMovablePath();
-            
+                if (FinishedSelectionCell(selectedCell))
+                    externalSuccessSelectionAction?.Invoke();
+                else externalFailSelectionAction?.Invoke();
+            });
+        InputManager.Instance.ChangeMouseInput(mouseInput);
+    }
+
+    protected virtual bool FinishedSelectionCell(GridXYCell<MapCellItem> selectedCell)
+    {
+        
+        switch (CheckSelectedCellValid(selectedCell))
+        {
+            case CellSelectionResult.InvalidSelection:
+                return false;
+            case CellSelectionResult.ValidSelection:
                 _canForceEnd = false;
             
                 var newTask = new CharacterMovementTask(
                     CharacterMovementTask.StartPosition.NextCell,
-                    cellSelectHighlighter.transform.position, 
+                    Grid.GetWorldPositionOfNearestCell(selectedCell), 
                     () =>
                     {
                         StateMachine.SetToState(CharacterMovementState.Idling);
                         
-                        externalSuccessSelectionAction?.Invoke();   
                         MapManager.Instance.UpdateAllCharacterRecognition();
                         
                         _canForceEnd = true;
@@ -206,20 +230,30 @@ public class BaseCharacterMapDynamicGameObject : MapDynamicGameObject
             
                 StateMachine.SetToState(CharacterMovementState.Moving, null, new object[]{newTask});
 
-                
-            }
-            else
-            {
-                HideMovablePath();
-                externalFailSelectionAction?.Invoke();
-            }
-        });
-        InputManager.Instance.ChangeMouseInput(mouseInput);
+                return true;
+            case CellSelectionResult.EndGameSelection:
+                Debug.Log("END GAME!");
+                return true;
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
+
+        return true;
     }
 
-    private bool CheckSelectedCellValid(CellSelectHighlighter cellSelectHighlighter)
+    private CellSelectionResult CheckSelectedCellValid(GridXYCell<MapCellItem> selectedCell)
     {
-        return cellSelectHighlighter != null;
+        var rolePlaying = GameManager.Instance.CurrentRolePlaying;
+
+        if (selectedCell.Item.GetFirstInCellGameObject<ExitMapGameObject>() != null)
+            return rolePlaying == PlayerRole.Imposter
+                ? CellSelectionResult.EndGameSelection
+                : CellSelectionResult.InvalidSelection;
+        if (selectedCell.Item.GetFirstInCellGameObject<BaseCharacterMapDynamicGameObject>() != null)
+            return rolePlaying == PlayerRole.Detective 
+                ? CellSelectionResult.EndGameSelection
+                : CellSelectionResult.InvalidSelection;
+        return CellSelectionResult.ValidSelection;
     }
     
     
@@ -229,6 +263,8 @@ public class BaseCharacterMapDynamicGameObject : MapDynamicGameObject
 
         foreach (var (cell, gCost) in AllMovableCellAndCost)
         {
+            if (CheckSelectedCellValid(cell) == CellSelectionResult.InvalidSelection) continue;
+            
             var cellHighlighter = cell.Item.CellSelectHighlighter;
             cellHighlighter.EnableInteractable();
             cellHighlighter.StartHighlight();
