@@ -23,6 +23,6 @@ MonoBehaviour:
     m_Bits: 1536
   Ability1UseCount: 1
   Ability2UseCount: 0
-  Ability1Description: Ability 1 Description
+  Ability1Description: Due to catching a cold, I cannot stand near people.
   Ability2Description: Ability 1 Description
-  LightInformation: {fileID: 11400000, guid: b0ea5d6f8f0ddd64f8fb705c4c93c360, type: 2}
+  LightInformation: {fileID: 11400000, guid: 48c8139c5c4512943abbcf34ce415c4a, type: 2}

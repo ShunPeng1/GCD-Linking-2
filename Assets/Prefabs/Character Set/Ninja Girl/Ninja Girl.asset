@@ -15,7 +15,7 @@ MonoBehaviour:
   BaseCharacterCardGameObjectPrefab: {fileID: 4817635229831402553, guid: e9abaf4e6ce7f0f4cb1be2660657aaef, type: 3}
   CharacterMapDynamicGameObjectPrefab: {fileID: 7585191472267442928, guid: 55bff60255a547e4984087dc67f0b993, type: 3}
   PortraitButtonRectPrefab: {fileID: 1133740268583423605, guid: c4162607a34d3584482311feebb97e52, type: 3}
-  CharacterName: Ni
+  CharacterName: Na
   MaxMoveCellCost: 5
   MoveSpeed: 10
   WallLayerMask:
@@ -23,6 +23,6 @@ MonoBehaviour:
     m_Bits: 1536
   Ability1UseCount: 1
   Ability2UseCount: 0
-  Ability1Description: Ability 1 Description
+  Ability1Description: I too short to see over the decorators
   Ability2Description: Ability 1 Description
   LightInformation: {fileID: 11400000, guid: b0ea5d6f8f0ddd64f8fb705c4c93c360, type: 2}

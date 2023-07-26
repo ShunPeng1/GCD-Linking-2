@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b2c080953fe34dae82567ab63d7d1fbf, type: 3}
-  m_Name: Normal Character Light Information
+  m_Name: Obstacle Collision Light
   m_EditorClassIdentifier: 
   LightRange: 10
   LightColor: {r: 1, g: 1, b: 1, a: 1}
@@ -19,7 +19,7 @@ MonoBehaviour:
   StartDirection: {x: 1, y: 0, z: 0}
   WallCastLayerMask:
     serializedVersion: 2
-    m_Bits: 512
+    m_Bits: 1536
   TargetCastLayerMask:
     serializedVersion: 2
-    m_Bits: 640
+    m_Bits: 1664

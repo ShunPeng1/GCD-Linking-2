@@ -23,6 +23,7 @@ MonoBehaviour:
     m_Bits: 1536
   Ability1UseCount: 1
   Ability2UseCount: 0
-  Ability1Description: Ability 1 Description
+  Ability1Description: My hearing is enhanced in the mine, allowing me to hear through
+    walls.
   Ability2Description: Ability 1 Description
-  LightInformation: {fileID: 11400000, guid: b0ea5d6f8f0ddd64f8fb705c4c93c360, type: 2}
+  LightInformation: {fileID: 11400000, guid: dcfde505a2a39df488d434ae53d8e2f4, type: 2}

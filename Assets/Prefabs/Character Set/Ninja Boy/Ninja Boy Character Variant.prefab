@@ -7,6 +7,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1234010508, guid: 09c0706e00ea10f45a4bd0e318f8b3d1, type: 3}
+      propertyPath: _lightInformation
+      value: 
+      objectReference: {fileID: 11400000, guid: b0ea5d6f8f0ddd64f8fb705c4c93c360, type: 2}
     - target: {fileID: 2001483643, guid: 09c0706e00ea10f45a4bd0e318f8b3d1, type: 3}
       propertyPath: m_ShapePath.Array.data[0].x
       value: 9.8377905
@@ -781,7 +785,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7813824521333892858, guid: 09c0706e00ea10f45a4bd0e318f8b3d1, type: 3}
       propertyPath: m_Name
-      value: Base Character
+      value: Ninja Boy Character Variant
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 7813824521333892837, guid: 09c0706e00ea10f45a4bd0e318f8b3d1, type: 3}

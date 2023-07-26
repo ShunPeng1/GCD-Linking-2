@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
+[RequireComponent(typeof(BaseCharacterMapDynamicGameObject))]
 public class CharacterLight : MonoBehaviour
 {
     [Header("Lights Components")] 
@@ -26,6 +27,7 @@ public class CharacterLight : MonoBehaviour
 
     private void InitializeLight()
     {
+        
         if (_lightInformation == null) return;
         _lightRange = _lightInformation.LightRange;
         _fieldOfView = _lightInformation.FieldOfView;

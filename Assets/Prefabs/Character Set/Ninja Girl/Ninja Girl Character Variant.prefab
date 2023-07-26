@@ -7,6 +7,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1234010508, guid: 09c0706e00ea10f45a4bd0e318f8b3d1, type: 3}
+      propertyPath: _lightInformation
+      value: 
+      objectReference: {fileID: 11400000, guid: 48c8139c5c4512943abbcf34ce415c4a, type: 2}
     - target: {fileID: 2001483643, guid: 09c0706e00ea10f45a4bd0e318f8b3d1, type: 3}
       propertyPath: m_ShapePath.Array.data[0].x
       value: 3.1609426
@@ -205,51 +209,51 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2001483643, guid: 09c0706e00ea10f45a4bd0e318f8b3d1, type: 3}
       propertyPath: m_ShapePath.Array.data[25].x
-      value: -1.7374812
+      value: -1.4087607
       objectReference: {fileID: 0}
     - target: {fileID: 2001483643, guid: 09c0706e00ea10f45a4bd0e318f8b3d1, type: 3}
       propertyPath: m_ShapePath.Array.data[25].y
-      value: 9.847077
+      value: 7.982818
       objectReference: {fileID: 0}
     - target: {fileID: 2001483643, guid: 09c0706e00ea10f45a4bd0e318f8b3d1, type: 3}
       propertyPath: m_ShapePath.Array.data[26].x
-      value: -2.418218
+      value: -1.9895891
       objectReference: {fileID: 0}
     - target: {fileID: 2001483643, guid: 09c0706e00ea10f45a4bd0e318f8b3d1, type: 3}
       propertyPath: m_ShapePath.Array.data[26].y
-      value: 9.703958
+      value: 7.984818
       objectReference: {fileID: 0}
     - target: {fileID: 2001483643, guid: 09c0706e00ea10f45a4bd0e318f8b3d1, type: 3}
       propertyPath: m_ShapePath.Array.data[27].x
-      value: -3.0911705
+      value: -2.5951009
       objectReference: {fileID: 0}
     - target: {fileID: 2001483643, guid: 09c0706e00ea10f45a4bd0e318f8b3d1, type: 3}
       propertyPath: m_ShapePath.Array.data[27].y
-      value: 9.509565
+      value: 7.982818
       objectReference: {fileID: 0}
     - target: {fileID: 2001483643, guid: 09c0706e00ea10f45a4bd0e318f8b3d1, type: 3}
       propertyPath: m_ShapePath.Array.data[28].x
-      value: -3.745065
+      value: -3.22467
       objectReference: {fileID: 0}
     - target: {fileID: 2001483643, guid: 09c0706e00ea10f45a4bd0e318f8b3d1, type: 3}
       propertyPath: m_ShapePath.Array.data[28].y
-      value: 9.272839
+      value: 7.984818
       objectReference: {fileID: 0}
     - target: {fileID: 2001483643, guid: 09c0706e00ea10f45a4bd0e318f8b3d1, type: 3}
       propertyPath: m_ShapePath.Array.data[29].x
-      value: -4.3847117
+      value: -3.8949704
       objectReference: {fileID: 0}
     - target: {fileID: 2001483643, guid: 09c0706e00ea10f45a4bd0e318f8b3d1, type: 3}
       propertyPath: m_ShapePath.Array.data[29].y
-      value: 8.98694
+      value: 7.982818
       objectReference: {fileID: 0}
     - target: {fileID: 2001483643, guid: 09c0706e00ea10f45a4bd0e318f8b3d1, type: 3}
       propertyPath: m_ShapePath.Array.data[30].x
-      value: -4.999001
+      value: -4.608459
       objectReference: {fileID: 0}
     - target: {fileID: 2001483643, guid: 09c0706e00ea10f45a4bd0e318f8b3d1, type: 3}
       propertyPath: m_ShapePath.Array.data[30].y
-      value: 8.661254
+      value: 7.984818
       objectReference: {fileID: 0}
     - target: {fileID: 2001483643, guid: 09c0706e00ea10f45a4bd0e318f8b3d1, type: 3}
       propertyPath: m_ShapePath.Array.data[31].x
@@ -781,7 +785,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7813824521333892858, guid: 09c0706e00ea10f45a4bd0e318f8b3d1, type: 3}
       propertyPath: m_Name
-      value: Base Character
+      value: Ninja Girl Character Variant
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 7813824521333892837, guid: 09c0706e00ea10f45a4bd0e318f8b3d1, type: 3}
