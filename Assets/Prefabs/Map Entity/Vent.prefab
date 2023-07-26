@@ -101,6 +101,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _isUnlock: 1
   _animator: {fileID: 4328152091826742401}
+  _openThenCloseSfx: {fileID: 8300000, guid: 4a295e53624e44146967d8308239b840, type: 3}
 --- !u!114 &2315559895233799649
 MonoBehaviour:
   m_ObjectHideFlags: 0

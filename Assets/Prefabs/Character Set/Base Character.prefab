@@ -215,7 +215,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _characterMapGameObject: {fileID: 7813824521333892837}
   Animator: {fileID: 651037112738291616}
-  _enterAndExitVentDuration: 0.333
+  _enterAndExitVentDuration: 0.25
   _characterMoveEase: 0
 --- !u!1001 &463417639197407614
 PrefabInstance:

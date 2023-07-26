@@ -23,18 +23,22 @@ namespace _Scripts.Cards.Card_UI
         public override void Select()
         {
             _cardGameObject.ExecuteAbility(this);
-            _spriteRenderer.color = _normalInteractableColor;
+            _spriteRenderer.color = _selectInteractableColor;
             
             AudioManager.Instance.PlaySFX(_clickSfx);
         }
 
         public override void Deselect()
         {
-            _spriteRenderer.color = _selectInteractableColor;
+            _spriteRenderer.color = _normalInteractableColor;
             
             AudioManager.Instance.PlaySFX(_clickSfx);
         }
 
+        public void ResetSelect()
+        {
+            _spriteRenderer.color = _normalInteractableColor;
+        }
         
         public override void StartHover()
         {
@@ -48,12 +52,13 @@ namespace _Scripts.Cards.Card_UI
         
         public override void DisableInteractable()
         {
-            Interactable = false;
+            base.DisableInteractable();
+            
         }
         
         public override void EnableInteractable()
         {
-            Interactable = true;
+            base.EnableInteractable();
         }
     }
 }

@@ -13,6 +13,7 @@ public class VentMapGameObject : MapStaticGameObject
     }
     
     [SerializeField] private Animator _animator;
+    [SerializeField] private AudioClip _openThenCloseSfx;
     private static readonly int IsOpen = Animator.StringToHash("IsOpen");
 
     public void LockVent()
@@ -28,6 +29,8 @@ public class VentMapGameObject : MapStaticGameObject
     public void UseVent(bool isOpen)
     {
         _animator.SetBool(IsOpen, isOpen);
+
+        if (isOpen) AudioManager.Instance.PlaySFX(_openThenCloseSfx);
     }
 
 }

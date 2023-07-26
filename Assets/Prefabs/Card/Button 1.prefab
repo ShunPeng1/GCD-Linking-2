@@ -73,7 +73,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 775460255
-  m_SortingLayer: 3
+  m_SortingLayer: 4
   m_SortingOrder: 10
   m_Sprite: {fileID: 1980801118, guid: 2f30cfce060a3db4aad73b6b841c23f4, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -124,4 +124,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e98da120b89347dc89f6ff87c2d3a716, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Interactable: 1
+  _interactable: 0
+  _spriteRenderer: {fileID: 1897857033099686086}
+  _selectInteractableColor: {r: 0.6431373, g: 0.6431373, b: 0.6431373, a: 1}
+  _normalInteractableColor: {r: 1, g: 1, b: 1, a: 1}
+  _clickSfx: {fileID: 8300000, guid: ffffbeb6c333fb044a7196cb13a69346, type: 3}

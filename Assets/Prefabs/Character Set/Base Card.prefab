@@ -934,50 +934,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3309244573876011155}
     m_Modifications:
-    - target: {fileID: -2964228502845533199, guid: d4c297781824cfb4a8bd3d25fdc369bb, type: 3}
-      propertyPath: _clickSfx
-      value: 
-      objectReference: {fileID: 8300000, guid: ffffbeb6c333fb044a7196cb13a69346, type: 3}
-    - target: {fileID: -2964228502845533199, guid: d4c297781824cfb4a8bd3d25fdc369bb, type: 3}
-      propertyPath: Interactable
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: -2964228502845533199, guid: d4c297781824cfb4a8bd3d25fdc369bb, type: 3}
-      propertyPath: _spriteRenderer
-      value: 
-      objectReference: {fileID: 3309244574788148056}
-    - target: {fileID: -2964228502845533199, guid: d4c297781824cfb4a8bd3d25fdc369bb, type: 3}
-      propertyPath: _normalInteractableColor.a
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: -2964228502845533199, guid: d4c297781824cfb4a8bd3d25fdc369bb, type: 3}
-      propertyPath: _normalInteractableColor.b
-      value: 0.6431373
-      objectReference: {fileID: 0}
-    - target: {fileID: -2964228502845533199, guid: d4c297781824cfb4a8bd3d25fdc369bb, type: 3}
-      propertyPath: _normalInteractableColor.g
-      value: 0.6431373
-      objectReference: {fileID: 0}
-    - target: {fileID: -2964228502845533199, guid: d4c297781824cfb4a8bd3d25fdc369bb, type: 3}
-      propertyPath: _normalInteractableColor.r
-      value: 0.6431373
-      objectReference: {fileID: 0}
-    - target: {fileID: -2964228502845533199, guid: d4c297781824cfb4a8bd3d25fdc369bb, type: 3}
-      propertyPath: _selectInteractableColor.a
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: -2964228502845533199, guid: d4c297781824cfb4a8bd3d25fdc369bb, type: 3}
-      propertyPath: _selectInteractableColor.b
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: -2964228502845533199, guid: d4c297781824cfb4a8bd3d25fdc369bb, type: 3}
-      propertyPath: _selectInteractableColor.g
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: -2964228502845533199, guid: d4c297781824cfb4a8bd3d25fdc369bb, type: 3}
-      propertyPath: _selectInteractableColor.r
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 1897857033099686080, guid: d4c297781824cfb4a8bd3d25fdc369bb, type: 3}
       propertyPath: m_Name
       value: Button 1
@@ -1026,25 +982,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1897857033099686086, guid: d4c297781824cfb4a8bd3d25fdc369bb, type: 3}
-      propertyPath: m_Color.b
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1897857033099686086, guid: d4c297781824cfb4a8bd3d25fdc369bb, type: 3}
-      propertyPath: m_Color.g
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1897857033099686086, guid: d4c297781824cfb4a8bd3d25fdc369bb, type: 3}
-      propertyPath: m_Color.r
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d4c297781824cfb4a8bd3d25fdc369bb, type: 3}
---- !u!212 &3309244574788148056 stripped
-SpriteRenderer:
-  m_CorrespondingSourceObject: {fileID: 1897857033099686086, guid: d4c297781824cfb4a8bd3d25fdc369bb, type: 3}
-  m_PrefabInstance: {fileID: 4015599545391049630}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &3309244574788148063 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1897857033099686081, guid: d4c297781824cfb4a8bd3d25fdc369bb, type: 3}
