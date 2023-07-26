@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using _Scripts.Lights;
 using DG.Tweening;
@@ -41,8 +42,17 @@ namespace _Scripts.Managers
         [SerializeField] private CanvasGroup _imposterRecognitionCanvasGroup;
         [SerializeField] private RectTransform _imposterRecognitionPanel;
         [SerializeField] private TMP_Text _imposterRecognitionText;
-        [SerializeField] private string _imposterRecognitionFormat = "Was In ";
+        [SerializeField] private string _imposterRecognitionFormat = "I Was In ";
+        [SerializeField] private Animator _imposterRecognitionPortraitAnimator;
 
+        [SerializeField] private Vector3 _imposterRecognitionPopInOffset = new Vector3(100,100,0);
+        [SerializeField] private Vector3 _imposterRecognitionPopInScale = new Vector3(2,2,0);
+        [SerializeField] private float _imposterRecognitionPopInDuration = 0.5f;
+        [SerializeField] private float _imposterRecognitionPopShowDuration = 1.5f;
+        [SerializeField] private Ease _imposterRecognitionPopInEase;
+        private Sequence _imposterRecognitionPopInSequence;
+
+        [Header("Ultility")] [SerializeField] private float _dialogSpeed = 15f;
         private void Start()
         {
             InitializeCurrentTurnGroup();
@@ -55,7 +65,9 @@ namespace _Scripts.Managers
             _currentTurnButton.onClick.AddListener(() => _currentTurnPopInSequence.Complete());
         }
 
-        private readonly List<PortraitButtonRect> _portraitButtonRects = new(); 
+        private readonly List<PortraitButtonRect> _portraitButtonRects = new();
+        private static readonly int IsInDark = Animator.StringToHash("IsInDark");
+
         public PortraitButtonRect CreatePortraitButton(PortraitButtonRect portraitButtonRectPrefab)
         {
             var portraitButtonRect = Instantiate(portraitButtonRectPrefab, _characterPortraitButtonGroup.transform);
@@ -63,24 +75,52 @@ namespace _Scripts.Managers
             return portraitButtonRect;
         }
 
-        public void UpdateImposterRecognition(CharacterRecognitionState imposterLastRoundRecognition)
+        private void Update()
         {
-            
-            
-            switch (imposterLastRoundRecognition)
+            if (Input.GetKeyDown(KeyCode.K)) UpdateImposterRecognition();
+        }
+
+        public void UpdateImposterRecognition()
+        {
+            var imposterLastRoundRecognition = GameManager.Instance.ImposterLastRoundRecognition;
+            _imposterRecognitionPopInSequence.Complete();
+            _imposterRecognitionPopInSequence = DOTween.Sequence();
+
+            var originalScale = _imposterRecognitionPanel.transform.lossyScale;
+            _imposterRecognitionPopInSequence.Append(_imposterRecognitionPanel.DOMove(_imposterRecognitionPopInOffset, _imposterRecognitionPopInDuration).SetRelative().SetEase(_currentTurnPopEase));
+            _imposterRecognitionPopInSequence.Join(_imposterRecognitionPanel.DOScale(_imposterRecognitionPopInScale, _imposterRecognitionPopInDuration).SetEase(_currentTurnPopEase));
+
+            _imposterRecognitionPopInSequence.AppendCallback(() =>
             {
-                case CharacterRecognitionState.InLight:
-                    _imposterRecognitionText.text = _imposterRecognitionFormat + "Light";
-                    break;
-                case CharacterRecognitionState.InDark:
-                    _imposterRecognitionText.text = _imposterRecognitionFormat + "Dark";
-                    break;
-                case CharacterRecognitionState.Innocent:
-                    _imposterRecognitionText.text = "Imposter Was Found";
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
+                string textToDisplay = "";
+                switch (imposterLastRoundRecognition)
+                {
+                    case CharacterRecognitionState.InLight:
+                        _imposterRecognitionPortraitAnimator.SetBool(IsInDark, false);
+                        textToDisplay = _imposterRecognitionFormat + "Light";
+                        break;
+                    case CharacterRecognitionState.InDark:
+                        _imposterRecognitionPortraitAnimator.SetBool(IsInDark, true);
+                        textToDisplay = _imposterRecognitionFormat + "Dark";
+                        break;
+                    case CharacterRecognitionState.Innocent:
+                        textToDisplay = "Who am I?";
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+
+                StartCoroutine(PopInTextWordByWord(_imposterRecognitionText, textToDisplay, _dialogSpeed));
+            });
+            
+            
+            _imposterRecognitionPopInSequence.AppendInterval(_imposterRecognitionPopShowDuration);
+            
+            
+            _imposterRecognitionPopInSequence.Append(_imposterRecognitionPanel.DOMove(-_imposterRecognitionPopInOffset, _imposterRecognitionPopInDuration).SetRelative().SetEase(_currentTurnPopEase));
+            _imposterRecognitionPopInSequence.Join(_imposterRecognitionPanel.DOScale(originalScale, _imposterRecognitionPopInDuration).SetEase(_currentTurnPopEase));
+
+            
         }
 
         public void UpdateRolePlaying()
@@ -106,6 +146,17 @@ namespace _Scripts.Managers
             
         }
         
-        
+        public IEnumerator PopInTextWordByWord(TMP_Text tmpText, string textToDisplay, float charPerSecond = 1f)
+        {
+            tmpText.text = ""; // Clear the text
+            
+            foreach (var word in textToDisplay)
+            {
+                _imposterRecognitionText.text += word; // Append the next word
+
+                // Wait for a short duration before popping in the next word
+                yield return new WaitForSeconds(1/charPerSecond);
+            }
+        }
     }
 }

@@ -133,7 +133,7 @@ namespace _Scripts.Managers
             MapManager.Instance.UpdateAllCharacterRecognition();
             UpdateImposterRecognitionWithOther();
             
-            UiManager.Instance.UpdateImposterRecognition(ImposterLastRoundRecognition);
+            UiManager.Instance.UpdateImposterRecognition();
             
             StartRound();
         }
