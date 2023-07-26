@@ -20,7 +20,7 @@ public class CardManager : SingletonMonoBehaviour<CardManager>
     private List<BaseCharacterCardGameObject> _allCards = new();
     private RandomBag<BaseCardGameObject> _deckCardBag;
 
-    public void Initialize()
+    public void InitializeBag()
     {
         var deckCards = _deckCardRegion.GetAllCardGameObjects().ToArray();
         _deckCardBag = new RandomBag<BaseCardGameObject>(deckCards, 1);

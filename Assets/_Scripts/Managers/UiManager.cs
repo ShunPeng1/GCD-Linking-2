@@ -13,6 +13,9 @@ namespace _Scripts.Managers
 {
     public class UiManager : SingletonMonoBehaviour<UiManager>
     {
+        [Header("Components")]
+        private readonly List<PortraitButtonRect> _portraitButtonRects = new();
+        
         [Header("Sprites")] 
         [SerializeField] private Sprite _imposterSprite;
         [SerializeField] private Sprite _detectiveSprite;
@@ -54,8 +57,11 @@ namespace _Scripts.Managers
         [SerializeField] private float _imposterRecognitionPopShowDuration = 1.5f;
         [SerializeField] private Ease _imposterRecognitionPopInEase;
         private Sequence _imposterRecognitionPopInSequence;
-
-        [Header("Ultility")] [SerializeField] private float _dialogSpeed = 15f;
+        private static readonly int IsInDark = Animator.StringToHash("IsInDark");
+        
+        [Header("Ultility")] 
+        [SerializeField] private float _dialogSpeed = 15f;
+        
         private void Start()
         {
             InitializeCurrentTurnGroup();
@@ -68,9 +74,7 @@ namespace _Scripts.Managers
             _currentTurnButton.onClick.AddListener(() => _currentTurnPopInSequence.Complete());
         }
 
-        private readonly List<PortraitButtonRect> _portraitButtonRects = new();
-        private static readonly int IsInDark = Animator.StringToHash("IsInDark");
-
+        
         public PortraitButtonRect CreatePortraitButton(PortraitButtonRect portraitButtonRectPrefab)
         {
             var portraitButtonRect = Instantiate(portraitButtonRectPrefab, _characterPortraitButtonGroup.transform);
@@ -78,10 +82,7 @@ namespace _Scripts.Managers
             return portraitButtonRect;
         }
 
-        private void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.K)) UpdateImposterRecognition();
-        }
+        
 
         public void UpdateImposterRecognition()
         {
@@ -166,5 +167,8 @@ namespace _Scripts.Managers
                 yield return new WaitForSeconds(1/charPerSecond);
             }
         }
+        
+        
+        
     }
 }
