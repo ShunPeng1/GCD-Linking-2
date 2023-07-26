@@ -89,7 +89,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 20, y: 7}
+  m_Size: {x: 28, y: 7}
   m_EdgeRadius: 0
 --- !u!114 &8299054843014282570
 MonoBehaviour:
@@ -113,3 +113,5 @@ MonoBehaviour:
   _moveInteractableOffset: {x: 0, y: 3.5, z: 0}
   _moveInteractableDuration: 0.25
   _moveInteractableEase: 9
+  _middleAlignDuration: 0.125
+  _middleAlignEase: 9

@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 3221032574887615011}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 14, y: -7, z: 10}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3221032575598347820}
@@ -58,7 +58,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 14, y: 14}
+  m_Size: {x: 0.0001, y: 0.0001}
   m_EdgeRadius: 0
 --- !u!114 &3221032574887615021
 MonoBehaviour:
@@ -74,7 +74,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CardHolderPrefab: {fileID: -5539691224234996992, guid: 8ae4f37e58335564a977bdd3f0ff7085, type: 3}
   SpawnPlace: {fileID: 3221032575598347820}
-  CardOffset: {x: -0.5, y: 0, z: 0}
+  CardOffset: {x: -1, y: 0, z: 0}
   _cardPlaceHolders: []
   MaxCardHold: 8
   CardMiddleInsertionStyle: 2
@@ -103,7 +103,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3221032575598347821}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 6, y: 0, z: 0}
+  m_LocalPosition: {x: 4, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
