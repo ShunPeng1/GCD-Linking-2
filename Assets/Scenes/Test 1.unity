@@ -47336,7 +47336,9 @@ MonoBehaviour:
   _imposterRecognitionFormat: 'I Was In '
   _imposterRecognitionPortraitAnimator: {fileID: 1953414996}
   _imposterRecognitionPopInOffset: {x: -100, y: -100, z: 0}
-  _imposterRecognitionPopInScale: {x: 2, y: 2, z: 0}
+  _imposterRecognitionPopInScale: {x: 1.5, y: 1.5, z: 0}
+  _crimeBoardPopInPopInOffset: {x: 200, y: -50, z: 0}
+  _crimeBoardPopInScale: {x: 0.9, y: 0.9, z: 0}
   _imposterRecognitionPopInDuration: 0.5
   _imposterRecognitionPopShowDuration: 1.5
   _imposterRecognitionPopInEase: 0

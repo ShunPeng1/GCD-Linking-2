@@ -45,8 +45,11 @@ namespace _Scripts.Managers
         [SerializeField] private string _imposterRecognitionFormat = "I Was In ";
         [SerializeField] private Animator _imposterRecognitionPortraitAnimator;
 
-        [SerializeField] private Vector3 _imposterRecognitionPopInOffset = new Vector3(100,100,0);
-        [SerializeField] private Vector3 _imposterRecognitionPopInScale = new Vector3(2,2,0);
+        [Header("End Round Animation")]
+        [SerializeField] private Vector3 _imposterRecognitionPopInOffset = new Vector3(-500,-500,0);
+        [SerializeField] private Vector3 _imposterRecognitionPopInScale = new Vector3(1.5f,1.5f,0);
+        [SerializeField] private Vector3 _crimeBoardPopInPopInOffset = new Vector3(300, -200, 0);
+        [SerializeField] private Vector3 _crimeBoardPopInScale = new Vector3(1.2f, 1.2f, 0);
         [SerializeField] private float _imposterRecognitionPopInDuration = 0.5f;
         [SerializeField] private float _imposterRecognitionPopShowDuration = 1.5f;
         [SerializeField] private Ease _imposterRecognitionPopInEase;
@@ -86,9 +89,12 @@ namespace _Scripts.Managers
             _imposterRecognitionPopInSequence.Complete();
             _imposterRecognitionPopInSequence = DOTween.Sequence();
 
-            var originalScale = _imposterRecognitionPanel.transform.lossyScale;
+            var imposterRecognitionPanelOriginalScale = _imposterRecognitionPanel.transform.lossyScale;
+            var crimeBoardPanelOriginalScale = _crimeBoardPanel.transform.lossyScale;
             _imposterRecognitionPopInSequence.Append(_imposterRecognitionPanel.DOMove(_imposterRecognitionPopInOffset, _imposterRecognitionPopInDuration).SetRelative().SetEase(_currentTurnPopEase));
+            _imposterRecognitionPopInSequence.Join(_crimeBoardPanel.DOMove(_crimeBoardPopInPopInOffset, _imposterRecognitionPopInDuration).SetRelative().SetEase(_currentTurnPopEase));
             _imposterRecognitionPopInSequence.Join(_imposterRecognitionPanel.DOScale(_imposterRecognitionPopInScale, _imposterRecognitionPopInDuration).SetEase(_currentTurnPopEase));
+            _imposterRecognitionPopInSequence.Join(_crimeBoardPanel.DOScale(_crimeBoardPopInScale, _imposterRecognitionPopInDuration).SetEase(_currentTurnPopEase));
 
             _imposterRecognitionPopInSequence.AppendCallback(() =>
             {
@@ -118,7 +124,9 @@ namespace _Scripts.Managers
             
             
             _imposterRecognitionPopInSequence.Append(_imposterRecognitionPanel.DOMove(-_imposterRecognitionPopInOffset, _imposterRecognitionPopInDuration).SetRelative().SetEase(_currentTurnPopEase));
-            _imposterRecognitionPopInSequence.Join(_imposterRecognitionPanel.DOScale(originalScale, _imposterRecognitionPopInDuration).SetEase(_currentTurnPopEase));
+            _imposterRecognitionPopInSequence.Join(_crimeBoardPanel.DOMove(-_crimeBoardPopInPopInOffset, _imposterRecognitionPopInDuration).SetRelative().SetEase(_currentTurnPopEase));
+            _imposterRecognitionPopInSequence.Join(_imposterRecognitionPanel.DOScale(imposterRecognitionPanelOriginalScale, _imposterRecognitionPopInDuration).SetEase(_currentTurnPopEase));
+            _imposterRecognitionPopInSequence.Join(_crimeBoardPanel.DOScale(crimeBoardPanelOriginalScale, _imposterRecognitionPopInDuration).SetEase(_currentTurnPopEase));
 
             
         }
