@@ -64,5 +64,7 @@ public class CellSelectHighlighter : MapStaticGameObject, IMouseInteractable
     {
         Interactable = true;
         _animator.enabled = true;
+        
+        _animator.Rebind();
     }
 }
