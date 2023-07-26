@@ -4,23 +4,16 @@ using UnityEngine;
 
 
 [Serializable]
-public class NonCollisionTilemapAdjacencyCellSelection : TilemapAdjacencyCellSelection
+public class PolicemanTilemapAdjacencyCellSelection : TilemapAdjacencyCellSelection
 {
 
-    public NonCollisionTilemapAdjacencyCellSelection(BaseCharacterMapDynamicGameObject characterMapDynamicGameObject,LayerMask wallLayerMask) : base(characterMapDynamicGameObject, wallLayerMask)
+    public PolicemanTilemapAdjacencyCellSelection(BaseCharacterMapDynamicGameObject characterMapDynamicGameObject,LayerMask wallLayerMask) : base(characterMapDynamicGameObject, wallLayerMask)
     {
     }    
     
     public override bool CheckMovableCell(GridXYCell<MapCellItem> from, GridXYCell<MapCellItem> to)
     {
-        VentMapGameObject fromVent = from.Item.GetFirstInCellGameObject<VentMapGameObject>();
-        VentMapGameObject toVent = to.Item.GetFirstInCellGameObject<VentMapGameObject>();
-        
-        if (fromVent != null && toVent != null)
-        {
-            return to.Item.GetFirstInCellGameObject<BaseCharacterMapDynamicGameObject>() == null;
-        }
-        
+
         ExitMapGameObject fromExit = from.Item.GetFirstInCellGameObject<ExitMapGameObject>();
         if (fromExit != null) return false;
 

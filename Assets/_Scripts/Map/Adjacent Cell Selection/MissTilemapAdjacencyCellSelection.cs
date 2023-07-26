@@ -4,10 +4,10 @@ using UnityEngine;
 
 
 [Serializable]
-public class NonCollisionTilemapAdjacencyCellSelection : TilemapAdjacencyCellSelection
+public class MissTilemapAdjacencyCellSelection : TilemapAdjacencyCellSelection
 {
 
-    public NonCollisionTilemapAdjacencyCellSelection(BaseCharacterMapDynamicGameObject characterMapDynamicGameObject,LayerMask wallLayerMask) : base(characterMapDynamicGameObject, wallLayerMask)
+    public MissTilemapAdjacencyCellSelection(BaseCharacterMapDynamicGameObject characterMapDynamicGameObject,LayerMask wallLayerMask) : base(characterMapDynamicGameObject, wallLayerMask)
     {
     }    
     
@@ -23,9 +23,6 @@ public class NonCollisionTilemapAdjacencyCellSelection : TilemapAdjacencyCellSel
         
         ExitMapGameObject fromExit = from.Item.GetFirstInCellGameObject<ExitMapGameObject>();
         if (fromExit != null) return false;
-
-        var fromCharacter = from.Item.GetFirstInCellGameObject<BaseCharacterMapDynamicGameObject>();
-        if (fromCharacter != null && fromCharacter != Character) return false;
         
         var fromPosition = Grid.GetWorldPositionOfNearestCell(from.XIndex, from.YIndex);
         var toPosition = Grid.GetWorldPositionOfNearestCell(to.XIndex, to.YIndex);

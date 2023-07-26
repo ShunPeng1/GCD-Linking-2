@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 7996352030391422561}
   - component: {fileID: 7996352030391422560}
   - component: {fileID: 7996352030391422563}
-  - component: {fileID: 6280582275261379514}
+  - component: {fileID: -4653014316199675742}
   m_Layer: 0
-  m_Name: Play Card Holder
+  m_Name: Hand Card Holder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -28,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 7996352030391422565}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.25, y: 1.25, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -112,7 +112,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 4, y: 7}
   m_EdgeRadius: 0
---- !u!114 &6280582275261379514
+--- !u!114 &-4653014316199675742
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -121,7 +121,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7996352030391422565}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 14df680376d64a6bbda39fdf556f0f06, type: 3}
+  m_Script: {fileID: 11500000, guid: 9e8638194641454e92d1773bb0f6adf3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   CardRegion: {fileID: 0}

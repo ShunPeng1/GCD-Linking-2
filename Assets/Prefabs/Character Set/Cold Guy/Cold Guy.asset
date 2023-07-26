@@ -16,13 +16,13 @@ MonoBehaviour:
   CharacterMapDynamicGameObjectPrefab: {fileID: 2509046602339728011, guid: efe5518ec40fa054b97b1f055ac511cd, type: 3}
   PortraitButtonRectPrefab: {fileID: 4207590802793953190, guid: d65b2746e93907846879e6550e90ebc1, type: 3}
   CharacterName: Fang
-  MaxMoveCellCost: 5
+  MaxMoveCellCost: 3
   MoveSpeed: 10
   WallLayerMask:
     serializedVersion: 2
-    m_Bits: 1664
+    m_Bits: 1536
   Ability1UseCount: 1
   Ability2UseCount: 0
-  Ability1Description: Due to catching a cold, I cannot stand near people.
+  Ability1Description: I can walk out of vent even being block
   Ability2Description: Ability 1 Description
   LightInformation: {fileID: 11400000, guid: 48c8139c5c4512943abbcf34ce415c4a, type: 2}

@@ -20,7 +20,7 @@ MonoBehaviour:
   MoveSpeed: 10
   WallLayerMask:
     serializedVersion: 2
-    m_Bits: 640
+    m_Bits: 512
   Ability1UseCount: 1
   Ability2UseCount: 0
   Ability1Description: I utilize ninja techniques to pass through decorator

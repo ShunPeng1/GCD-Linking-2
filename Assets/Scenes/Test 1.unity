@@ -49907,6 +49907,10 @@ PrefabInstance:
       propertyPath: _interactable
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8299054843014282570, guid: 6fe38d2d8a812cc4e883766c6a8febce, type: 3}
+      propertyPath: CardHolderPrefab
+      value: 
+      objectReference: {fileID: -4653014316199675742, guid: 632655792f8cc5f4ba6cfde1f052b9a9, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6fe38d2d8a812cc4e883766c6a8febce, type: 3}
 --- !u!1001 &8606446733114821231

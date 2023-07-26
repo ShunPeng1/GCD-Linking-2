@@ -26,7 +26,7 @@ public class BaseCharacterMapDynamicGameObject : MapDynamicGameObject
 
     public float MoveSpeed => CharacterSet.CharacterInformation.MoveSpeed;
     private float MaxMoveCellCost => CharacterSet.CharacterInformation.MaxMoveCellCost;
-    private LayerMask WallLayerMask => CharacterSet.CharacterInformation.WallLayerMask;
+    protected LayerMask WallLayerMask => CharacterSet.CharacterInformation.WallLayerMask;
     
     
     [Header("Grid")]

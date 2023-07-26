@@ -16,11 +16,11 @@ MonoBehaviour:
   CharacterMapDynamicGameObjectPrefab: {fileID: 1999589914, guid: 48b6bc0bbaff7de44885020305824b64, type: 3}
   PortraitButtonRectPrefab: {fileID: 5804057826200580115, guid: c92774cf5e2673d4baa68de2a785b587, type: 3}
   CharacterName: Paul
-  MaxMoveCellCost: 5
+  MaxMoveCellCost: 9
   MoveSpeed: 10
   WallLayerMask:
     serializedVersion: 2
-    m_Bits: 1664
+    m_Bits: 1536
   Ability1UseCount: 1
   Ability2UseCount: 0
   Ability1Description: Although I cannot walk in the vent, I possess great stamina.
