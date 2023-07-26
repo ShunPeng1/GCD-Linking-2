@@ -65,6 +65,8 @@ namespace _Scripts.Managers
 
         public void UpdateImposterRecognition(CharacterRecognitionState imposterLastRoundRecognition)
         {
+            
+            
             switch (imposterLastRoundRecognition)
             {
                 case CharacterRecognitionState.InLight:
