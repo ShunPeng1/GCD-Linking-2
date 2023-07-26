@@ -8,12 +8,13 @@ using UnityEngine;
 public class TilemapAdjacencyCellSelection : IPathFindingAdjacentCellSelection<GridXYCell<MapCellItem>, MapCellItem>
 {
     protected GridXY<MapCellItem> Grid => MapManager.Instance.WorldGrid;
-    protected PlayerRole PlayerRole => GameManager.Instance.CurrentRolePlaying;
+    protected BaseCharacterMapDynamicGameObject Character;
     protected LayerMask WallLayerMask;
 
-    public TilemapAdjacencyCellSelection(LayerMask wallLayerMask)
+    public TilemapAdjacencyCellSelection( BaseCharacterMapDynamicGameObject character, LayerMask wallLayerMask)
     {
         WallLayerMask = wallLayerMask;
+        Character = character;
     }
 
     

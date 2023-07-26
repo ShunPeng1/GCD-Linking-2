@@ -20,7 +20,7 @@ MonoBehaviour:
   MoveSpeed: 10
   WallLayerMask:
     serializedVersion: 2
-    m_Bits: 1536
+    m_Bits: 1664
   Ability1UseCount: 1
   Ability2UseCount: 0
   Ability1Description: Ability 1 Description

@@ -20,6 +20,7 @@ public class BaseCharacterMapDynamicGameObject : MapDynamicGameObject
     [Header("Components")] 
     public CharacterLight CharacterLight;
     public CharacterMovementVisual CharacterMovementVisual;
+    public Collider2D Collider2D;
     
     public CharacterSet CharacterSet { get; protected set; }
 
@@ -61,6 +62,8 @@ public class BaseCharacterMapDynamicGameObject : MapDynamicGameObject
     protected void Start()
     {
         InitializeState();
+
+        Collider2D = GetComponent<Collider2D>();
     }
 
     public void InitializeCharacter(CharacterSet characterSet)
@@ -72,7 +75,7 @@ public class BaseCharacterMapDynamicGameObject : MapDynamicGameObject
     
     protected virtual void InitializePathfinding()
     {
-        AdjacencyCellSelection = new NonCollisionTilemapAdjacencyCellSelection(WallLayerMask);
+        AdjacencyCellSelection = new NonCollisionTilemapAdjacencyCellSelection(this, WallLayerMask);
         PathfindingAlgorithm = new AStarPathFinding<GridXY<MapCellItem>, GridXYCell<MapCellItem>, MapCellItem>(Grid, AdjacencyCellSelection, PathFindingCostFunction.Manhattan);
         
         LastMovingCell = NextMovingCell = Grid.GetCell(transform.position);

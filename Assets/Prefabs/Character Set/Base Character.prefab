@@ -183,6 +183,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CharacterLight: {fileID: 1234010508}
   CharacterMovementVisual: {fileID: 2438050044057033891}
+  Collider2D: {fileID: 7813824521333892833}
   IsBetween2Cells: 1
 --- !u!114 &1234010508
 MonoBehaviour:

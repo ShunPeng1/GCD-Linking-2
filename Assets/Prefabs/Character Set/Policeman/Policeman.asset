@@ -20,9 +20,9 @@ MonoBehaviour:
   MoveSpeed: 10
   WallLayerMask:
     serializedVersion: 2
-    m_Bits: 1536
+    m_Bits: 1664
   Ability1UseCount: 1
   Ability2UseCount: 0
-  Ability1Description: I can block Lights
+  Ability1Description: Although I cannot walk in the vent, I possess great stamina.
   Ability2Description: Ability 1 Description
   LightInformation: {fileID: 11400000, guid: b0ea5d6f8f0ddd64f8fb705c4c93c360, type: 2}

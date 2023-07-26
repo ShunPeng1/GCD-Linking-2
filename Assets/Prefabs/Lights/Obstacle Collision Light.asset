@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2c080953fe34dae82567ab63d7d1fbf, type: 3}
   m_Name: Obstacle Collision Light
   m_EditorClassIdentifier: 
-  LightRange: 10
+  LightRange: 13
   LightColor: {r: 1, g: 1, b: 1, a: 1}
   FieldOfView: 360
   RayCount: 90

@@ -7,7 +7,7 @@ using UnityEngine;
 public class NonCollisionTilemapAdjacencyCellSelection : TilemapAdjacencyCellSelection
 {
 
-    public NonCollisionTilemapAdjacencyCellSelection(LayerMask wallLayerMask) : base(wallLayerMask)
+    public NonCollisionTilemapAdjacencyCellSelection(BaseCharacterMapDynamicGameObject characterMapDynamicGameObject,LayerMask wallLayerMask) : base(characterMapDynamicGameObject, wallLayerMask)
     {
     }    
     
@@ -15,19 +15,23 @@ public class NonCollisionTilemapAdjacencyCellSelection : TilemapAdjacencyCellSel
     {
         VentMapGameObject fromVent = from.Item.GetFirstInCellGameObject<VentMapGameObject>();
         VentMapGameObject toVent = to.Item.GetFirstInCellGameObject<VentMapGameObject>();
+        
         if (fromVent != null && toVent != null)
         {
-            return fromVent.IsUnlock && toVent.IsUnlock;
+            return to.Item.GetFirstInCellGameObject<BaseCharacterMapDynamicGameObject>() == null;
         }
         
         ExitMapGameObject fromExit = from.Item.GetFirstInCellGameObject<ExitMapGameObject>();
-        ExitMapGameObject toExit = to.Item.GetFirstInCellGameObject<ExitMapGameObject>();
         if (fromExit != null) return false;
 
 
         var fromPosition = Grid.GetWorldPositionOfNearestCell(from.XIndex, from.YIndex);
         var toPosition = Grid.GetWorldPositionOfNearestCell(to.XIndex, to.YIndex);
+
+        Character.Collider2D.enabled = false;
         var hit = Physics2D.Linecast(fromPosition, toPosition, WallLayerMask);
+        Character.Collider2D.enabled = true;
+        
         return hit.transform == null;
     }
 
