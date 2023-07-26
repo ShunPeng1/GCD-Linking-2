@@ -21,9 +21,10 @@ namespace _Scripts.Base_Character_Set.Card_Region
         [SerializeField] private float _middleAlignDuration = 0.125f;
         [SerializeField] private Ease _middleAlignEase = Ease.OutCubic;
 
-        
-        private void Start()
+
+        protected override void Awake()
         {
+            base.Awake();
             _startPosition = transform.localPosition;
             
         }
@@ -49,7 +50,7 @@ namespace _Scripts.Base_Character_Set.Card_Region
         {
             var maxOffset =  ( CardOffset * (MaxCardHold -1 ))/2;
             var currentOffset = (CardOffset * (CardHoldingCount - 1)) / 2;
-            _moveInteractableDestinationPosition = maxOffset - currentOffset ;
+            _middlePivotDestinationPosition = maxOffset - currentOffset ;
             
             
             LocalMoveToDestination(_middleAlignDuration, _middleAlignEase);
@@ -77,6 +78,7 @@ namespace _Scripts.Base_Character_Set.Card_Region
             _moveSequence.Kill();
             _moveSequence = DOTween.Sequence();
             _moveSequence.Append(transform.DOLocalMove(GetMovePosition(), duration).SetEase(ease));
+            _moveSequence.Play();
         }
 
         private Vector3 GetMovePosition()
