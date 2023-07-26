@@ -143,11 +143,11 @@ namespace _Scripts.Managers
                         .GetFirstInCellGameObject<BaseCharacterMapDynamicGameObject>();
                     if (collideCharacter == ImposterSet.CharacterMapGameObject)
                     {
-                        Debug.Log("DETECTIVE WIN ");
+                        UiManager.Instance.EndGame(PlayerRole.Detective, "The Detective has caught the imposter!");
                     }
                     else
                     {
-                        Debug.Log("IMPOSTER WIN");
+                        UiManager.Instance.EndGame(PlayerRole.Imposter, "The Detective falsely accused someone!");
                     }
                     break;
                 case PlayerRole.Imposter:
@@ -155,7 +155,7 @@ namespace _Scripts.Managers
                         .GetFirstInCellGameObject<ExitMapGameObject>();
                     if (exit!= null && exit.IsOpen)
                     {
-                        Debug.Log("IMPOSTER WIN");
+                        UiManager.Instance.EndGame(PlayerRole.Imposter, "The Imposter escape!");
                     }
                     
                     break;

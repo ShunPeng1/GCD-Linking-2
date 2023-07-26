@@ -18497,6 +18497,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ccd253620d9e4f48b2a196bf70388725, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CardRegionsParent: {fileID: 930233319}
   _handCardRegion: {fileID: 734855584}
   _playCardRegion: {fileID: 8170925472789329259}
   _exhaustCardRegion: {fileID: 1965224856}

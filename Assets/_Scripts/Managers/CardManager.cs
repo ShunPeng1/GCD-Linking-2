@@ -8,8 +8,9 @@ using UnityUtilities;
 
 public class CardManager : SingletonMonoBehaviour<CardManager>
 {
-    
-    [Header("Card Region")] 
+
+    [Header("Card Region")]
+    public GameObject CardRegionsParent; 
     [SerializeField] private HandCardRegion _handCardRegion;
     [SerializeField] private PlayCardRegion _playCardRegion;
     [SerializeField] private DeckCardRegion _exhaustCardRegion;

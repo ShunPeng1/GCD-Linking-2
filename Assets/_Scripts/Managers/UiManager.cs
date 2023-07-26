@@ -289,8 +289,35 @@ namespace _Scripts.Managers
                 yield return new WaitForSeconds(1/charPerSecond);
             }
         }
-        
-        
+
+        public void EndGame(PlayerRole playerRole, string display)
+        {
+            CardManager.Instance.LockPlayCard();
+            CardManager.Instance.CardRegionsParent.SetActive(false);
+            
+            _currentTurnImage.sprite = playerRole switch
+            {
+                PlayerRole.Detective => _detectiveSprite,
+                PlayerRole.Imposter => _imposterSprite,
+                _ => throw new ArgumentOutOfRangeException()
+            };
+            
+
+            _currentTurnText.text = playerRole + " Win!\n" + display;
+
+            _currentTurnPopInSequence.Kill();
+            Sequence endGameSequence = DOTween.Sequence();
+
+            Vector3 popInDestination = _currentTurnPopDestination + _currentTurnPopInOffset;
+            
+            endGameSequence.Append(_currentTurnPanel.DOMove(popInDestination, _currentTurnPopInDuration).SetEase(_currentTurnPopEase));
+            endGameSequence.Join(_crimeBoardCanvasGroup.DOFade(0, _currentTurnPopInDuration).SetEase(_currentTurnPopEase));
+            endGameSequence.Join(_imposterRecognitionCanvasGroup.DOFade(0, _currentTurnPopInDuration).SetEase(_currentTurnPopEase));
+
+            
+
+            
+        }
         
     }
 }

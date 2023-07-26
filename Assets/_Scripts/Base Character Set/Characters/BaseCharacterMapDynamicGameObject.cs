@@ -248,8 +248,6 @@ public class BaseCharacterMapDynamicGameObject : MapDynamicGameObject
                         
                         MapManager.Instance.UpdateAllCharacterRecognition();
                         GameManager.Instance.RequestEndGame(this);
-                        
-                        externalSuccessSelectionAction?.Invoke();
 
                         _canForceEnd = true;
                         
