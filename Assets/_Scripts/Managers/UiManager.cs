@@ -32,7 +32,7 @@ namespace _Scripts.Managers
         [SerializeField] private Button _portraitSelectionButton;
         [SerializeField] private Vector3 _portraitSelectionOffsetPosition = new Vector3(0, -100, 0);
         private PortraitButtonRect _choosingPortraitButton;
-        private UnityAction _portraitClickListener;
+        private readonly Dictionary<PortraitButtonRect,UnityAction> _portraitClickListeners = new();
         
         [Header("Current Turn")] 
         [SerializeField] private CanvasGroup _currentTurnCanvasGroup;
@@ -101,7 +101,7 @@ namespace _Scripts.Managers
                 GameManager.Instance.StartGame(_choosingPortraitButton.CharacterSet);
                 foreach (var portraitButtonRect in _portraitButtonRects)
                 {
-                    portraitButtonRect.Button.onClick.RemoveListener(_portraitClickListener);
+                    portraitButtonRect.Button.onClick.RemoveListener(_portraitClickListeners[portraitButtonRect]);
                 }
             });
         }
@@ -112,8 +112,8 @@ namespace _Scripts.Managers
             var portraitButtonRect = Instantiate(portraitButtonRectPrefab, _characterPortraitButtonGroup.transform);
             _portraitButtonRects.Add(portraitButtonRect);
 
-            _portraitClickListener = () => ChoosePortrait(portraitButtonRect);
-            portraitButtonRect.Button.onClick.AddListener(_portraitClickListener);
+            _portraitClickListeners[portraitButtonRect] = () => ChoosePortrait(portraitButtonRect);
+            portraitButtonRect.Button.onClick.AddListener(_portraitClickListeners[portraitButtonRect]);
             
             return portraitButtonRect;
         }

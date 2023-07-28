@@ -2,6 +2,7 @@
 {
     public enum CharacterRecognitionState
     {
+        None,
         InLight,
         InDark,
         Innocent

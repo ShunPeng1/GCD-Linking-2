@@ -76,6 +76,7 @@ namespace _Scripts.Managers
             ImposterSet = imposterSet;
             StartGameAction.Invoke();
             MapManager.Instance.UpdateAllCharacterRecognition();
+            
         }
         
         private void StartTurn()
