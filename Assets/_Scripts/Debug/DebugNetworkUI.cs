@@ -16,9 +16,5 @@ public class DebugNetworkUI : MonoBehaviour
         _client.onClick.AddListener( () => NetworkManager.Singleton.StartClient());
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    
 }

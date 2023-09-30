@@ -35,7 +35,7 @@ public class MultiplayerManager : PersistentSingletonMonoBehaviour<MultiplayerMa
     public string PlayerId { get; set; }
     
     [Header("Lobby")]
-    [SerializeField] private string _lobbyName = "Lobby Name";
+    [SerializeField] private string _lobbyName = "Shun Lobby";
     [SerializeField] private int _maxPlayers = 4;
     [SerializeField] private EncryptionType _encryptionType = EncryptionType.Dtls;
 
@@ -45,7 +45,7 @@ public class MultiplayerManager : PersistentSingletonMonoBehaviour<MultiplayerMa
     
     private Lobby _currentLobby;
 
-    private const string K_KEY_JOIN_CODE = "RelayJoinCode";
+    private const string KEY_JOIN_CODE = "RelayJoinCode";
 
     private const string DTLS_ENCRYPTION = "dtls";
     private const string UDP_ENCRYPTION = "udp";
@@ -92,7 +92,7 @@ public class MultiplayerManager : PersistentSingletonMonoBehaviour<MultiplayerMa
     {
 
         _heartBeatTimer.timesUpEvent.AddListener(() => HandleHeartBeatAsync());
-
+        _pollForUpdateTimer.timesUpEvent.AddListener(() => GetLobbyAsync());
     }
     
     public async Task CreateLobby()
@@ -128,7 +128,7 @@ public class MultiplayerManager : PersistentSingletonMonoBehaviour<MultiplayerMa
                 {
                     {
                        
-                    K_KEY_JOIN_CODE, new DataObject(DataObject.VisibilityOptions.Member, relayJoinCode)
+                    KEY_JOIN_CODE, new DataObject(DataObject.VisibilityOptions.Member, relayJoinCode)
                      
                     }
                 }
@@ -152,11 +152,11 @@ public class MultiplayerManager : PersistentSingletonMonoBehaviour<MultiplayerMa
             _currentLobby = await LobbyService.Instance.QuickJoinLobbyAsync();
             _pollForUpdateTimer.StartTimer();
 
-            string relayJoinCode = _currentLobby.Data[K_KEY_JOIN_CODE].Value;
+            string relayJoinCode = _currentLobby.Data[KEY_JOIN_CODE].Value;
             JoinAllocation joinAllocation = await JoinRelay(relayJoinCode);
             
-            NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(new RelayServerData(
-                joinAllocation, ConnectionType));
+            NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(
+                new RelayServerData(joinAllocation, ConnectionType));
 
             NetworkManager.Singleton.StartClient();
         }
@@ -209,12 +209,23 @@ public class MultiplayerManager : PersistentSingletonMonoBehaviour<MultiplayerMa
         }
     }
     
-    async Task JoinLobbyByCode(string joinCode)
+    public async Task JoinLobbyById(string lobbyId)
     {
         try
         {
-            await Lobbies.Instance.JoinLobbyByCodeAsync(joinCode);
-            Debug.Log("Join lobby with code: "+ joinCode);
+            Debug.Log("Tried to lobby with code: "+ lobbyId);
+            _currentLobby = await Lobbies.Instance.JoinLobbyByIdAsync(lobbyId);
+            
+            _pollForUpdateTimer.StartTimer();
+
+            string relayJoinCode = _currentLobby.Data[KEY_JOIN_CODE].Value;
+            JoinAllocation joinAllocation = await JoinRelay(relayJoinCode);
+            
+            NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(
+                new RelayServerData(joinAllocation, ConnectionType));
+
+            NetworkManager.Singleton.StartClient();
+            Debug.Log("Successfully join lobby with code: "+ lobbyId);
         }
         catch (RelayServiceException e)
         {
@@ -240,17 +251,17 @@ public class MultiplayerManager : PersistentSingletonMonoBehaviour<MultiplayerMa
     {
         try
         {
-            await LobbyService.Instance.GetLobbyAsync(_currentLobby.Id);
+            _currentLobby = await LobbyService.Instance.GetLobbyAsync(_currentLobby.Id);
         }
         catch (LobbyServiceException e)
         {
-            Debug.LogError("Failed to heartbeat lobby: "+ e.Message);
+            Debug.LogError("Failed to get lobby: "+ e.Message);
             throw;
         }
     }
     
     
-    private async Task QueryLobbiesAsync()
+    public async Task<QueryResponse> QueryLobbiesAsync()
     {
         try
         {
@@ -268,15 +279,58 @@ public class MultiplayerManager : PersistentSingletonMonoBehaviour<MultiplayerMa
             };
             
             QueryResponse queryResponse = await LobbyService.Instance.QueryLobbiesAsync();
-            Debug.Log($"lobbies found: {queryResponse.Results}");
+            Debug.Log($"lobbies found: {queryResponse.Results.Count}");
             foreach (var lobby in queryResponse.Results)
             {
                 Debug.Log(lobby.Name + " " + lobby.MaxPlayers);
             }
+
+            return queryResponse;
         }
         catch (LobbyServiceException e)
         {
             Debug.LogError("Failed to query lobbies: "+ e.Message);
+            throw;
+        }
+        
+        return default;
+    }
+
+    public async void LeaveLobby()
+    {
+        try
+        {
+            await LobbyService.Instance.RemovePlayerAsync(_currentLobby.Id, AuthenticationService.Instance.PlayerId);
+        }
+        catch (LobbyServiceException e)
+        {
+            Debug.LogError("Fail to leave lobby");
+            throw;
+        }
+    }
+    
+    public async void KickPlayer(int indexInLobby)
+    {
+        try
+        {
+            await LobbyService.Instance.RemovePlayerAsync(_currentLobby.Id, _currentLobby.Players[indexInLobby].Id);
+        }
+        catch (LobbyServiceException e)
+        {
+            Debug.LogError("Fail to Kick player from lobby");
+            throw;
+        }
+    }
+
+    public async void DeleteLobby()
+    {
+        try
+        {
+            await LobbyService.Instance.DeleteLobbyAsync(_currentLobby.Id);
+        }
+        catch (LobbyServiceException e)
+        {
+            Debug.LogError("Fail to Kick player from lobby");
             throw;
         }
     }
