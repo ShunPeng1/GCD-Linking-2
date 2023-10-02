@@ -42,8 +42,8 @@ public class MultiplayerManager : PersistentSingletonMonoBehaviour<MultiplayerMa
     [Header("Timer")]
     [SerializeField] private Timer _heartBeatTimer; // The lobby will timeout if there is no message sending in 30 seconds
     [SerializeField] private Timer _pollForUpdateTimer;
-    
-    private Lobby _currentLobby;
+
+    public Lobby CurrentLobby { get; private set; }
 
     private const string KEY_JOIN_CODE = "RelayJoinCode";
 
@@ -54,17 +54,15 @@ public class MultiplayerManager : PersistentSingletonMonoBehaviour<MultiplayerMa
     
     async void Start()
     {
-        await Authenticate();
-        
         SetUpTimer();
     }
 
-    private async Task Authenticate()
+    public async Task AuthenticateAnonymously()
     {
-        await Authenticate("Player_" + Random.Range(0, 1024));
+        await SignInAnonymously("Player_" + Random.Range(0, 1024));
     }
 
-    private async Task Authenticate(string playerName)
+    private async Task SignInAnonymously(string playerName)
     {
         if (UnityServices.State == ServicesInitializationState.Uninitialized)
         {
@@ -115,14 +113,14 @@ public class MultiplayerManager : PersistentSingletonMonoBehaviour<MultiplayerMa
                 }
             };
 
-            _currentLobby = await LobbyService.Instance.CreateLobbyAsync(_lobbyName, _maxPlayers, options);
-            Debug.Log("Created lobby :" + _currentLobby.Name + " with code "+ _currentLobby.LobbyCode);
+            CurrentLobby = await LobbyService.Instance.CreateLobbyAsync(_lobbyName, _maxPlayers, options);
+            Debug.Log("Created lobby :" + CurrentLobby.Name + " with code "+ CurrentLobby.LobbyCode);
             
             // heartbeat timer and poll for updates
             _heartBeatTimer.StartTimer();
             _pollForUpdateTimer.StartTimer();
 
-            await LobbyService.Instance.UpdateLobbyAsync(_currentLobby.Id, new UpdateLobbyOptions
+            await LobbyService.Instance.UpdateLobbyAsync(CurrentLobby.Id, new UpdateLobbyOptions
             {
                 Data = new Dictionary<string, DataObject>
                 {
@@ -149,10 +147,10 @@ public class MultiplayerManager : PersistentSingletonMonoBehaviour<MultiplayerMa
     {
         try
         {
-            _currentLobby = await LobbyService.Instance.QuickJoinLobbyAsync();
+            CurrentLobby = await LobbyService.Instance.QuickJoinLobbyAsync();
             _pollForUpdateTimer.StartTimer();
 
-            string relayJoinCode = _currentLobby.Data[KEY_JOIN_CODE].Value;
+            string relayJoinCode = CurrentLobby.Data[KEY_JOIN_CODE].Value;
             JoinAllocation joinAllocation = await JoinRelay(relayJoinCode);
             
             NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(
@@ -214,11 +212,11 @@ public class MultiplayerManager : PersistentSingletonMonoBehaviour<MultiplayerMa
         try
         {
             Debug.Log("Tried to lobby with code: "+ lobbyId);
-            _currentLobby = await Lobbies.Instance.JoinLobbyByIdAsync(lobbyId);
+            CurrentLobby = await Lobbies.Instance.JoinLobbyByIdAsync(lobbyId);
             
             _pollForUpdateTimer.StartTimer();
 
-            string relayJoinCode = _currentLobby.Data[KEY_JOIN_CODE].Value;
+            string relayJoinCode = CurrentLobby.Data[KEY_JOIN_CODE].Value;
             JoinAllocation joinAllocation = await JoinRelay(relayJoinCode);
             
             NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(
@@ -237,7 +235,7 @@ public class MultiplayerManager : PersistentSingletonMonoBehaviour<MultiplayerMa
     {
         try
         {
-            await LobbyService.Instance.SendHeartbeatPingAsync(_currentLobby.Id);
+            await LobbyService.Instance.SendHeartbeatPingAsync(CurrentLobby.Id);
             Debug.Log("Heart beat Lobby ");
         }
         catch (LobbyServiceException e)
@@ -251,7 +249,7 @@ public class MultiplayerManager : PersistentSingletonMonoBehaviour<MultiplayerMa
     {
         try
         {
-            _currentLobby = await LobbyService.Instance.GetLobbyAsync(_currentLobby.Id);
+            CurrentLobby = await LobbyService.Instance.GetLobbyAsync(CurrentLobby.Id);
         }
         catch (LobbyServiceException e)
         {
@@ -300,7 +298,7 @@ public class MultiplayerManager : PersistentSingletonMonoBehaviour<MultiplayerMa
     {
         try
         {
-            await LobbyService.Instance.RemovePlayerAsync(_currentLobby.Id, AuthenticationService.Instance.PlayerId);
+            await LobbyService.Instance.RemovePlayerAsync(CurrentLobby.Id, AuthenticationService.Instance.PlayerId);
         }
         catch (LobbyServiceException e)
         {
@@ -313,7 +311,7 @@ public class MultiplayerManager : PersistentSingletonMonoBehaviour<MultiplayerMa
     {
         try
         {
-            await LobbyService.Instance.RemovePlayerAsync(_currentLobby.Id, _currentLobby.Players[indexInLobby].Id);
+            await LobbyService.Instance.RemovePlayerAsync(CurrentLobby.Id, CurrentLobby.Players[indexInLobby].Id);
         }
         catch (LobbyServiceException e)
         {
@@ -326,7 +324,7 @@ public class MultiplayerManager : PersistentSingletonMonoBehaviour<MultiplayerMa
     {
         try
         {
-            await LobbyService.Instance.DeleteLobbyAsync(_currentLobby.Id);
+            await LobbyService.Instance.DeleteLobbyAsync(CurrentLobby.Id);
         }
         catch (LobbyServiceException e)
         {

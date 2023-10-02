@@ -6,7 +6,7 @@ using Unity.Services.Lobbies.Models;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class LobbyPanel : MonoBehaviour
+public class AvailableLobbyPanel : MonoBehaviour
 {
     private Lobby _lobby;
     [SerializeField] private Button _joinLobbyButton;
