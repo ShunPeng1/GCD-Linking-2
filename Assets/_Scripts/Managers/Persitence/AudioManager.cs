@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Serialization;
 using UnityUtilities;
 
-public class AudioManager : SingletonMonoBehaviour<AudioManager> 
+public class AudioManager : PersistentSingletonMonoBehaviour<AudioManager> 
 {
     [SerializeField] private AudioSource _bgmAudioSource;
     [SerializeField] private AudioSource _sfxAudioSource;
