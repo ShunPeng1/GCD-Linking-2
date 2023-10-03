@@ -406,7 +406,7 @@ GameObject:
   - component: {fileID: 6973213517796464968}
   - component: {fileID: 5300168204077269230}
   m_Layer: 5
-  m_Name: Lobby Panel
+  m_Name: Available Lobby Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
